@@ -1,0 +1,93 @@
+{
+	"name": "ru-py",
+	"scopeName": "source.rupy",
+	"patterns": [
+		{ "include": "#comments" },
+		{ "include": "#keywords" },
+		{ "include": "#functions" },
+		{ "include": "#classes" },
+		{ "include": "#strings" },
+		{ "include": "#numbers" }
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.rupy",
+					"match": "\\b(если|иначе|конец|попробовать|отловить|для|раза|функция|вернуть|класс|создать|использовать|из)\\b"
+				},
+				{
+					"name": "keyword.other.rupy",
+					"match": "\\b(пусть|вывести|ввод)\\b"
+				},
+				{
+					"name": "entity.name.function.member.rupy",
+					"comment": "Подсветка методов после точки",
+					"match": "(?<=\\.)(добавить|удалить|размер|очистить)\\b"
+				},
+				{
+					"name": "variable.language.self.rupy",
+					"match": "\\bэто\\b"
+				}
+			]
+		},
+
+
+		"functions": {
+			"patterns": [
+				{
+					"name": "entity.name.function.rupy",
+					"comment": "Подсветка имени при объявлении: функция говорить",
+					"match": "(?<=функция|создать)\\s+([a-zA-Zа-яА-Я_]\\w*)"
+				},
+				{
+					"name": "entity.name.function.rupy",
+					"comment": "Подсветка вызова: бот.говорить()",
+					"match": "(?<=\\.)([a-zA-Zа-яА-Я_]\\w*)(?=\\s*\\()"
+				}
+			]
+		},
+		"classes": {
+			"patterns": [
+				{
+					"name": "entity.name.type.class.rupy",
+					"comment": "Подсветка имени класса: класс Роберт",
+					"match": "(?<=класс)\\s+([a-zA-Zа-яА-Я_]\\w*)"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.rupy",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.rupy",
+					"match": "\\\\."
+				}
+			]
+		},
+		"numbers": {
+			"patterns": [{
+				"name": "constant.numeric.rupy",
+				"match": "\\b\\d+(\\.\\d+)?\\b"
+			}]
+		},
+		"comments": {
+			"patterns": [{
+				"name": "comment.line.number-sign.rupy",
+				"match": "#.*$"
+			}]
+		},
+		"methods": {
+			"patterns": [
+				{
+					"name": "entity.name.function.member.rupy",
+					"match": "(?<=\\.)(добавить|удалить|размер|очистить)\\b"
+				}
+			]
+		}
+
+		
+	}
+}

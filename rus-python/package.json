@@ -1,0 +1,69 @@
+{
+  "name": "ru-python",
+  "displayName": "Ru Python",
+  "description": "позволяет писать на русском синтаксис python",
+  "publisher": "SUSCERSAL",
+  "version": "0.0.1",
+  "main": "./extension.js",
+  "activationEvents": [
+      "onLanguage:rupy"
+  ],
+
+  "engines": {
+    "vscode": "^1.007.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+        "id": "rupy",
+        "aliases": ["Ru Python", "rupy", "RuPy"],
+        "extensions": [".rupy"],
+        "configuration": "./language-configuration.json",
+        "icon": { 
+            "light": "./icon.png", 
+            "dark": "./icon.png" 
+        }
+    }],
+    "grammars": [{
+      "language": "rupy",
+      "scopeName": "source.rupy",
+      "path": "./syntaxes/rupy.tmLanguage.json"
+    }],
+    "snippets": [
+        {
+            "language": "rupy",
+            "path": "./snippets/rupy-words.json"
+        }
+    ],
+
+    "commands": [
+        {
+            "command": "rupy.run",
+            "title": "Запустить Rupy",
+            "icon": "$(play)"
+        },
+        {
+            "command": "rupy.createNewFile",
+            "title": "Файл RuPython",
+            "category": "RuPy",
+            "icon": "$(file-add)" 
+        }
+    ],
+    "menus": {
+        "editor/title": [
+            {
+                "command": "rupy.run",
+                "when": "resourceExtname == .rupy",
+                "group": "navigation" 
+            }
+        ],
+        "file/newFile": [
+            {
+                "command": "rupy.createNewFile"
+            }
+        ]
+    }
+  }
+}
