@@ -1,7 +1,7 @@
 # Транслятор rupy в Python
 
 ## Готовый бинарник
-**Есть скомпилированый [.exe](https://github.com/suscersal/ru-python/blob/main/dist/rupython.exe) скомпилированный [build.py](https://github.com/suscersal/ru-python/blob/main/build.py).**
+**Есть скомпилированый [бинарник](https://github.com/suscersal/ru-python/blob/main/dist/rupython.exe) скомпилированный [build.py](https://github.com/suscersal/ru-python/blob/main/build.py).**
 **файл запускается через передачу аргумента бинарнику. Например: 'C:\rupython.exe test.rupy'**
 **Код .rupy транслируется в .py**
 
