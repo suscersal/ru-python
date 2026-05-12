@@ -8,7 +8,6 @@ GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
 
-# 1. Функция для автоматической установки модулей
 def install_if_missing(package):
     try:
         # Проверяем, установлен ли пакет
@@ -22,7 +21,6 @@ def install_if_missing(package):
 install_if_missing("pyinstaller")
 
 # 3. Находим путь к pyinstaller.exe автоматически
-# Обычно он лежит в папке Scripts рядом с python.exe
 scripts_path = os.path.join(os.path.dirname(sys.executable), "Scripts")
 pyinstaller = os.path.join(scripts_path, "pyinstaller.exe")
 

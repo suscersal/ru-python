@@ -39,7 +39,7 @@ def load_config():
 # Загружаем базу один раз
 MOD_CONFIG = load_config()
 
-print(MOD_CONFIG)
+# print(MOD_CONFIG)
 
 def get_russian_error(raw_error):
     raw_error_str = str(raw_error)
