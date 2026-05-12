@@ -3,10 +3,468 @@
     "ru-name": "время",
     "sources": {
       "sleep": {
-        "ru-name": "пауза"
+        "ru-name": "спать"
       },
       "time": {
         "ru-name": "время"
       }
+    }
+  },
+  "math": {
+    "ru-name": "математика",
+    "sources": {
+      "cos": {
+        "ru-name": "косинус"
+      },
+      "sin": {
+        "ru-name": "синус"
+      },
+      "sqrt": {
+        "ru-name": "корень"
+      }
+    }
+  },
+  "os": {
+    "ru-name": "os",
+    "sources": {
+      "DirEntry": {
+        "ru-name": "дирentry"
+      },
+      "EX_OK": {
+        "ru-name": "ех_ок"
+      },
+      "F_OK": {
+        "ru-name": "ф_ок"
+      },
+      "GenericAlias": {
+        "ru-name": "общий псевдоним"
+      },
+      "Mapping": {
+        "ru-name": "картирование"
+      },
+      "MutableMapping": {
+        "ru-name": "mutablemapping"
+      },
+      "O_APPEND": {
+        "ru-name": "o_append"
+      },
+      "O_BINARY": {
+        "ru-name": "o_binary"
+      },
+      "O_CREAT": {
+        "ru-name": "o_creat"
+      },
+      "O_EXCL": {
+        "ru-name": "о_excl"
+      },
+      "O_NOINHERIT": {
+        "ru-name": "o_noinherit"
+      },
+      "O_RANDOM": {
+        "ru-name": "o_random"
+      },
+      "O_RDONLY": {
+        "ru-name": "о_rdonly"
+      },
+      "O_RDWR": {
+        "ru-name": "о_rdwr"
+      },
+      "O_SEQUENTIAL": {
+        "ru-name": "o_sequential"
+      },
+      "O_SHORT_LIVED": {
+        "ru-name": "o_short_lived"
+      },
+      "O_TEMPORARY": {
+        "ru-name": "о_временно"
+      },
+      "O_TEXT": {
+        "ru-name": "о_текст"
+      },
+      "O_TRUNC": {
+        "ru-name": "o_trunc"
+      },
+      "O_WRONLY": {
+        "ru-name": "о_wronly"
+      },
+      "P_DETACH": {
+        "ru-name": "p_detach"
+      },
+      "P_NOWAIT": {
+        "ru-name": "p_nowait"
+      },
+      "P_NOWAITO": {
+        "ru-name": "п_новаито"
+      },
+      "P_OVERLAY": {
+        "ru-name": "p_overlay"
+      },
+      "P_WAIT": {
+        "ru-name": "п_wait"
+      },
+      "PathLike": {
+        "ru-name": "pathlike"
+      },
+      "R_OK": {
+        "ru-name": "р_ок"
+      },
+      "SEEK_CUR": {
+        "ru-name": "seek_cur"
+      },
+      "SEEK_END": {
+        "ru-name": "seek_end"
+      },
+      "SEEK_SET": {
+        "ru-name": "seek_set"
+      },
+      "TMP_MAX": {
+        "ru-name": "тмп_макс"
+      },
+      "W_OK": {
+        "ru-name": "в_ок"
+      },
+      "X_OK": {
+        "ru-name": "х_ок"
+      },
+      "abc": {
+        "ru-name": "абв"
+      },
+      "abort": {
+        "ru-name": "прерывать"
+      },
+      "access": {
+        "ru-name": "доступ"
+      },
+      "add_dll_directory": {
+        "ru-name": "add_dll_directory"
+      },
+      "altsep": {
+        "ru-name": "альцеп"
+      },
+      "chdir": {
+        "ru-name": "чдир"
+      },
+      "chmod": {
+        "ru-name": "chmod"
+      },
+      "close": {
+        "ru-name": "закрывать"
+      },
+      "closerange": {
+        "ru-name": "близкое расстояние"
+      },
+      "cpu_count": {
+        "ru-name": "cpu_count"
+      },
+      "curdir": {
+        "ru-name": "курдир"
+      },
+      "defpath": {
+        "ru-name": "defpath"
+      },
+      "device_encoding": {
+        "ru-name": "устройство_кодирование"
+      },
+      "devnull": {
+        "ru-name": "devnull"
+      },
+      "dup": {
+        "ru-name": "обман"
+      },
+      "dup2": {
+        "ru-name": "дубликат2"
+      },
+      "environ": {
+        "ru-name": "окружать"
+      },
+      "error": {
+        "ru-name": "ошибка"
+      },
+      "execl": {
+        "ru-name": "исключить"
+      },
+      "execle": {
+        "ru-name": "изгнанник"
+      },
+      "execlp": {
+        "ru-name": "execlp"
+      },
+      "execlpe": {
+        "ru-name": "исключить"
+      },
+      "execv": {
+        "ru-name": "руководитель"
+      },
+      "execve": {
+        "ru-name": "исполнять"
+      },
+      "execvp": {
+        "ru-name": "исполнительный директор"
+      },
+      "execvpe": {
+        "ru-name": "выполнить"
+      },
+      "extsep": {
+        "ru-name": "эксцепт"
+      },
+      "fchmod": {
+        "ru-name": "fchmod"
+      },
+      "fdopen": {
+        "ru-name": "fdopen"
+      },
+      "fsdecode": {
+        "ru-name": "фсдекод"
+      },
+      "fsencode": {
+        "ru-name": "фсенкод"
+      },
+      "fspath": {
+        "ru-name": "fspath"
+      },
+      "fstat": {
+        "ru-name": "фстат"
+      },
+      "fsync": {
+        "ru-name": "fsync"
+      },
+      "ftruncate": {
+        "ru-name": "ftruncate"
+      },
+      "get_blocking": {
+        "ru-name": "get_blocking"
+      },
+      "get_exec_path": {
+        "ru-name": "get_exec_path"
+      },
+      "get_handle_inheritable": {
+        "ru-name": "get_handle_inheritable"
+      },
+      "get_inheritable": {
+        "ru-name": "get_inheritable"
+      },
+      "get_terminal_size": {
+        "ru-name": "get_terminal_size"
+      },
+      "getcwd": {
+        "ru-name": "получить cwd"
+      },
+      "getcwdb": {
+        "ru-name": "getcwdb"
+      },
+      "getenv": {
+        "ru-name": "получить"
+      },
+      "getlogin": {
+        "ru-name": "получить логин"
+      },
+      "getpid": {
+        "ru-name": "получитьпид"
+      },
+      "getppid": {
+        "ru-name": "getppid"
+      },
+      "isatty": {
+        "ru-name": "недовольный"
+      },
+      "kill": {
+        "ru-name": "убийство"
+      },
+      "lchmod": {
+        "ru-name": "лчмод"
+      },
+      "linesep": {
+        "ru-name": "линесеп"
+      },
+      "link": {
+        "ru-name": "связь"
+      },
+      "listdir": {
+        "ru-name": "списоккаталог"
+      },
+      "listdrives": {
+        "ru-name": "списокдисков"
+      },
+      "listmounts": {
+        "ru-name": "списокмонтируется"
+      },
+      "listvolumes": {
+        "ru-name": "списоктомов"
+      },
+      "lseek": {
+        "ru-name": "я ищу"
+      },
+      "lstat": {
+        "ru-name": "lstat"
+      },
+      "makedirs": {
+        "ru-name": "македирс"
+      },
+      "mkdir": {
+        "ru-name": "мкдир"
+      },
+      "name": {
+        "ru-name": "имя"
+      },
+      "open": {
+        "ru-name": "открыть"
+      },
+      "pardir": {
+        "ru-name": "пардир"
+      },
+      "path": {
+        "ru-name": "путь"
+      },
+      "pathsep": {
+        "ru-name": "путь"
+      },
+      "pipe": {
+        "ru-name": "трубка"
+      },
+      "popen": {
+        "ru-name": "открыть"
+      },
+      "process_cpu_count": {
+        "ru-name": "процесс_cpu_count"
+      },
+      "putenv": {
+        "ru-name": "путинв"
+      },
+      "read": {
+        "ru-name": "читать"
+      },
+      "readlink": {
+        "ru-name": "ссылка для чтения"
+      },
+      "remove": {
+        "ru-name": "удалять"
+      },
+      "removedirs": {
+        "ru-name": "удалены"
+      },
+      "rename": {
+        "ru-name": "переименовывать"
+      },
+      "renames": {
+        "ru-name": "переименовывает"
+      },
+      "replace": {
+        "ru-name": "заменять"
+      },
+      "rmdir": {
+        "ru-name": "rmdir"
+      },
+      "scandir": {
+        "ru-name": "скандир"
+      },
+      "sep": {
+        "ru-name": "сентябрь"
+      },
+      "set_blocking": {
+        "ru-name": "set_blocking"
+      },
+      "set_handle_inheritable": {
+        "ru-name": "set_handle_inheritable"
+      },
+      "set_inheritable": {
+        "ru-name": "set_inheritable"
+      },
+      "spawnl": {
+        "ru-name": "спавнл"
+      },
+      "spawnle": {
+        "ru-name": "порождать"
+      },
+      "spawnv": {
+        "ru-name": "спавнв"
+      },
+      "spawnve": {
+        "ru-name": "порождать"
+      },
+      "st": {
+        "ru-name": "ул."
+      },
+      "startfile": {
+        "ru-name": "стартовый файл"
+      },
+      "stat": {
+        "ru-name": "статистика"
+      },
+      "stat_result": {
+        "ru-name": "stat_result"
+      },
+      "statvfs_result": {
+        "ru-name": "statvfs_result"
+      },
+      "strerror": {
+        "ru-name": "ошибка"
+      },
+      "supports_bytes_environ": {
+        "ru-name": "support_bytes_environ"
+      },
+      "supports_dir_fd": {
+        "ru-name": "support_dir_fd"
+      },
+      "supports_effective_ids": {
+        "ru-name": "support_efficient_ids"
+      },
+      "supports_fd": {
+        "ru-name": "support_fd"
+      },
+      "supports_follow_symlinks": {
+        "ru-name": "support_follow_symlinks"
+      },
+      "symlink": {
+        "ru-name": "символическая ссылка"
+      },
+      "sys": {
+        "ru-name": "система"
+      },
+      "system": {
+        "ru-name": "система"
+      },
+      "terminal_size": {
+        "ru-name": "размер_терминала"
+      },
+      "times": {
+        "ru-name": "раз"
+      },
+      "times_result": {
+        "ru-name": "times_result"
+      },
+      "truncate": {
+        "ru-name": "обрезать"
+      },
+      "umask": {
+        "ru-name": "маска"
+      },
+      "uname_result": {
+        "ru-name": "uname_result"
+      },
+      "unlink": {
+        "ru-name": "отсоединить"
+      },
+      "unsetenv": {
+        "ru-name": "unsetenv"
+      },
+      "urandom": {
+        "ru-name": "случайный"
+      },
+      "utime": {
+        "ru-name": "время работы"
+      },
+      "waitpid": {
+        "ru-name": "ожидание"
+      },
+      "waitstatus_to_exitcode": {
+        "ru-name": "waitstatus_to_exitcode"
+      },
+      "walk": {
+        "ru-name": "ходить"
+      },
+      "write": {
+        "ru-name": "писать"
+      }
+    }
   }
 }
