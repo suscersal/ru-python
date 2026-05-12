@@ -3,6 +3,10 @@ import sys
 import json
 import re
 import traceback
+import shutil
+
+
+
 
 # Включаем поддержку ANSI цветов в Windows
 # os.system('')
@@ -11,6 +15,31 @@ RED = "\033[91m"
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
+
+
+def load_config():
+    local_json = "modules.json"
+    # Путь к исходникам расширения рядом с твоим .py файлом
+    source_json = os.path.join(os.path.dirname(__file__), 'rus-python', 'modules.json')
+
+    # 1. Синхронизация: если в папке исходников есть файл, копируем его к себе
+    if os.path.exists(source_json):
+        try:
+            shutil.copy2(source_json, local_json)
+            # print(f"# База модулей обновлена из исходников")
+        except Exception as e:
+            print(f"# Ошибка при копировании: {e}")
+
+    # 2. Загрузка (если файла нет совсем, создаем пустой словарь)
+    if os.path.exists(local_json):
+        with open(local_json, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+# Загружаем базу один раз
+MOD_CONFIG = load_config()
+
+print(MOD_CONFIG)
 
 def get_russian_error(raw_error):
     raw_error_str = str(raw_error)
@@ -88,7 +117,28 @@ def run_rupy(input_file):
             continue # pass добавили (или нет), идем дальше
 
         elif cmd == 'вывести':
-            py_lines.append(f"{prefix}print({' '.join(parts[1:])})")
+            # 1. Берем всё, что идет после слова "вывести"
+            expression = " ".join(parts[1:])
+            
+            # 2. Проходим по всем модулям в JSON и заменяем русские имена на английские
+            for py_mod_name, mod_data in MOD_CONFIG.items():
+                ru_mod_name = mod_data.get("ru-name")
+                
+                # Если в выражении есть "время."
+                if f"{ru_mod_name}." in expression:
+                    # Заменяем модуль: время. -> time.
+                    expression = expression.replace(f"{ru_mod_name}.", f"{py_mod_name}.")
+                    
+                    # Заменяем функции из этого модуля: .время -> .time
+                    sources = mod_data.get("sources", {})
+                    for py_src, src_data in sources.items():
+                        ru_src = src_data.get("ru-name")
+                        if f".{ru_src}" in expression:
+                            expression = expression.replace(f".{ru_src}", f".{py_src}")
+            
+            # 3. Записываем итоговый принт
+            py_lines.append(f"{prefix}print({expression})")
+            continue
 
 
         elif cmd == 'ввод':
@@ -115,10 +165,20 @@ def run_rupy(input_file):
 
             
         elif cmd == 'использовать':
-            # Синтаксис: использовать модуль
-            # Пример: использовать math -> import math
-            module_name = "".join(parts[1:])
-            py_lines.append(f"{prefix}import {module_name}")
+            module_to_import = content.replace('использовать ', '').strip()
+            
+            found_in_config = False
+            for py_mod_name, mod_data in MOD_CONFIG.items():
+                if mod_data.get("ru-name") == module_to_import:
+                    # Если нашли в JSON (например, "время"), пишем английский "import time"
+                    py_lines.append(f"{prefix}import {py_mod_name}")
+                    found_in_config = True
+                    break
+            
+            if not found_in_config:
+                # Если в JSON модуля нет, оставляем как было (на случай обычных библиотек)
+                py_lines.append(f"{prefix}import {module_to_import}")
+            continue # Переходим к следующей строке кода
 
         elif cmd == 'из':
             # Синтаксис: из модуль использовать функция
@@ -188,8 +248,37 @@ def run_rupy(input_file):
         elif "#" in cmd:
             py_lines.append(f'{prefix}#{' '.join(parts[1:])}')
         else:
+            is_processed = False
+            for py_mod, mod_data in MOD_CONFIG.items():
+                ru_mod = mod_data.get("ru-name")
+                
+                # Если строка начинается с "русский_модуль."
+                if content.startswith(f"{ru_mod}."):
+                    # 1. Заменяем имя модуля: время. -> time.
+                    line_to_process = content.replace(f"{ru_mod}.", f"{py_mod}.", 1)
+                    
+                    # 2. Заменяем функции/классы из sources
+                    sources = mod_data.get("sources", {})
+                    for py_src, src_data in sources.items():
+                        ru_src = src_data.get("ru-name")
+                        if f".{ru_src}" in line_to_process:
+                            line_to_process = line_to_process.replace(f".{ru_src}", f".{py_src}")
+                    
+                    # 3. Авто-скобки (если их нет)
+                    if '(' not in line_to_process:
+                        if ' ' in line_to_process:
+                            f_name, args = line_to_process.split(' ', 1)
+                            line_to_process = f"{f_name}({args})"
+                        else:
+                            line_to_process = f"{line_to_process}()"
+
+                    py_lines.append(f"{prefix}{line_to_process}")
+                    is_processed = True
+                    break
+        
+            if is_processed: continue
+
             # АВТО-СКОБКИ ДЛЯ ВЫЗОВОВ МЕТОДОВ И ФУНКЦИЙ
-            # Если в строке есть пробел и это не присваивание (нет знака =)
             if ' ' in content and '=' not in content and '(' not in content:
                 # Находим первое слово (это имя функции/метода)
                 # и все остальное (это аргументы)

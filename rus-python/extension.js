@@ -1,118 +1,119 @@
 const vscode = require('vscode');
-const path = require('path'); // <- ОБЯЗАТЕЛЬНО
+const path = require('path');
 const fs = require('fs');
 
-
-
-/**
- * Метод активации: выполняется, когда VS Code запускает расширение
- * @param {vscode.ExtensionContext} context
- */
 function activate(context) {
-    console.log('Расширение "RUS Python" успешно активировано!');
+    console.log('Расширение RuPy активно!');
 
-        // Команда для создания нового файла из меню
-    let createFileName = vscode.commands.registerCommand('rupy.createNewFile', async () => {
-        const doc = await vscode.workspace.openTextDocument({
-            language: 'rupy',
-            content: 'вывести "Привет, Мир!"\n'
-        });
-        
-        // Открываем созданный файл в редакторе
-        await vscode.window.showTextDocument(doc);
-    });
+    // --- 1. ЗАГРУЗКА БАЗЫ ИЗ JSON (С ЗАЩИТОЙ) ---
+    const modulesPath = path.join(context.extensionPath, 'modules.json');
+    let modulesData = {}; // По умолчанию пустой объект
 
-    context.subscriptions.push(createFileName);
-
-        // Подсказки при наведении (Hovers)
-    let hoverProvider = vscode.languages.registerHoverProvider('rupy', {
-        provideHover(document, position) {
-            const range = document.getWordRangeAtPosition(position);
-            const word = document.getText(range);
-
-            // База описаний и примеров
-            const hoverData = {
-                'функция': '**Функция** — создает блок кода.\n\nПример:\n```rupy\nфункция привет имя\n  вывести "Привет, " + имя\nконец\n```',
-                'класс': '**Класс** — создает шаблон объекта.\n\nПример:\n```rupy\nкласс Робот\n  создать имя\n    это.имя = имя\n  конец\nконец\n```',
-                'вывести': '**Вывести** — печатает текст в консоль.\n\n`вывести "Привет"`',
-                'добавить': '**добавить** — метод списка.\n\n`список.добавить значение`',
-                'это': '**это** — обращение к текущему объекту (self).\n\n`это.имя = "Борис"`'
-            };
-
-            if (hoverData[word]) {
-                return new vscode.Hover(hoverData[word]);
+    try {
+        if (fs.existsSync(modulesPath)) {
+            const fileContent = fs.readFileSync(modulesPath, 'utf8');
+            if (fileContent) {
+                modulesData = JSON.parse(fileContent);
             }
+        } else {
+            console.error('Файл modules.json не найден по пути:', modulesPath);
         }
+    } catch (err) {
+        console.error('Ошибка при чтении modules.json:', err);
+        vscode.window.showErrorMessage('Ошибка в формате файла modules.json');
+        modulesData = {}; // Сбрасываем, чтобы не было ошибки "null to object"
+    }
+
+    // Стили подсветки
+    const importDecorationType = vscode.window.createTextEditorDecorationType({
+        color: '#4EC9B0',
+        fontWeight: 'bold'
+    });
+    const funcDecorationType = vscode.window.createTextEditorDecorationType({
+        color: '#DCDCAA' 
     });
 
-    context.subscriptions.push(hoverProvider);
-
-
-    // Регистрируем команду запуска, которую мы указали в package.json
-    let disposable = vscode.commands.registerCommand('rupy.run', function () {
+    // --- 2. ФУНКЦИЯ ПОДСВЕТКИ ---
+    function updateDecorations() {
         const editor = vscode.window.activeTextEditor;
-        
-        // Проверяем, открыт ли файл
-        if (!editor) {
-            vscode.window.showErrorMessage("Ошибка: Нет активного файла для запуска.");
-            return;
-        }
+        if (!editor || editor.document.languageId !== 'rupy') return;
 
-        editor.document.save().then(async () => {
-            const filePath = editor.document.fileName;
-            const extensionPath = context.extensionPath;
-            
-            // 1. Проверяем, есть ли сохраненный путь в памяти расширения
-            let exePath = context.globalState.get('rupyExePath');
+        const text = editor.document.getText();
+        const importDecs = [];
+        const funcDecs = [];
 
-            // 2. Если в памяти пусто или файл по этому пути исчез, ищем в папке расширения
-            if (!exePath || !fs.existsSync(exePath)) {
-                exePath = path.join(extensionPath, 'rupy.exe');
+        // Безопасный перебор (Object.entries теперь точно получит объект)
+        for (const [moduleName, data] of Object.entries(modulesData)) {
+            const importRegEx = new RegExp(`использовать\\s+${moduleName}`, 'g');
+            let m;
+            while ((m = importRegEx.exec(text))) {
+                importDecs.push({ range: new vscode.Range(editor.document.positionAt(m.index), editor.document.positionAt(m.index + m.length)) });
             }
-            
-            // 3. Если всё еще не нашли (нет ни в памяти, ни в папке), просим выбрать вручную
-            if (!fs.existsSync(exePath)) {
-                const choice = await vscode.window.showErrorMessage(
-                    "Транслятор rupy.exe не найден. Выбрать вручную?",
-                    "Да", "Отмена"
-                );
 
-                if (choice === "Да") {
-                    const fileUri = await vscode.window.showOpenDialog({
-                        canSelectMany: false,
-                        openLabel: 'Выбрать rupy.exe',
-                        filters: { 'Исполняемые файлы': ['exe'] }
-                    });
-
-                    if (fileUri && fileUri[0]) {
-                        exePath = fileUri[0].fsPath;
-                        // СОХРАНЯЕМ ПУТЬ В ПАМЯТЬ
-                        await context.globalState.update('rupyExePath', exePath);
-                        vscode.window.showInformationMessage("Путь к RuPy сохранен!");
-                    } else {
-                        return; 
+            if (text.includes(`использовать ${moduleName}`) && data.функции) {
+                for (const funcName of Object.keys(data.функции)) {
+                    const funcRegEx = new RegExp(`${moduleName}\\.${funcName}`, 'g');
+                    let fm;
+                    while ((fm = funcRegEx.exec(text))) {
+                        funcDecs.push({ range: new vscode.Range(editor.document.positionAt(fm.index), editor.document.positionAt(fm.index + fm.length)) });
                     }
-                } else {
-                    return;
                 }
             }
+        }
+        editor.setDecorations(importDecorationType, importDecs);
+        editor.setDecorations(funcDecorationType, funcDecs);
+    }
 
-            // 4. Запуск в терминале
-            const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
-            terminal.show();
-            terminal.sendText(`& "${exePath}" "${filePath}"`);
-        });
+    // --- 3. ДИНАМИЧЕСКИЕ СНИППЕТЫ ---
+    let completionProvider = vscode.languages.registerCompletionItemProvider('rupy', {
+        provideCompletionItems(document) {
+            const text = document.getText();
+            const completions = [];
 
-
+            for (const [pyMod, modData] of Object.entries(modulesData)) {
+            const ruMod = modData["ru-name"];
+            
+            // Если в тексте есть "использовать время"
+            if (text.includes(`использовать ${ruMod}`)) {
+                const sources = modData["sources"] || {};
+                
+                for (const [pySrc, srcData] of Object.entries(sources)) {
+                    const ruSrc = srcData["ru-name"];
+                    const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
+                    
+                    // Вставляем: время.пауза($1)
+                    item.insertText = new vscode.SnippetString(`${ruMod}.${ruSrc}(\${1})`);
+                    item.detail = `Из модуля ${ruMod} (Python: ${pyMod}.${pySrc})`;
+                    completions.push(item);
+                    }
+                }
+            }
+            return completions;
+        }
     });
 
-    context.subscriptions.push(disposable);
+    // --- 4. ЗАПУСК ЧЕРЕЗ RUPYTHON ---
+    let runCommand = vscode.commands.registerCommand('rupy.run', function () {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return;
+
+        editor.document.save().then(() => {
+            const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
+            terminal.show();
+            terminal.sendText(`rupython "${editor.document.fileName}"`);
+        });
+    });
+
+    context.subscriptions.push(
+        completionProvider,
+        runCommand,
+        vscode.workspace.onDidChangeTextDocument(updateDecorations),
+        vscode.window.onDidChangeActiveTextEditor(updateDecorations)
+    );
+
+    if (vscode.window.activeTextEditor) updateDecorations();
 }
 
-// Метод деактивации (выполняется при закрытии VS Code)
 function deactivate() {}
 
-module.exports = {
-    activate,
-    deactivate
-};
+module.exports = { activate, deactivate };

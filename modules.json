@@ -1,0 +1,16 @@
+{
+  "time": {
+    "ru-name": "время",
+    "sources": {
+      "sleep": {
+        "ru-name": "пауза"
+      },
+      "time": {
+        "ru-name": "время"
+      },
+      "Timer": {
+        "ru-name": "Таймер"
+      }
+    }
+  }
+}
