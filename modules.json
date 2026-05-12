@@ -3,13 +3,293 @@
     "ru-name": "время",
     "sources": {
       "sleep": {
-        "ru-name": "пауза"
+        "ru-name": "спать"
       },
       "time": {
         "ru-name": "время"
+      }
+    }
+  },
+  "math": {
+    "ru-name": "математика",
+    "sources": {
+      "cos": {
+        "ru-name": "косинус"
       },
-      "Timer": {
-        "ru-name": "Таймер"
+      "sin": {
+        "ru-name": "синус"
+      },
+      "sqrt": {
+        "ru-name": "корень"
+      }
+    }
+  },
+  "os": {
+    "ru-name": "os",
+    "sources": {
+      "EX_OK": {
+        "ru-name": "ех_ок"
+      },
+      "F_OK": {
+        "ru-name": "ф_ок"
+      },
+      "GenericAlias": {
+        "ru-name": "общий псевдоним"
+      },
+      "Mapping": {
+        "ru-name": "картирование"
+      },
+      "O_TEMPORARY": {
+        "ru-name": "о_временно"
+      },
+      "O_TEXT": {
+        "ru-name": "о_текст"
+      },
+      "P_NOWAITO": {
+        "ru-name": "п_новаито"
+      },
+      "R_OK": {
+        "ru-name": "р_ок"
+      },
+      "TMP_MAX": {
+        "ru-name": "тмп_макс"
+      },
+      "W_OK": {
+        "ru-name": "в_ок"
+      },
+      "X_OK": {
+        "ru-name": "х_ок"
+      },
+      "abc": {
+        "ru-name": "абв"
+      },
+      "abort": {
+        "ru-name": "прерывать"
+      },
+      "access": {
+        "ru-name": "доступ"
+      },
+      "altsep": {
+        "ru-name": "альцеп"
+      },
+      "chdir": {
+        "ru-name": "чдир"
+      },
+      "close": {
+        "ru-name": "закрывать"
+      },
+      "closerange": {
+        "ru-name": "близкое расстояние"
+      },
+      "curdir": {
+        "ru-name": "курдир"
+      },
+      "device_encoding": {
+        "ru-name": "устройство_кодирование"
+      },
+      "dup": {
+        "ru-name": "обман"
+      },
+      "dup2": {
+        "ru-name": "дубликат2"
+      },
+      "environ": {
+        "ru-name": "окружать"
+      },
+      "error": {
+        "ru-name": "ошибка"
+      },
+      "execl": {
+        "ru-name": "исключить"
+      },
+      "execle": {
+        "ru-name": "изгнанник"
+      },
+      "execlpe": {
+        "ru-name": "исключить"
+      },
+      "execv": {
+        "ru-name": "руководитель"
+      },
+      "execve": {
+        "ru-name": "исполнять"
+      },
+      "execvp": {
+        "ru-name": "исполнительный директор"
+      },
+      "execvpe": {
+        "ru-name": "выполнить"
+      },
+      "extsep": {
+        "ru-name": "эксцепт"
+      },
+      "fsdecode": {
+        "ru-name": "фсдекод"
+      },
+      "fsencode": {
+        "ru-name": "фсенкод"
+      },
+      "fstat": {
+        "ru-name": "фстат"
+      },
+      "getenv": {
+        "ru-name": "получить"
+      },
+      "getlogin": {
+        "ru-name": "получить логин"
+      },
+      "getpid": {
+        "ru-name": "получитьпид"
+      },
+      "isatty": {
+        "ru-name": "недовольный"
+      },
+      "kill": {
+        "ru-name": "убийство"
+      },
+      "lchmod": {
+        "ru-name": "лчмод"
+      },
+      "linesep": {
+        "ru-name": "линесеп"
+      },
+      "link": {
+        "ru-name": "связь"
+      },
+      "listdir": {
+        "ru-name": "списоккаталог"
+      },
+      "listdrives": {
+        "ru-name": "списокдисков"
+      },
+      "listmounts": {
+        "ru-name": "списокмонтируется"
+      },
+      "listvolumes": {
+        "ru-name": "списоктомов"
+      },
+      "lseek": {
+        "ru-name": "я ищу"
+      },
+      "makedirs": {
+        "ru-name": "македирс"
+      },
+      "mkdir": {
+        "ru-name": "мкдир"
+      },
+      "name": {
+        "ru-name": "имя"
+      },
+      "open": {
+        "ru-name": "открыть"
+      },
+      "pardir": {
+        "ru-name": "пардир"
+      },
+      "path": {
+        "ru-name": "путь"
+      },
+      "pathsep": {
+        "ru-name": "путь"
+      },
+      "pipe": {
+        "ru-name": "трубка"
+      },
+      "popen": {
+        "ru-name": "открыть"
+      },
+      "putenv": {
+        "ru-name": "путинв"
+      },
+      "read": {
+        "ru-name": "читать"
+      },
+      "readlink": {
+        "ru-name": "ссылка для чтения"
+      },
+      "remove": {
+        "ru-name": "удалять"
+      },
+      "removedirs": {
+        "ru-name": "удалены"
+      },
+      "rename": {
+        "ru-name": "переименовывать"
+      },
+      "renames": {
+        "ru-name": "переименовывает"
+      },
+      "replace": {
+        "ru-name": "заменять"
+      },
+      "scandir": {
+        "ru-name": "скандир"
+      },
+      "sep": {
+        "ru-name": "сентябрь"
+      },
+      "spawnl": {
+        "ru-name": "спавнл"
+      },
+      "spawnle": {
+        "ru-name": "порождать"
+      },
+      "spawnv": {
+        "ru-name": "спавнв"
+      },
+      "spawnve": {
+        "ru-name": "порождать"
+      },
+      "st": {
+        "ru-name": "ул."
+      },
+      "startfile": {
+        "ru-name": "стартовый файл"
+      },
+      "stat": {
+        "ru-name": "статистика"
+      },
+      "strerror": {
+        "ru-name": "ошибка"
+      },
+      "symlink": {
+        "ru-name": "символическая ссылка"
+      },
+      "sys": {
+        "ru-name": "система"
+      },
+      "system": {
+        "ru-name": "система"
+      },
+      "terminal_size": {
+        "ru-name": "размер_терминала"
+      },
+      "times": {
+        "ru-name": "раз"
+      },
+      "truncate": {
+        "ru-name": "обрезать"
+      },
+      "umask": {
+        "ru-name": "маска"
+      },
+      "unlink": {
+        "ru-name": "отсоединить"
+      },
+      "urandom": {
+        "ru-name": "случайный"
+      },
+      "utime": {
+        "ru-name": "время работы"
+      },
+      "waitpid": {
+        "ru-name": "ожидание"
+      },
+      "walk": {
+        "ru-name": "ходить"
+      },
+      "write": {
+        "ru-name": "писать"
       }
     }
   }
