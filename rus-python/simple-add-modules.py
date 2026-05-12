@@ -4,6 +4,7 @@ import subprocess
 import importlib
 import inspect
 import json
+import re
 
 try:
     from deep_translator import GoogleTranslator
@@ -20,24 +21,66 @@ except ModuleNotFoundError:
 
 file_path = 'modules.json'
 
-def print_table(data_dict):
-    col_mod, col_eng, col_ru = 15, 20, 20
-    header = f"| {'Модуль':<{col_mod}} | {'Слово (англ)':<{col_eng}} | {'Перевод (рус)':<{col_ru}} |"
+def has_english_letters(text):
+    return bool(re.search('[a-zA-Z]', text))
+
+def print_module_statistics(data_dict, mod_name):
+    if mod_name not in data_dict:
+        print(f"\nМодуль '{mod_name}' отсутствует в базе данных.")
+        return
+
+    try:
+        imported_module = importlib.import_module(mod_name)
+        all_elements = [name for name, _ in inspect.getmembers(imported_module) if not name.startswith('_')]
+    except ModuleNotFoundError:
+        all_elements = list(data_dict[mod_name].get("sources", {}).keys())
+
+    sources = data_dict[mod_name].get("sources", {})
+    
+    translated_words = []
+    missing_words = []
+
+    for word in all_elements:
+        if word in sources and sources[word].get("ru-name"):
+            ru_word = sources[word].get("ru-name")
+            if not has_english_letters(ru_word):
+                translated_words.append((word, ru_word))
+                continue
+        missing_words.append(word)
+
+    total = len(all_elements)
+    translated_count = len(translated_words)
+    percent = (translated_count / total * 100) if total > 0 else 0
+
+    col_eng, col_ru = 25, 25
+    header = f"| {'Слово (англ)':<{col_eng}} | {'Перевод (рус)':<{col_ru}} |"
     separator = "-" * len(header)
-    
-    print("\n" + separator)
-    print(header)
-    print(separator)
-    
-    for mod_name, mod_content in data_dict.items():
-        sources = mod_content.get("sources", {})
-        if not sources:
-            print(f"| {mod_name:<{col_mod}} | {'(пусто)':<{col_eng}} | {'(пусто)':<{col_ru}} |")
-        else:
-            for eng_word, ru_content in sources.items():
-                ru_word = ru_content.get("ru-name", "")
-                print(f"| {mod_name:<{col_mod}} | {eng_word:<{col_eng}} | {ru_word:<{col_ru}} |")
-    print(separator + "\n")
+
+    print("\n" + "=" * 60)
+    print(f"СТАТИСТИКА ДЛЯ МОДУЛЯ: {mod_name.upper()}")
+    print(f"Всего элементов в модуле: {total}")
+    print(f"Успешно переведено: {translated_count} ({percent:.1f}%)")
+    print(f"Осталось перевести: {len(missing_words)}")
+    print("=" * 60)
+
+    if translated_words:
+        print("\n[ ГОТОВЫЕ ПЕРЕВОДЫ ]")
+        print(separator)
+        print(header)
+        print(separator)
+        for eng, ru in translated_words:
+            print(f"| {eng:<{col_eng}} | {ru:<{col_ru}} |")
+        print(separator)
+
+    if missing_words:
+        print("\n[ НЕТ ПЕРЕВОДА ДЛЯ СЛЕДУЮЩИХ СЛОВ ]")
+        col_miss = 54
+        print(separator)
+        print(f"| {'Слово (англ)':<{col_miss}} |")
+        print(separator)
+        for eng in missing_words:
+            print(f"| {eng:<{col_miss}} |")
+        print(separator)
 
 if os.path.exists(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -48,16 +91,11 @@ if os.path.exists(file_path):
 else:
     data = {}
 
-if data:
-    print("Текущая база переводов:")
-    print_table(data)
-else:
-    print("База данных пока пуста.")
-
 print("Выберите режим работы:")
 print("1 — Одиночный ввод слова (вручную/с подтверждением ИИ)")
 print("2 — Полный автоперевод целого Python-модуля (пакетный режим)")
-mode = input("Введите номер режима (1 или 2): ").strip()
+print("3 — Посмотреть статистику и таблицу по конкретному модулю")
+mode = input("Введите номер режима (1, 2 или 3): ").strip()
 
 translator = GoogleTranslator(source='en', target='ru')
 need_to_save = False
@@ -79,35 +117,44 @@ if mode == "1":
         answer = input("Хотите перезаписать перевод? (да/нет): ").strip().lower()
         if answer in ['да', 'y', 'yes']:
             new_translation = input(f"Введите НОВЫЙ перевод для слова '{func}': ").strip()
-            data[module]["sources"][func]["ru-name"] = new_translation
-            need_to_save = True
-            print(f"Перевод для слова '{func}' успешно обновлен.")
+            if has_english_letters(new_translation):
+                print("Ошибка: В переводе содержатся английские буквы! Изменения не сохранены.")
+            else:
+                data[module]["sources"][func]["ru-name"] = new_translation
+                need_to_save = True
+                print(f"Перевод для слова '{func}' успешно обновлен.")
         else:
             print("Изменения отменены.")
     else:
         print("Ищу автоматический перевод...")
         try:
             auto_translation = translator.translate(func).lower()
-            print(f"Найден автоперевод: '{auto_translation}'")
-            accept = input("Использовать его? (Enter/да, 'нет' - вручную, или ваш вариант): ").strip().lower()
-            
-            if accept in ['да', 'y', 'yes', '']:
-                final_translation = auto_translation
-            elif accept in ['нет', 'n', 'no']:
-                final_translation = input(f"Введите ручной перевод для '{func}': ").strip()
+            if has_english_letters(auto_translation):
+                print(f"Предупреждение ИИ выдал перевод с латиницей: '{auto_translation}'")
+                final_translation = input(f"Введите ручной перевод без английских букв для '{func}': ").strip()
             else:
-                final_translation = accept
+                print(f"Найден автоперевод: '{auto_translation}'")
+                accept = input("Использовать его? (Enter/да, 'нет' - вручную, или ваш вариант): ").strip().lower()
+                if accept in ['да', 'y', 'yes', '']:
+                    final_translation = auto_translation
+                elif accept in ['нет', 'n', 'no']:
+                    final_translation = input(f"Введите ручной перевод для '{func}': ").strip()
+                else:
+                    final_translation = accept
         except Exception as e:
             print(f"Не удалось подключиться к переводчику ({e}).")
             final_translation = input(f"Введите перевод вручную для '{func}': ").strip()
 
         if final_translation:
-            data[module]["sources"][func] = {"ru-name": final_translation}
-            need_to_save = True
-            print(f"Слово '{func}' успешно добавлено.")
+            if has_english_letters(final_translation):
+                print("Ошибка: Слово содержит английские буквы. Запись отменена.")
+            else:
+                data[module]["sources"][func] = {"ru-name": final_translation}
+                need_to_save = True
+                print(f"Слово '{func}' успешно добавлено.")
 
 elif mode == "2":
-    module_name = input('Какой Python-модуль автоматически перевести? (например: math, os): ').strip()
+    module_name = input('Какой Python-модуль автоматически перевести?: ').strip()
     try:
         imported_module = importlib.import_module(module_name)
     except ModuleNotFoundError:
@@ -124,24 +171,31 @@ elif mode == "2":
 
     for idx, eng_word in enumerate(module_elements, 1):
         if eng_word in sources:
-            print(f"[{idx}/{len(module_elements)}] '{eng_word}' уже есть в базе. Пропускаю.")
-            continue
+            current_ru = sources[eng_word].get("ru-name", "")
+            if not has_english_letters(current_ru):
+                print(f"[{idx}/{len(module_elements)}] '{eng_word}' уже успешно переведено. Пропускаю.")
+                continue
             
-        print(f"[{idx}/{len(module_elements)}] Полный автоперевод слова: '{eng_word}'...")
+        print(f"[{idx}/{len(module_elements)}] Автоперевод слова: '{eng_word}'...")
         try:
             translated = translator.translate(eng_word).lower()
-            sources[eng_word] = {"ru-name": translated}
-            need_to_save = True
+            if has_english_letters(translated):
+                print(f" -> Не удалось успешно перевести '{eng_word}' (в переводе '{translated}' остались латинские буквы).")
+            else:
+                sources[eng_word] = {"ru-name": translated}
+                need_to_save = True
         except Exception as e:
             print(f"Ошибка при переводе '{eng_word}': {e}. Прерываю поток.")
             break
+
+elif mode == "3":
+    module_name = input('Введите название модуля для вывода статистики (например: math): ').strip()
+    print_module_statistics(data, module_name)
+
 else:
     print("Неверный режим работы. Завершение программы.")
 
 if need_to_save:
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(data, file, ensure_ascii=False, indent=2)
-    print("\nИзменения успешно сохранены! Обновленная таблица:")
-    print_table(data)
-else:
-    print("\nИзменений не обнаружено.")
+    print("\nИзменения успешно сохранены!")

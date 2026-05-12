@@ -4,12 +4,13 @@ import json
 import re
 import traceback
 import shutil
+import os
 
 
 
 
-# Включаем поддержку ANSI цветов в Windows
-# os.system('')
+
+os.system('')
 
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -17,16 +18,28 @@ YELLOW = "\033[93m"
 RESET = "\033[0m"
 
 
+def get_resource_path(relative_path):
+    """Возвращает абсолютный путь к ресурсу (работает для исходного кода и для PyInstaller)"""
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        # Если приложение запущено как скомпилированный .exe
+        base_path = sys._MEIPASS
+    else:
+        # Если приложение запущено как обычный .py скрипт
+        base_path = os.path.dirname(os.path.abspath(__file__))
+        
+    return os.path.join(base_path, relative_path)
+
+
+
+
 def load_config():
     local_json = "modules.json"
-    # Путь к исходникам расширения рядом с твоим .py файлом
     source_json = os.path.join(os.path.dirname(__file__), 'rus-python', 'modules.json')
 
     # 1. Синхронизация: если в папке исходников есть файл, копируем его к себе
     if os.path.exists(source_json):
         try:
             shutil.copy2(source_json, local_json)
-            # print(f"# База модулей обновлена из исходников")
         except Exception as e:
             print(f"# Ошибка при копировании: {e}")
 
@@ -38,7 +51,7 @@ def load_config():
 
 # Загружаем базу один раз
 MOD_CONFIG = load_config()
-
+import time
 # print(MOD_CONFIG)
 
 def get_russian_error(raw_error):
