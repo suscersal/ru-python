@@ -5,7 +5,7 @@ import re
 import traceback
 import shutil
 import os
-
+import pathlib
 
 
 
@@ -306,7 +306,8 @@ def run_rupy(input_file):
 
 
     # Сохранение
-    output_file = input_file.replace(".rupy", ".py")
+    input_path = pathlib.Path(input_file)
+    output_file = input_path.with_suffix('.py')
     with open(output_file, "w", encoding="utf-8") as f_out:
         f_out.write("\n".join(py_lines))
     
