@@ -31,20 +31,26 @@ if not os.path.exists(pyinstaller):
 # 4. Настройки сборки
 script_to_build = "main.py"
 exe_name = "rupython"
-icon_path = "icon.ico" # Убедись, что файл существует, или закомментируй строку ниже
+icon_path = "icon.ico"
+module_file = "modules.json"
+
 
 args = [
     pyinstaller,
     "--onefile",
     "--name", exe_name,
-    "--clean"  # Очистить временные файлы перед сборкой
-]
+    "--clean"
 
 # Добавляем иконку только если файл существует
 if os.path.exists(icon_path):
     args.extend(["--icon", icon_path])
 else:
     print(f"{YELLOW}--- Предупреждение: {icon_path} не найден, сборка будет со стандартной иконкой ---")
+
+if os.path.exists(module_file);
+    args.extend(["--add-data",module_file])
+else:
+    print(f"{YELLOW}--- Предупреждение: {module_file} не найден, сборка будет без перевода модулей")
 
 args.append(script_to_build)
 
