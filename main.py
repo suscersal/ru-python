@@ -51,10 +51,8 @@ def load_config():
             return json.load(f)
     return {}
 
-# Загружаем базу один раз
 MOD_CONFIG = load_config()
 import time
-# print(MOD_CONFIG)
 
 def get_russian_error(raw_error):
     raw_error_str = str(raw_error)
