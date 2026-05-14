@@ -2,63 +2,738 @@
   "time": {
     "ru-name": "время",
     "sources": {
+      "altzone": {
+        "ru-name": "альтернативная зона"
+      },
+      "asctime": {
+        "ru-name": "время подъема"
+      },
+      "daylight": {
+        "ru-name": "дневной свет"
+      },
+      "get_clock_info": {
+        "ru-name": "получить информацию о часах"
+      },
+      "localtime": {
+        "ru-name": "местное время"
+      },
+      "mktime": {
+        "ru-name": "мктайм"
+      },
+      "monotonic": {
+        "ru-name": "монотонный"
+      },
+      "monotonic_ns": {
+        "ru-name": "монотонный нс"
+      },
+      "perf_counter": {
+        "ru-name": "счетчик производительности"
+      },
+      "perf_counter_ns": {
+        "ru-name": "счетчик производительности нс"
+      },
+      "process_time": {
+        "ru-name": "время процесса"
+      },
+      "process_time_ns": {
+        "ru-name": "время процесса нс"
+      },
       "sleep": {
         "ru-name": "спать"
       },
+      "strftime": {
+        "ru-name": "отформатировать время как строку"
+      },
+      "strptime": {
+        "ru-name": "время анализа строки"
+      },
+      "struct_time": {
+        "ru-name": "структурировать время"
+      },
+      "thread_time": {
+        "ru-name": "время потока"
+      },
+      "thread_time_ns": {
+        "ru-name": "время потока нс"
+      },
       "time": {
         "ru-name": "время"
+      },
+      "time_ns": {
+        "ru-name": "время нс"
+      },
+      "timezone": {
+        "ru-name": "часовой пояс"
+      },
+      "tzname": {
+        "ru-name": "тцнаме"
       }
     }
   },
-  "math": {
-    "ru-name": "математика",
+  "ursina": {
+    "ru-name": "ursina",
     "sources": {
+      "AmbientLight": {
+        "ru-name": "рассеянный свет"
+      },
+      "Animation": {
+        "ru-name": "анимация"
+      },
+      "Animator": {
+        "ru-name": "аниматор"
+      },
+      "Audio": {
+        "ru-name": "аудио"
+      },
+      "BitMask32": {
+        "ru-name": "битовая маска32"
+      },
+      "Bounds": {
+        "ru-name": "границы"
+      },
+      "BoxCollider": {
+        "ru-name": "коробчатый коллайдер"
+      },
+      "BoxShape": {
+        "ru-name": "форма коробки"
+      },
+      "BulletBoxShape": {
+        "ru-name": "форма пули"
+      },
+      "BulletCapsuleShape": {
+        "ru-name": "форма капсулы пули"
+      },
+      "BulletDebugNode": {
+        "ru-name": "узел отладки пули"
+      },
+      "BulletPlaneShape": {
+        "ru-name": "форма плоскости пули"
+      },
+      "BulletRigidBodyNode": {
+        "ru-name": "узел твердого тела пули"
+      },
+      "BulletSphereShape": {
+        "ru-name": "форма сферы пули"
+      },
+      "BulletTriangleMesh": {
+        "ru-name": "треугольная сетка пули"
+      },
+      "BulletTriangleMeshShape": {
+        "ru-name": "форма сетки треугольника пули"
+      },
+      "BulletWorld": {
+        "ru-name": "пулевый мир"
+      },
+      "Button": {
+        "ru-name": "кнопка"
+      },
+      "ButtonGroup": {
+        "ru-name": "группа кнопок"
+      },
+      "ButtonList": {
+        "ru-name": "список кнопок"
+      },
+      "Capsule": {
+        "ru-name": "капсула"
+      },
+      "CapsuleCollider": {
+        "ru-name": "капсульный коллайдер"
+      },
+      "CapsuleShape": {
+        "ru-name": "форма капсулы"
+      },
+      "CheckBox": {
+        "ru-name": "флажок"
+      },
+      "Circle": {
+        "ru-name": "круг"
+      },
+      "Collider": {
+        "ru-name": "коллайдер"
+      },
+      "CollisionBox": {
+        "ru-name": "поле столкновений"
+      },
+      "CollisionCapsule": {
+        "ru-name": "столкновительная капсула"
+      },
+      "CollisionNode": {
+        "ru-name": "узел столкновения"
+      },
+      "CollisionPolygon": {
+        "ru-name": "многоугольник столкновения"
+      },
+      "CollisionSphere": {
+        "ru-name": "сфера столкновения"
+      },
+      "Color": {
+        "ru-name": "цвет"
+      },
+      "Cone": {
+        "ru-name": "конус"
+      },
+      "ContentTypes": {
+        "ru-name": "типы контента"
+      },
+      "Cube": {
+        "ru-name": "куб"
+      },
+      "Cursor": {
+        "ru-name": "курсор"
+      },
+      "Cylinder": {
+        "ru-name": "цилиндр"
+      },
+      "Default": {
+        "ru-name": "по умолчанию"
+      },
+      "DirectionalLight": {
+        "ru-name": "направленный свет"
+      },
+      "Draggable": {
+        "ru-name": "перетаскиваемый"
+      },
+      "EditorCamera": {
+        "ru-name": "редактор камеры"
+      },
+      "Empty": {
+        "ru-name": "пустой"
+      },
+      "Entity": {
+        "ru-name": "сущность"
+      },
+      "Func": {
+        "ru-name": "исполняемая функция"
+      },
+      "Grid": {
+        "ru-name": "сетка"
+      },
+      "InputField": {
+        "ru-name": "поле ввода"
+      },
+      "Keys": {
+        "ru-name": "ключи"
+      },
+      "Light": {
+        "ru-name": "свет"
+      },
+      "LoopingList": {
+        "ru-name": "циклический список"
+      },
+      "Mat3": {
+        "ru-name": "мат3"
+      },
+      "Mat4": {
+        "ru-name": "мат4"
+      },
+      "Mesh": {
+        "ru-name": "сетка"
+      },
+      "MeshCollider": {
+        "ru-name": "сетчатый коллайдер"
+      },
+      "MeshModes": {
+        "ru-name": "режимы сетки"
+      },
+      "MeshShape": {
+        "ru-name": "форма сетки"
+      },
+      "NodePath": {
+        "ru-name": "путь к узлу"
+      },
+      "PandaAmbientLight": {
+        "ru-name": "панда окружающий свет"
+      },
+      "PandaDirectionalLight": {
+        "ru-name": "панда направленного света"
+      },
+      "PandaPointLight": {
+        "ru-name": "панда точечный свет"
+      },
+      "PandaSpotLight": {
+        "ru-name": "панда точечный светильник"
+      },
+      "Panel": {
+        "ru-name": "панель"
+      },
+      "Path": {
+        "ru-name": "путь"
+      },
+      "PhysicsBody": {
+        "ru-name": "физика тела"
+      },
+      "Pipe": {
+        "ru-name": "трубка"
+      },
+      "Plane": {
+        "ru-name": "самолет"
+      },
+      "PlaneShape": {
+        "ru-name": "форма плоскости"
+      },
+      "PointLight": {
+        "ru-name": "точечный свет"
+      },
+      "PostInitCaller": {
+        "ru-name": "пост-инициализация вызывающего объекта"
+      },
+      "Quad": {
+        "ru-name": "четверной"
+      },
+      "Quat": {
+        "ru-name": "кват"
+      },
+      "RigidBody": {
+        "ru-name": "твердое тело"
+      },
+      "Scrollable": {
+        "ru-name": "прокручиваемый"
+      },
+      "Sequence": {
+        "ru-name": "последовательность"
+      },
+      "Shader": {
+        "ru-name": "шейдер"
+      },
+      "Sky": {
+        "ru-name": "небо"
+      },
+      "Slider": {
+        "ru-name": "ползунок"
+      },
+      "SmoothFollow": {
+        "ru-name": "плавное следование"
+      },
+      "Space": {
+        "ru-name": "космос"
+      },
+      "SphereCollider": {
+        "ru-name": "сферический коллайдер"
+      },
+      "SphereShape": {
+        "ru-name": "форма сферы"
+      },
+      "SpotLight": {
+        "ru-name": "точечный свет"
+      },
+      "Sprite": {
+        "ru-name": "спрайт"
+      },
+      "SpriteSheetAnimation": {
+        "ru-name": "анимация листа спрайтов"
+      },
+      "Terrain": {
+        "ru-name": "местность"
+      },
+      "Text": {
+        "ru-name": "текст"
+      },
+      "TextField": {
+        "ru-name": "текстовое поле"
+      },
+      "Texture": {
+        "ru-name": "текстура"
+      },
+      "ThinSlider": {
+        "ru-name": "тонкий ползунок"
+      },
+      "Tooltip": {
+        "ru-name": "подсказка"
+      },
+      "TransformState": {
+        "ru-name": "трансформировать состояние"
+      },
+      "Ursina": {
+        "ru-name": "медведица"
+      },
+      "Vec2": {
+        "ru-name": "век2"
+      },
+      "Vec3": {
+        "ru-name": "век3"
+      },
+      "Vec4": {
+        "ru-name": "век4"
+      },
+      "Wait": {
+        "ru-name": "ждать"
+      },
+      "WindowPanel": {
+        "ru-name": "оконная панель"
+      },
+      "XUp": {
+        "ru-name": "х вверх"
+      },
+      "YUp": {
+        "ru-name": "ага"
+      },
+      "acos": {
+        "ru-name": "арккосинус"
+      },
+      "after": {
+        "ru-name": "после"
+      },
+      "application": {
+        "ru-name": "приложение"
+      },
+      "audio": {
+        "ru-name": "аудио"
+      },
+      "boxcast": {
+        "ru-name": "коробка литая"
+      },
+      "camel_to_snake": {
+        "ru-name": "верблюд к змее"
+      },
+      "camera": {
+        "ru-name": "камера"
+      },
+      "ceil": {
+        "ru-name": "округлить потолок"
+      },
+      "chunk_list": {
+        "ru-name": "список фрагментов"
+      },
+      "clamp": {
+        "ru-name": "зажим"
+      },
+      "collider": {
+        "ru-name": "коллайдер"
+      },
+      "color": {
+        "ru-name": "цвет"
+      },
+      "copy": {
+        "ru-name": "копировать"
+      },
       "cos": {
         "ru-name": "косинус"
+      },
+      "curve": {
+        "ru-name": "изгиб"
+      },
+      "dedent": {
+        "ru-name": "де дент"
+      },
+      "deepcopy": {
+        "ru-name": "глубокая копия"
+      },
+      "destroy": {
+        "ru-name": "разрушать"
+      },
+      "distance": {
+        "ru-name": "расстояние"
+      },
+      "distance_xz": {
+        "ru-name": "расстояние хз"
+      },
+      "duplicate": {
+        "ru-name": "дубликат"
+      },
+      "entity": {
+        "ru-name": "сущность"
+      },
+      "every": {
+        "ru-name": "каждый"
+      },
+      "find_sequence": {
+        "ru-name": "найти последовательность"
+      },
+      "flatten_completely": {
+        "ru-name": "полностью сгладить"
+      },
+      "flatten_list": {
+        "ru-name": "сгладить список"
+      },
+      "floor": {
+        "ru-name": "круглый пол вниз"
+      },
+      "generate_properties_for_class": {
+        "ru-name": "генерировать свойства для класса"
+      },
+      "grid_layout": {
+        "ru-name": "макет сетки"
+      },
+      "held_keys": {
+        "ru-name": "ключи"
+      },
+      "hit_info": {
+        "ru-name": "информация о хите"
+      },
+      "hsv": {
+        "ru-name": "впг"
+      },
+      "import_all_classes": {
+        "ru-name": "импортировать все классы"
+      },
+      "inf": {
+        "ru-name": "бесконечность"
+      },
+      "input_handler": {
+        "ru-name": "обработчик ввода"
+      },
+      "internal_sum": {
+        "ru-name": "внутренняя расчетная сумма"
+      },
+      "invoke": {
+        "ru-name": "вызывать"
+      },
+      "lerp": {
+        "ru-name": "я ошибаюсь"
+      },
+      "lerp_angle": {
+        "ru-name": "л. угол э.п.м."
+      },
+      "lights": {
+        "ru-name": "огни"
+      },
+      "load_blender_scene": {
+        "ru-name": "прочитать из сцены файла в блендере"
+      },
+      "load_model": {
+        "ru-name": "читать из файловой модели"
+      },
+      "load_texture": {
+        "ru-name": "читать из текстуры файла"
+      },
+      "main": {
+        "ru-name": "основной"
+      },
+      "make_gradient": {
+        "ru-name": "градиент"
+      },
+      "math": {
+        "ru-name": "математика"
+      },
+      "mesh": {
+        "ru-name": "сетка"
+      },
+      "mesh_importer": {
+        "ru-name": "импортер сетки"
+      },
+      "models": {
+        "ru-name": "модели"
+      },
+      "mouse": {
+        "ru-name": "мышь"
+      },
+      "multireplace": {
+        "ru-name": "множественная замена"
+      },
+      "os": {
+        "ru-name": "ос"
+      },
+      "pi": {
+        "ru-name": "пи"
+      },
+      "prefabs": {
+        "ru-name": "префабы"
+      },
+      "print_info": {
+        "ru-name": "распечатать информацию"
+      },
+      "print_on_screen": {
+        "ru-name": "распечатать на экране"
+      },
+      "print_warning": {
+        "ru-name": "распечатать предупреждение"
+      },
+      "printvar": {
+        "ru-name": "распечатать вар"
+      },
+      "random": {
+        "ru-name": "случайный"
+      },
+      "raycast": {
+        "ru-name": "лучевой приброс"
+      },
+      "re": {
+        "ru-name": "регулярное выражение"
+      },
+      "rigidbody": {
+        "ru-name": "твердое тело"
+      },
+      "round_to_closest": {
+        "ru-name": "округлить до ближайшего"
+      },
+      "sample_gradient": {
+        "ru-name": "образец градиента"
+      },
+      "scene": {
+        "ru-name": "сцена"
+      },
+      "scripts": {
+        "ru-name": "сценарии"
+      },
+      "sequence": {
+        "ru-name": "последовательность"
+      },
+      "shader": {
+        "ru-name": "шейдер"
       },
       "sin": {
         "ru-name": "синус"
       },
+      "size_list": {
+        "ru-name": "список размеров"
+      },
+      "slerp": {
+        "ru-name": "сл эрп"
+      },
+      "snake_to_camel": {
+        "ru-name": "змея к верблюду"
+      },
       "sqrt": {
-        "ru-name": "корень"
+        "ru-name": "вычислить квадратный корень"
+      },
+      "string_utilities": {
+        "ru-name": "строковые утилиты"
+      },
+      "sum": {
+        "ru-name": "рассчитать сумму"
+      },
+      "sys": {
+        "ru-name": "система"
+      },
+      "terraincast": {
+        "ru-name": "рельеф местности"
+      },
+      "text": {
+        "ru-name": "текст"
+      },
+      "texture": {
+        "ru-name": "текстура"
+      },
+      "texture_importer": {
+        "ru-name": "импортер текстур"
+      },
+      "time": {
+        "ru-name": "время"
+      },
+      "traceback": {
+        "ru-name": "обратная трассировка"
+      },
+      "ursinamath": {
+        "ru-name": "урсина математика"
+      },
+      "ursinastuff": {
+        "ru-name": "медвежья штука"
+      },
+      "vec2": {
+        "ru-name": "век2"
+      },
+      "vec3": {
+        "ru-name": "век3"
+      },
+      "vec4": {
+        "ru-name": "век4"
+      },
+      "window": {
+        "ru-name": "окно"
+      },
+      "world_position_to_screen_position": {
+        "ru-name": "мировая позиция на экране"
       }
     }
   },
   "os": {
-    "ru-name": "os",
+    "ru-name": "система",
     "sources": {
+      "DirEntry": {
+        "ru-name": "запись в каталоге"
+      },
       "EX_OK": {
-        "ru-name": "ех_ок"
+        "ru-name": "е х ок"
       },
       "F_OK": {
-        "ru-name": "ф_ок"
+        "ru-name": "окей"
       },
       "GenericAlias": {
         "ru-name": "общий псевдоним"
       },
       "Mapping": {
-        "ru-name": "картирование"
+        "ru-name": "картографирование"
+      },
+      "MutableMapping": {
+        "ru-name": "изменяемое отображение"
+      },
+      "O_APPEND": {
+        "ru-name": "о приложение"
+      },
+      "O_BINARY": {
+        "ru-name": "о б и н а р ь"
+      },
+      "O_CREAT": {
+        "ru-name": "о творчестве"
+      },
+      "O_EXCL": {
+        "ru-name": "о е х с л"
+      },
+      "O_NOINHERIT": {
+        "ru-name": "о нет о в наследстве"
+      },
+      "O_RANDOM": {
+        "ru-name": "или рандом"
+      },
+      "O_RDONLY": {
+        "ru-name": "или д о н л ы"
+      },
+      "O_RDWR": {
+        "ru-name": "или р д ш р"
+      },
+      "O_SHORT_LIVED": {
+        "ru-name": "о короткоживущий"
       },
       "O_TEMPORARY": {
-        "ru-name": "о_временно"
+        "ru-name": "в р а м о р а я"
       },
       "O_TEXT": {
-        "ru-name": "о_текст"
+        "ru-name": "о т е х т"
+      },
+      "O_TRUNC": {
+        "ru-name": "о бегать"
+      },
+      "O_WRONLY": {
+        "ru-name": "оу р о н л ы"
+      },
+      "P_DETACH": {
+        "ru-name": "п д е т а ч"
+      },
+      "P_NOWAIT": {
+        "ru-name": "п н о подожди"
       },
       "P_NOWAITO": {
-        "ru-name": "п_новаито"
+        "ru-name": "п н о погоди"
+      },
+      "P_OVERLAY": {
+        "ru-name": "п о в е р л а й"
+      },
+      "P_WAIT": {
+        "ru-name": "п подожди"
+      },
+      "PathLike": {
+        "ru-name": "путь как"
       },
       "R_OK": {
-        "ru-name": "р_ок"
+        "ru-name": "р о к"
+      },
+      "SEEK_CUR": {
+        "ru-name": "искать"
+      },
+      "SEEK_END": {
+        "ru-name": "искать"
+      },
+      "SEEK_SET": {
+        "ru-name": "ищу набор"
       },
       "TMP_MAX": {
-        "ru-name": "тмп_макс"
+        "ru-name": "т м п м а х"
       },
       "W_OK": {
-        "ru-name": "в_ок"
+        "ru-name": "в о к"
       },
       "X_OK": {
-        "ru-name": "х_ок"
+        "ru-name": "х о к"
       },
       "abc": {
         "ru-name": "абв"
@@ -70,10 +745,13 @@
         "ru-name": "доступ"
       },
       "altsep": {
-        "ru-name": "альцеп"
+        "ru-name": "альтернативный сентябрь"
       },
       "chdir": {
-        "ru-name": "чдир"
+        "ru-name": "изменить рабочий каталог"
+      },
+      "chmod": {
+        "ru-name": "изменить режим разрешений"
       },
       "close": {
         "ru-name": "закрывать"
@@ -81,11 +759,17 @@
       "closerange": {
         "ru-name": "близкое расстояние"
       },
+      "cpu_count": {
+        "ru-name": "количество процессоров"
+      },
       "curdir": {
         "ru-name": "курдир"
       },
+      "defpath": {
+        "ru-name": "путь определения"
+      },
       "device_encoding": {
-        "ru-name": "устройство_кодирование"
+        "ru-name": "кодирование устройства"
       },
       "dup": {
         "ru-name": "обман"
@@ -94,7 +778,7 @@
         "ru-name": "дубликат2"
       },
       "environ": {
-        "ru-name": "окружать"
+        "ru-name": "переменные среды"
       },
       "error": {
         "ru-name": "ошибка"
@@ -103,13 +787,10 @@
         "ru-name": "исключить"
       },
       "execle": {
-        "ru-name": "изгнанник"
-      },
-      "execlpe": {
-        "ru-name": "исключить"
+        "ru-name": "исполнительный файл"
       },
       "execv": {
-        "ru-name": "руководитель"
+        "ru-name": "выполнить программу с аргументами"
       },
       "execve": {
         "ru-name": "исполнять"
@@ -118,22 +799,43 @@
         "ru-name": "исполнительный директор"
       },
       "execvpe": {
-        "ru-name": "выполнить"
+        "ru-name": "исполнительный е"
       },
       "extsep": {
-        "ru-name": "эксцепт"
+        "ru-name": "доп.сентябрь"
       },
       "fsdecode": {
-        "ru-name": "фсдекод"
+        "ru-name": "декодирование фс"
       },
       "fsencode": {
-        "ru-name": "фсенкод"
+        "ru-name": "фс кодировать"
+      },
+      "fspath": {
+        "ru-name": "путь к фс"
       },
       "fstat": {
         "ru-name": "фстат"
       },
+      "get_blocking": {
+        "ru-name": "получить блокировку"
+      },
+      "get_exec_path": {
+        "ru-name": "получить путь выполнения программы"
+      },
+      "get_handle_inheritable": {
+        "ru-name": "получить дескриптор, передаваемый по наследству"
+      },
+      "get_inheritable": {
+        "ru-name": "получить по наследству"
+      },
+      "get_terminal_size": {
+        "ru-name": "получить размер терминала"
+      },
+      "getcwd": {
+        "ru-name": "получить текущий рабочий каталог"
+      },
       "getenv": {
-        "ru-name": "получить"
+        "ru-name": "получить переменную среды"
       },
       "getlogin": {
         "ru-name": "получить логин"
@@ -147,35 +849,35 @@
       "kill": {
         "ru-name": "убийство"
       },
-      "lchmod": {
-        "ru-name": "лчмод"
-      },
       "linesep": {
-        "ru-name": "линесеп"
+        "ru-name": "линия сентябрь"
       },
       "link": {
         "ru-name": "связь"
       },
       "listdir": {
-        "ru-name": "списоккаталог"
+        "ru-name": "список содержимого каталога"
       },
       "listdrives": {
-        "ru-name": "списокдисков"
+        "ru-name": "список дисков"
       },
       "listmounts": {
-        "ru-name": "списокмонтируется"
+        "ru-name": "список монтировок"
       },
       "listvolumes": {
-        "ru-name": "списоктомов"
+        "ru-name": "список томов"
       },
       "lseek": {
         "ru-name": "я ищу"
       },
+      "lstat": {
+        "ru-name": "состояние ссылки"
+      },
       "makedirs": {
-        "ru-name": "македирс"
+        "ru-name": "создавать каталоги рекурсивно"
       },
       "mkdir": {
-        "ru-name": "мкдир"
+        "ru-name": "создать каталог"
       },
       "name": {
         "ru-name": "имя"
@@ -184,13 +886,13 @@
         "ru-name": "открыть"
       },
       "pardir": {
-        "ru-name": "пардир"
+        "ru-name": "номинальная режиссура"
       },
       "path": {
         "ru-name": "путь"
       },
       "pathsep": {
-        "ru-name": "путь"
+        "ru-name": "путь сентября"
       },
       "pipe": {
         "ru-name": "трубка"
@@ -199,7 +901,7 @@
         "ru-name": "открыть"
       },
       "putenv": {
-        "ru-name": "путинв"
+        "ru-name": "установить переменную среды"
       },
       "read": {
         "ru-name": "читать"
@@ -211,7 +913,7 @@
         "ru-name": "удалять"
       },
       "removedirs": {
-        "ru-name": "удалены"
+        "ru-name": "рекурсивно удалять каталоги"
       },
       "rename": {
         "ru-name": "переименовывать"
@@ -222,23 +924,32 @@
       "replace": {
         "ru-name": "заменять"
       },
+      "rmdir": {
+        "ru-name": "удалить каталог"
+      },
       "scandir": {
-        "ru-name": "скандир"
+        "ru-name": "сканировать содержимое каталога"
       },
       "sep": {
         "ru-name": "сентябрь"
       },
+      "set_blocking": {
+        "ru-name": "установить блокировку"
+      },
+      "set_handle_inheritable": {
+        "ru-name": "установить дескриптор, наследуемый"
+      },
+      "set_inheritable": {
+        "ru-name": "установить наследуемый"
+      },
       "spawnl": {
-        "ru-name": "спавнл"
+        "ru-name": "спаун л"
       },
       "spawnle": {
-        "ru-name": "порождать"
-      },
-      "spawnv": {
-        "ru-name": "спавнв"
+        "ru-name": "спаун ле"
       },
       "spawnve": {
-        "ru-name": "порождать"
+        "ru-name": "порождать пять"
       },
       "st": {
         "ru-name": "ул."
@@ -249,8 +960,23 @@
       "stat": {
         "ru-name": "статистика"
       },
+      "stat_result": {
+        "ru-name": "результат статистики"
+      },
       "strerror": {
         "ru-name": "ошибка"
+      },
+      "supports_bytes_environ": {
+        "ru-name": "поддерживает байтовые переменные среды"
+      },
+      "supports_effective_ids": {
+        "ru-name": "поддерживает эффективные идентификаторы"
+      },
+      "supports_fd": {
+        "ru-name": "поддерживает файловый дескриптор"
+      },
+      "supports_follow_symlinks": {
+        "ru-name": "поддерживает следование символическим ссылкам"
       },
       "symlink": {
         "ru-name": "символическая ссылка"
@@ -262,16 +988,22 @@
         "ru-name": "система"
       },
       "terminal_size": {
-        "ru-name": "размер_терминала"
+        "ru-name": "размер терминала"
       },
       "times": {
         "ru-name": "раз"
+      },
+      "times_result": {
+        "ru-name": "результат раз"
       },
       "truncate": {
         "ru-name": "обрезать"
       },
       "umask": {
         "ru-name": "маска"
+      },
+      "uname_result": {
+        "ru-name": "безымянный результат"
       },
       "unlink": {
         "ru-name": "отсоединить"
@@ -280,16 +1012,195 @@
         "ru-name": "случайный"
       },
       "utime": {
-        "ru-name": "время работы"
+        "ru-name": "тебе пора"
       },
       "waitpid": {
         "ru-name": "ожидание"
+      },
+      "waitstatus_to_exitcode": {
+        "ru-name": "статус ожидания для выхода из кода"
       },
       "walk": {
         "ru-name": "ходить"
       },
       "write": {
         "ru-name": "писать"
+      }
+    }
+  },
+  "math": {
+    "ru-name": "математика",
+    "sources": {
+      "acos": {
+        "ru-name": "арккосинус"
+      },
+      "acosh": {
+        "ru-name": "обратный гиперболический косинус"
+      },
+      "asin": {
+        "ru-name": "арксинус"
+      },
+      "asinh": {
+        "ru-name": "обратный гиперболический синус"
+      },
+      "atan": {
+        "ru-name": "арктангенс"
+      },
+      "atan2": {
+        "ru-name": "арктангенс двух аргументов"
+      },
+      "atanh": {
+        "ru-name": "обратный гиперболический тангенс"
+      },
+      "ceil": {
+        "ru-name": "округлить потолок"
+      },
+      "comb": {
+        "ru-name": "гребень"
+      },
+      "copysign": {
+        "ru-name": "копировать знак"
+      },
+      "cos": {
+        "ru-name": "косинус"
+      },
+      "cosh": {
+        "ru-name": "гиперболический косинус"
+      },
+      "degrees": {
+        "ru-name": "конвертировать в градусы"
+      },
+      "dist": {
+        "ru-name": "расстояние"
+      },
+      "e": {
+        "ru-name": "е"
+      },
+      "erf": {
+        "ru-name": "эрф"
+      },
+      "exp": {
+        "ru-name": "показательная функция"
+      },
+      "exp2": {
+        "ru-name": "эксп2"
+      },
+      "expm1": {
+        "ru-name": "экспоненциальный минус 1"
+      },
+      "fabs": {
+        "ru-name": "абсолютное значение с плавающей запятой"
+      },
+      "factorial": {
+        "ru-name": "факториал"
+      },
+      "floor": {
+        "ru-name": "круглый пол вниз"
+      },
+      "fmod": {
+        "ru-name": "с плавающей запятой по модулю"
+      },
+      "frexp": {
+        "ru-name": "фр. опыт"
+      },
+      "gamma": {
+        "ru-name": "гамма"
+      },
+      "gcd": {
+        "ru-name": "наибольший общий делитель"
+      },
+      "hypot": {
+        "ru-name": "вычислить гипотенузу"
+      },
+      "inf": {
+        "ru-name": "бесконечность"
+      },
+      "isclose": {
+        "ru-name": "близко"
+      },
+      "isfinite": {
+        "ru-name": "конечно"
+      },
+      "isinf": {
+        "ru-name": "бесконечность"
+      },
+      "isnan": {
+        "ru-name": "не число"
+      },
+      "isqrt": {
+        "ru-name": "я занимаюсь сексом"
+      },
+      "lcm": {
+        "ru-name": "наименьшее общее кратное"
+      },
+      "ldexp": {
+        "ru-name": "лд эксп"
+      },
+      "lgamma": {
+        "ru-name": "л гамма"
+      },
+      "log": {
+        "ru-name": "натуральный логарифм"
+      },
+      "log10": {
+        "ru-name": "десятичный логарифм"
+      },
+      "log2": {
+        "ru-name": "логарифм по основанию 2"
+      },
+      "modf": {
+        "ru-name": "мод ф"
+      },
+      "nan": {
+        "ru-name": "не число"
+      },
+      "nextafter": {
+        "ru-name": "следующий после"
+      },
+      "perm": {
+        "ru-name": "пермь"
+      },
+      "pi": {
+        "ru-name": "пи"
+      },
+      "pow": {
+        "ru-name": "привести к власти"
+      },
+      "prod": {
+        "ru-name": "произведение элементов"
+      },
+      "radians": {
+        "ru-name": "конвертировать в радианы"
+      },
+      "remainder": {
+        "ru-name": "остаток"
+      },
+      "sin": {
+        "ru-name": "синус"
+      },
+      "sinh": {
+        "ru-name": "гиперболический синус"
+      },
+      "sqrt": {
+        "ru-name": "вычислить квадратный корень"
+      },
+      "sumprod": {
+        "ru-name": "сумма производства"
+      },
+      "tan": {
+        "ru-name": "касательная"
+      },
+      "tanh": {
+        "ru-name": "гиперболический тангенс"
+      },
+      "tau": {
+        "ru-name": "тау"
+      },
+      "trunc": {
+        "ru-name": "ствол"
+      },
+      "ulp": {
+        "ru-name": "мутить"
       }
     }
   }
