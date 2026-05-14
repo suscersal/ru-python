@@ -220,11 +220,31 @@ def run_rupy(input_file):
 
         elif cmd == 'попробовать':
             py_lines.append(f"{prefix}try:")
+        
             indent_level += 1
 
         elif cmd == 'отловить':
-            py_lines.append(f"{prefix}except Exception as ошибка:")
+            args_str = " ".join(parts[1:])
+            
+            if " как " in args_str:
+                err_type_part, var_part = args_str.split(" как ", 1)
+                err_type = err_type_part.strip()
+                err_var = var_part.strip()
+                
+                if not err_type or err_type == "Ошибка":
+                    err_type = "Exception"
+                    
+                py_lines.append(f"{prefix}except {err_type} as {err_var}:")
+            else:
+                remainder = args_str.strip()
+                if remainder:
+                    py_lines.append(f"{prefix}except {remainder}:")
+                else:
+                    py_lines.append(f"{prefix}except Exception:")
+            
             indent_level += 1
+
+
 
         elif cmd == 'для':
             if ' в ' in content:
