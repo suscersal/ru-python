@@ -77,7 +77,6 @@ def get_russian_error(raw_error):
     return raw_error_str
 
 def run_rupy(input_file):
-    # ПРОВЕРКА: Если файла нет, выходим сразу, не пытаясь его парсить
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
