@@ -1,16 +1,15 @@
 {
   "name": "ru-python",
   "displayName": "Ru Python",
-  "description": "позволяет писать на русском синтаксис python",
+  "description": "Позволяет писать на русском синтаксис python",
   "publisher": "SUSCERSAL",
   "version": "0.0.1",
   "main": "./extension.js",
   "activationEvents": [
       "onLanguage:rupy"
   ],
-
   "engines": {
-    "vscode": "^1.007.0"
+    "vscode": "^1.75.0"
   },
   "categories": [
     "Programming Languages"
@@ -37,7 +36,6 @@
             "path": "./snippets/rupy-words.json"
         }
     ],
-
     "commands": [
         {
             "command": "rupy.run",
@@ -64,6 +62,16 @@
                 "command": "rupy.createNewFile"
             }
         ]
+    },
+    "configuration": {
+        "title": "RuPy Configuration",
+        "properties": {
+            "rupy.path": {
+                "type": "string",
+                "default": "rupython",
+                "description": "Абсолютный путь к файлу rupython.exe (например, C:\\Program Files\\RuPy\\rupython.exe). Если оставить по умолчанию, будет использоваться глобальная команда."
+            }
+        }
     }
   }
 }

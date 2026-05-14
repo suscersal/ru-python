@@ -5,23 +5,23 @@ const fs = require('fs');
 function activate(context) {
     console.log('Расширение RuPy активно!');
 
-    // --- 1. ЗАГРУЗКА БАЗЫ ИЗ JSON (С ЗАЩИТОЙ) ---
+    // --- 1. ЗАГРУЗКА БАЗЫ ИЗ JSON (С АВТОСОЗДАНИЕМ) ---
     const modulesPath = path.join(context.extensionPath, 'modules.json');
-    let modulesData = {}; // По умолчанию пустой объект
+    let modulesData = {};
 
     try {
-        if (fs.existsSync(modulesPath)) {
-            const fileContent = fs.readFileSync(modulesPath, 'utf8');
-            if (fileContent) {
-                modulesData = JSON.parse(fileContent);
-            }
-        } else {
-            console.error('Файл modules.json не найден по пути:', modulesPath);
+        if (!fs.existsSync(modulesPath)) {
+            fs.writeFileSync(modulesPath, JSON.stringify({}, null, 4), 'utf8');
+            console.log('Создан новый файл modules.json');
+        }
+        const fileContent = fs.readFileSync(modulesPath, 'utf8');
+        if (fileContent.trim()) {
+            modulesData = JSON.parse(fileContent);
         }
     } catch (err) {
-        console.error('Ошибка при чтении modules.json:', err);
-        vscode.window.showErrorMessage('Ошибка в формате файла modules.json');
-        modulesData = {}; // Сбрасываем, чтобы не было ошибки "null to object"
+        console.error('Ошибка при работе с modules.json:', err);
+        vscode.window.showErrorMessage('Ошибка инициализации базы данных модулей');
+        modulesData = {};
     }
 
     // Стили подсветки
@@ -42,7 +42,6 @@ function activate(context) {
         const importDecs = [];
         const funcDecs = [];
 
-        // Безопасный перебор (Object.entries теперь точно получит объект)
         for (const [moduleName, data] of Object.entries(modulesData)) {
             const importRegEx = new RegExp(`использовать\\s+${moduleName}`, 'g');
             let m;
@@ -71,20 +70,15 @@ function activate(context) {
             const completions = [];
 
             for (const [pyMod, modData] of Object.entries(modulesData)) {
-            const ruMod = modData["ru-name"];
-            
-            // Если в тексте есть "использовать время"
-            if (text.includes(`использовать ${ruMod}`)) {
-                const sources = modData["sources"] || {};
-                
-                for (const [pySrc, srcData] of Object.entries(sources)) {
-                    const ruSrc = srcData["ru-name"];
-                    const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
-                    
-                    // Вставляем: время.пауза($1)
-                    item.insertText = new vscode.SnippetString(`${ruMod}.${ruSrc}(\${1})`);
-                    item.detail = `Из модуля ${ruMod} (Python: ${pyMod}.${pySrc})`;
-                    completions.push(item);
+                const ruMod = modData["ru-name"];
+                if (text.includes(`использовать ${ruMod}`)) {
+                    const sources = modData["sources"] || {};
+                    for (const [pySrc, srcData] of Object.entries(sources)) {
+                        const ruSrc = srcData["ru-name"];
+                        const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
+                        item.insertText = new vscode.SnippetString(`${ruMod}.${ruSrc}(\${1})`);
+                        item.detail = `Из модуля ${ruMod} (Python: ${pyMod}.${pySrc})`;
+                        completions.push(item);
                     }
                 }
             }
@@ -92,21 +86,108 @@ function activate(context) {
         }
     });
 
-    // --- 4. ЗАПУСК ЧЕРЕЗ RUPYTHON ---
-    let runCommand = vscode.commands.registerCommand('rupy.run', function () {
+    // --- 4. ЗАПУСК ЧЕРЕЗ RUPYTHON (С ИСПРАВЛЕНИЕМ ОШИБКИ И ВЫБОРОМ EXE) ---
+    let runCommand = vscode.commands.registerCommand('rupy.run', async function () {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
 
-        editor.document.save().then(() => {
-            const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
-            terminal.show();
-            terminal.sendText(`rupython "${editor.document.fileName}"`);
-        });
+        if (editor.document.isUntitled) {
+            const uri = await vscode.window.showSaveDialog({
+                filters: { 'RuPy Files': ['rupy'] },
+                title: 'Сохранить файл перед запуском'
+            });
+            if (!uri) return;
+            fs.writeFileSync(uri.fsPath, editor.document.getText(), 'utf8');
+        } else {
+            await editor.document.save();
+        }
+
+        const config = vscode.workspace.getConfiguration('rupy');
+        let rupythonPath = config.get('path') || 'rupython';
+
+        if (rupythonPath === 'rupython') {
+            const { execSync } = require('child_process');
+            try {
+                execSync('rupython --version', { stdio: 'ignore' });
+            } catch (e) {
+                const choice = await vscode.window.showErrorMessage(
+                    'Команда "rupython" не распознана. Указать путь к исполняемому файлу вручную?',
+                    'Выбрать .exe файл', 'Отмена'
+                );
+
+                if (choice === 'Выбрать .exe файл') {
+                    const exeUri = await vscode.window.showOpenDialog({
+                        canSelectMany: false,
+                        filters: { 'Исполняемые файлы': ['exe'] },
+                        title: 'Выберите файл rupython.exe'
+                    });
+
+                    if (exeUri && exeUri[0]) {
+                        rupythonPath = exeUri[0].fsPath;
+                        await config.update('path', rupythonPath, vscode.ConfigurationTarget.Global);
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            }
+        }
+
+        const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
+        terminal.show();
+        // Символ & необходим для корректного вызова путей с кавычками в PowerShell
+        terminal.sendText(`& "${rupythonPath}" "${editor.document.fileName}"`);
     });
 
+    // --- 5. СОЗДАНИЕ НОВОГО ФАЙЛА RUPY (РАБОТАЕТ ВЕЗДЕ) ---
+    let createNewFileCommand = vscode.commands.registerCommand('rupy.createNewFile', async function () {
+        let targetUri;
+
+        if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+            const fileName = await vscode.window.showInputBox({
+                prompt: 'Введите имя нового файла',
+                value: 'скрипт.rupy',
+                validateInput: text => text.endsWith('.rupy') ? null : 'Имя должно заканчиваться на .rupy'
+            });
+
+            if (!fileName) return;
+
+            const targetFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+            const fullPath = path.join(targetFolder, fileName);
+
+            if (fs.existsSync(fullPath)) {
+                vscode.window.showErrorMessage(`Файл ${fileName} уже существует!`);
+                return;
+            }
+
+            try {
+                fs.writeFileSync(fullPath, '# Создано с помощью RuPy\n', 'utf8');
+                targetUri = vscode.Uri.file(fullPath);
+            } catch (err) {
+                vscode.window.showErrorMessage(`Не удалось создать файл: ${err.message}`);
+                return;
+            }
+        } else {
+            // Если папка не открыта, открываем временную вкладку без сохранения на диск
+            targetUri = vscode.Uri.parse('untitled:Новый_скрипт.rupy');
+        }
+
+        const doc = await vscode.workspace.openTextDocument(targetUri);
+        const editor = await vscode.window.showTextDocument(doc);
+
+        if (!vscode.workspace.workspaceFolders) {
+            await editor.edit(editBuilder => {
+                editBuilder.insert(new vscode.Position(0, 0), '# Создано с помощью RuPy\n');
+            });
+        }
+    });
+
+    // РЕГИСТРАЦИЯ ВСЕХ ПОДПИСОК (Исправлено)
     context.subscriptions.push(
         completionProvider,
         runCommand,
+        createNewFileCommand,
         vscode.workspace.onDidChangeTextDocument(updateDecorations),
         vscode.window.onDidChangeActiveTextEditor(updateDecorations)
     );

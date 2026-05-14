@@ -33,12 +33,14 @@ def get_resource_path(relative_path):
 
 
 def load_config():
-    local_json = "modules.json"
+    local_json = get_resource_path("modules.json")
+    print(local_json)
     source_json = os.path.join(os.path.dirname(__file__), 'rus-python', 'modules.json')
 
     # 1. Синхронизация: если в папке исходников есть файл, копируем его к себе
     if os.path.exists(source_json):
         try:
+            print('файл modules.json обновлён')
             shutil.copy2(source_json, local_json)
         except Exception as e:
             print(f"# Ошибка при копировании: {e}")
@@ -177,13 +179,13 @@ def run_rupy(input_file):
 
 
             
-        elif cmd == 'использовать':
+        elif cmd == 'использовать' or 'использовать' in cmd:
             module_to_import = content.replace('использовать ', '').strip()
-            
             found_in_config = False
             for py_mod_name, mod_data in MOD_CONFIG.items():
                 if mod_data.get("ru-name") == module_to_import:
                     # Если нашли в JSON (например, "время"), пишем английский "import time"
+                    print(py_mod_name)
                     py_lines.append(f"{prefix}import {py_mod_name}")
                     found_in_config = True
                     break
@@ -353,22 +355,18 @@ def run_rupy(input_file):
 if __name__ == "__main__":
     import sys
     
-    # Если аргумент передан (например, через VS Code), используем его
     if len(sys.argv) > 1:
         target_file = sys.argv[1]
     else:
-        # Если аргументов нет, ищем test.rupy в папке, где лежит сам main.py
-        # os.path.dirname(__file__) — это путь к папке со скриптом
+
         current_dir = os.path.dirname(os.path.abspath(__file__))
         target_file = os.path.join(current_dir, "test.rupy")
     
-    # Проверяем, существует ли файл, прежде чем запускать
+   
     if os.path.exists(target_file):
         run_rupy(target_file)
     else:
         print(f"{RED}--- ОШИБКА ---")
         print(f"Файл не найден по пути: {target_file}{RESET}")
         print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на main.py{RESET}")
-        # Чтобы окно консоли не закрывалось сразу
-        # input("\nНажмите Enter, чтобы выйти...")
 
