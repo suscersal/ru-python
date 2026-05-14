@@ -2,7 +2,6 @@ import subprocess
 import os
 import sys
 
-
 RED = "\033[91m"
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
@@ -10,67 +9,65 @@ RESET = "\033[0m"
 
 def install_if_missing(package):
     try:
-        # Проверяем, установлен ли пакет
         subprocess.run([sys.executable, "-m", "pip", "show", package], 
                        capture_output=True, check=True)
     except subprocess.CalledProcessError:
-        print(f"--- Модуль {package} не найден. Устанавливаю... ---")
+        print(f"{YELLOW}--- Модуль {package} не найден. Устанавливаю... ---{RESET}")
         subprocess.run([sys.executable, "-m", "pip", "install", package], check=True)
 
-# 2. Устанавливаем PyInstaller, если его нет
+# 1. Проверка зависимостей
 install_if_missing("pyinstaller")
 
-# 3. Находим путь к pyinstaller.exe автоматически
+# 2. Поиск PyInstaller
 scripts_path = os.path.join(os.path.dirname(sys.executable), "Scripts")
 pyinstaller = os.path.join(scripts_path, "pyinstaller.exe")
 
-# Если вдруг не нашли в стандартном месте, пробуем вызвать просто команду
 if not os.path.exists(pyinstaller):
     pyinstaller = "pyinstaller" 
 
-# 4. Настройки сборки
+# 3. Настройки
 script_to_build = "main.py"
 exe_name = "rupython"
 icon_path = "icon.ico"
 module_file = "modules.json"
 
-
+# Base аргументы
 args = [
     pyinstaller,
     "--onefile",
     "--name", exe_name,
     "--clean"
 ]
-# Добавляем иконку только если файл существует
+
+# Проверка и добавление иконки
 if os.path.exists(icon_path):
     args.extend(["--icon", icon_path])
 else:
-    print(f"{YELLOW}--- Предупреждение: {icon_path} не найден, сборка будет со стандартной иконкой ---")
+    print(f"{YELLOW}--- Предупреждение: {icon_path} не найден, стандартная иконка ---{RESET}")
+
 
 if os.path.exists(module_file):
-    args.extend(["--add-data",module_file])
+    args.extend(["--add-data", f"{module_file};."])
 else:
-    print(f"{YELLOW}--- Предупреждение: {module_file} не найден, сборка будет без перевода модулей")
+    print(f"{YELLOW}--- Предупреждение: {module_file} не найден, сборка без перевода ---{RESET}")
 
 args.append(script_to_build)
 
 def test_run():
     exe_path = os.path.join("dist", f"{exe_name}.exe")
-    test_file_path = os.path.join('.','test.rupy')
+    test_file_path = os.path.join(".", "test.rupy")
     if os.path.exists(exe_path):
         print(f"{GREEN}--- Запуск собранного файла для проверки... ---{RESET}")
-        os.system(f"{exe_path} {test_file_path}")
+        subprocess.run([exe_path, test_file_path])
     else:
         print(f"{RED}--- Ошибка: Исполняемый файл не найден в папке dist ---{RESET}")
         
-# test_run()
-# 5. Запуск сборки
+# 4. Сборка
 print(f"{GREEN}--- Начинаю сборку {exe_name}.exe ---{RESET}")
 try:
     result = subprocess.run(args)
     if result.returncode == 0:
         print(f"{GREEN}\n Готово! Файл {exe_name}.exe создан в папке 'dist'.{RESET}")
-
         test_run()
     else:
         print(f"\n {RED}Ошибка сборки. Код: {result.returncode}{RESET}")
