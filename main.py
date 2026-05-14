@@ -52,7 +52,7 @@ def load_config():
     return {}
 
 MOD_CONFIG = load_config()
-import time
+
 
 def get_russian_error(raw_error):
     raw_error_str = str(raw_error)
