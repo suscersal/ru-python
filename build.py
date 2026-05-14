@@ -40,14 +40,14 @@ args = [
     "--onefile",
     "--name", exe_name,
     "--clean"
-
+]
 # Добавляем иконку только если файл существует
 if os.path.exists(icon_path):
     args.extend(["--icon", icon_path])
 else:
     print(f"{YELLOW}--- Предупреждение: {icon_path} не найден, сборка будет со стандартной иконкой ---")
 
-if os.path.exists(module_file);
+if os.path.exists(module_file):
     args.extend(["--add-data",module_file])
 else:
     print(f"{YELLOW}--- Предупреждение: {module_file} не найден, сборка будет без перевода модулей")
