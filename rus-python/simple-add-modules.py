@@ -34,6 +34,21 @@ file_path = 'modules.json'
 
 def has_english_letters(text):
     return bool(re.search('[a-zA-Z]', text))
+    
+def has_censoured(text):
+    
+    ban_worlds = [
+        "секс",
+    ]
+    
+    for ban_world in ban_worlds:
+        if ban_world in a:
+            return False
+        
+    return True
+            
+
+
 
 def prepare_technical_text(text):
     """
@@ -53,6 +68,7 @@ def prepare_technical_text(text):
     abbreviations = {
         # --- МАТЕМАТИКА, СТАТИСТИКА И ГЕОМЕТРИЯ (math, cmath, numpy) ---
         "sqrt": ["calculate", "square", "root"],
+        "is": ["is"],
         "pow": ["raise", "to", "power"],
         "abs": ["absolute", "value"],
         "fabs": ["floating", "point", "absolute", "value"],
@@ -361,6 +377,8 @@ elif mode == "2":
             translated = translate_as_action(eng_word, translator)
             if has_english_letters(translated):
                 print(f" -> Пропущено. В результате осталась латиница: '{translated}'")
+            elif has_censoured(translated):
+                print(f" -> Пропущено. В результате есть слово находящиеся в бан списке: '{translated}'")
             else:
                 sources[eng_word] = {"ru-name": translated}
                 need_to_save = True
