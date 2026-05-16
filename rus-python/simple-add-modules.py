@@ -43,9 +43,9 @@ def has_censoured(text):
     
     for ban_world in ban_worlds:
         if ban_world in text:
-            return False
+            return True
         
-    return True
+    return False
             
 
 
