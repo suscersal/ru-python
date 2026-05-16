@@ -32,8 +32,17 @@ wordsegment.load()  # Загрузка словаря для разделени�
 
 file_path = 'modules.json'
 
+
 def has_english_letters(text):
-    return bool(re.search('[a-zA-Z]', text))
+    exceptions = {'api', 'android','id', 'url', 'json', 'py', 'git', 'termux'}
+    
+    words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
+    
+    for word in words:
+        if word not in exceptions:
+            return True  # Нашли настоящее английское слово, которое надо переводить
+            
+    return False  # Английских слов нет, либо все они — из списка исключений
     
 def has_censoured(text):
     
@@ -199,7 +208,9 @@ def prepare_technical_text(text):
         "ptr": ["memory", "pointer"],
         "tbl": ["data", "table"],
         "col": ["table", "column"],
-        "impl": ["implementation"]
+        "impl": ["implementation"],
+	"unraisablehook": ["unraisable","hook"]
+
     }
     
     for w in words:
@@ -345,7 +356,7 @@ elif mode == "2":
         sys.exit(1)
 
     if module_name not in data:
-        data[module_name] = {"ru-name": module_name, "sources": {}}
+        data[module_name] = {"ru-name": translate_as_action( module_name,translator), "sources": {}}
 
     sources = data[module_name].setdefault("sources", {})
     
