@@ -42,7 +42,7 @@ def has_censoured(text):
     ]
     
     for ban_world in ban_worlds:
-        if ban_world in a:
+        if ban_world in text:
             return False
         
     return True
