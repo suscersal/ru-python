@@ -1,6 +1,7 @@
 import subprocess
 import os
 import sys
+import platform
 
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -46,8 +47,10 @@ else:
     print(f"{YELLOW}--- Предупреждение: {icon_path} не найден, стандартная иконка ---{RESET}")
 
 
+separator = ";" if platform.system() == "Windows" else ":"
+
 if os.path.exists(module_file):
-    args.extend(["--add-data", f"{module_file};."])
+    args.extend(["--add-data", f"{module_file}{separator}."])
 else:
     print(f"{YELLOW}--- Предупреждение: {module_file} не найден, сборка без перевода ---{RESET}")
 
