@@ -39,13 +39,19 @@ jobs:
             *.exe
             *.log
       
-      - name: Создать Релиз и загрузить EXE
+      - name: Создать релиз
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/') # Создаст релиз, только если вы создадите тег
         with:
+          # Имя релиза (будет содержать дату и номер сборки)
+          tag_name: "v${{ github.run_number }}"
+          name: "Сборка от ${{ github.event.schedule || 'ручного запуска' }}"
+          draft: false
+          prerelease: false
+          # Какие файлы прикрепить к релизу
           files: |
             dist/*.exe
-            rupython.exe
+            *.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
