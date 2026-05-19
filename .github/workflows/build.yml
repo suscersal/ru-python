@@ -10,6 +10,9 @@ jobs:
     name: Сборка проекта
     runs-on: windows-latest
 
+    env:
+      PYTHONUTF8: 1
+
     steps:
       - name: Копирование кода
         uses: actions/checkout@v4
