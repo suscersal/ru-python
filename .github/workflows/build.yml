@@ -42,7 +42,7 @@ jobs:
             *.exe
             *.log
       
-            - name: Создать Релиз и загрузить EXE
+      - name: Создать Релиз и загрузить EXE
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') # Создаст релиз, только если вы создадите тег
         with:
