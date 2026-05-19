@@ -140,48 +140,19 @@ function activate(context) {
         terminal.sendText(`& "${rupythonPath}" "${editor.document.fileName}"`);
     });
 
-    // --- 5. СОЗДАНИЕ НОВОГО ФАЙЛА RUPY (РАБОТАЕТ ВЕЗДЕ) ---
+        // --- 5. СОЗДАНИЕ НОВОГО ФАЙЛА RUPY (БЕЗ СОХРАНЕНИЯ НА ДИСК) ---
     let createNewFileCommand = vscode.commands.registerCommand('rupy.createNewFile', async function () {
-        let targetUri;
-
-        if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
-            const fileName = await vscode.window.showInputBox({
-                prompt: 'Введите имя нового файла',
-                value: 'скрипт.rupy',
-                validateInput: text => text.endsWith('.rupy') ? null : 'Имя должно заканчиваться на .rupy'
-            });
-
-            if (!fileName) return;
-
-            const targetFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
-            const fullPath = path.join(targetFolder, fileName);
-
-            if (fs.existsSync(fullPath)) {
-                vscode.window.showErrorMessage(`Файл ${fileName} уже существует!`);
-                return;
-            }
-
-            try {
-                fs.writeFileSync(fullPath, '# Создано с помощью RuPy\n', 'utf8');
-                targetUri = vscode.Uri.file(fullPath);
-            } catch (err) {
-                vscode.window.showErrorMessage(`Не удалось создать файл: ${err.message}`);
-                return;
-            }
-        } else {
-            // Если папка не открыта, открываем временную вкладку без сохранения на диск
-            targetUri = vscode.Uri.parse('untitled:Новый_скрипт.rupy');
-        }
-
-        const doc = await vscode.workspace.openTextDocument(targetUri);
-        const editor = await vscode.window.showTextDocument(doc);
-
-        if (!vscode.workspace.workspaceFolders) {
-            await editor.edit(editBuilder => {
-                editBuilder.insert(new vscode.Position(0, 0), '# Создано с помощью RuPy\n');
-            });
-        }
+        // Открываем пустой документ с привязкой к языку rupy, без жесткого пути к диску C:\
+        const doc = await vscode.workspace.openTextDocument({
+            language: 'rupy',
+            content: 'вывести "Привет мир!"\n'
+        });
+        
+        // Показываем его в редакторе
+        await vscode.window.showTextDocument(doc);
     });
+
+
 
     // РЕГИСТРАЦИЯ ВСЕХ ПОДПИСОК (Исправлено)
     context.subscriptions.push(
@@ -197,4 +168,4 @@ function activate(context) {
 
 function deactivate() {}
 
-module.exports = { activate, deactivate };
+module.exports = {activate, deactivate};
