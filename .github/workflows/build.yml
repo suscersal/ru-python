@@ -30,12 +30,25 @@ jobs:
       - name: Запуск скрипта сборки (build.py)
         run: python build.py
 
+
+
       - name: Сохранение готового файла
         if: always() # Попытаться сохранить, даже если билд упал (чтобы посмотреть логи)
         uses: actions/upload-artifact@v4
         with:
-          name: build-output
+          name: rupython
           path: |
             dist/
             *.exe
             *.log
+      
+            - name: Создать Релиз и загрузить EXE
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') # Создаст релиз, только если вы создадите тег
+        with:
+          files: |
+            dist/*.exe
+            rupython.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
