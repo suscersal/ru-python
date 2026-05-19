@@ -4,6 +4,10 @@
   "description": "Позволяет писать на русском синтаксис python",
   "publisher": "SUSCERSAL",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suscersal/ru-python"
+  },
   "main": "./extension.js",
   "activationEvents": [
       "onLanguage:rupy"
