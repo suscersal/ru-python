@@ -34,7 +34,7 @@ def get_resource_path(relative_path):
 
 def load_config():
     local_json = get_resource_path("modules.json")
-    print(local_json)
+    # print(local_json)
     source_json = os.path.join(os.path.dirname(__file__), 'rus-python', 'modules.json')
 
     # 1. Синхронизация: если в папке исходников есть файл, копируем его к себе
@@ -182,7 +182,7 @@ def run_rupy(input_file):
             for py_mod_name, mod_data in MOD_CONFIG.items():
                 if mod_data.get("ru-name") == module_to_import:
                     # Если нашли в JSON (например, "время"), пишем английский "import time"
-                    print(py_mod_name)
+                    # print(py_mod_name)
                     py_lines.append(f"{prefix}import {py_mod_name}")
                     found_in_config = True
                     break
