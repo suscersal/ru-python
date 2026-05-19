@@ -2,8 +2,12 @@ name: Автоматическая сборка раз в три дня
 
 on:
   schedule:
-    - cron: '0 0 */3 * *'
-  workflow_dispatch:
+    - cron: '0 0 */3 * *' # Запуск каждые 3 дня в 00:00 UTC
+  workflow_dispatch: # Возможность ручного запуска
+
+# Добавляем права для корректной работы GITHUB_TOKEN (создание релизов и запись пакетов)
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -21,30 +25,32 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          # Мы убрали строку с кэшем, чтобы не было ошибок
-
 
       - name: Запуск скрипта сборки (build.py)
         run: python build.py
 
-
-
       - name: Сохранение готового файла
-        if: always() # Попытаться сохранить, даже если билд упал (чтобы посмотреть логи)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rupython
+          name: rupython-artifacts
           path: |
             dist/
             *.exe
             *.log
-      
+          if-no-files-found: warn # Не ронять билд, если файлов для сборки не нашлось
+
+      # Изменено условие: теперь релиз создается И по тегу, И при запуске по расписанию/вручную
       - name: Создать Релиз и загрузить EXE
         uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/') # Создаст релиз, только если вы создадите тег
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('auto-{0}', github.sha) }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка {0}', github.sha) }}
+          draft: false
+          prerelease: ${{ github.event_name != 'create' }} # Автосборки помечаются как Pre-release
           files: |
             dist/*.exe
-            rupython.exe
+            *.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
