@@ -2,9 +2,7 @@ name: Автоматическая сборка раз в три дня
 
 on:
   schedule:
-    # Запуск в 00:00 (полночь) каждые 3 дня
     - cron: '0 0 */3 * *'
-  # Позволяет запускать сборку вручную кнопкой в любое время
   workflow_dispatch:
 
 jobs:
@@ -13,23 +11,28 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Копирование кода из репозитория
+      - name: Копирование кода
         uses: actions/checkout@v4
 
       - name: Установка Python 3.13
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: 'pip'
+          # Мы убрали строку с кэшем, чтобы не было ошибок
+
+      - name: Подготовка окружения
+        # Установим wheel и pyinstaller на всякий случай, если ваш скрипт их ждет
+        run: python -m pip install --upgrade pip wheel pyinstaller
 
       - name: Запуск скрипта сборки (build.py)
-        # Ваш скрипт сам ставит библиотеки и собирает EXE
         run: python build.py
 
-      - name: Сохранение готового файла (Артефакт)
+      - name: Сохранение готового файла
+        if: always() # Попытаться сохранить, даже если билд упал (чтобы посмотреть логи)
         uses: actions/upload-artifact@v4
         with:
-          name: Готовый-бинарник-ru-python
+          name: build-output
           path: |
             dist/
             *.exe
+            *.log
