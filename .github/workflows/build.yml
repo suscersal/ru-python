@@ -23,9 +23,6 @@ jobs:
           python-version: '3.13'
           # Мы убрали строку с кэшем, чтобы не было ошибок
 
-      - name: Подготовка окружения
-        # Установим wheel и pyinstaller на всякий случай, если ваш скрипт их ждет
-        run: python -m pip install --upgrade pip wheel pyinstaller
 
       - name: Запуск скрипта сборки (build.py)
         run: python build.py
