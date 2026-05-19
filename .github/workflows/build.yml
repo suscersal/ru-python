@@ -29,7 +29,18 @@ jobs:
       - name: Запуск скрипта сборки (build.py)
         run: python build.py
 
-      - name: Сохранение готового файла
+      - name: Установка Node.js (для сборки VS Code расширения)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Сборка расширения VS Code (.vsix)
+        run: |
+          npm install -g @vscode/vsce
+          cd rus-python
+          vsce package --no-dependencies
+
+      - name: Сохранение готовых файлов в артефакты
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -38,17 +49,17 @@ jobs:
             dist/
             *.exe
             *.log
-          if-no-files-found: warn # Не ронять билд, если файлов для сборки не нашлось
+            rus-python/*.vsix
+          if-no-files-found: warn
 
-      
-            # Изменено условие: теперь релиз создается И по тегу, И при запуске по расписанию/вручную
-      - name: Создать Релиз и загрузить EXE
+      # Релиз создается по тегу, расписанию или вручную
+      - name: Создать Релиз и загрузить EXE + VSIX
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         with:
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('auto-{0}', github.sha) }}
           name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка {0}', github.sha) }}
-          generate_release_notes: true # GitHub сам добавит список коммитов и PR
+          generate_release_notes: true
           body: |
             ### Автоматическая сборка проекта
             
@@ -59,9 +70,10 @@ jobs:
             ---
             ### Что нового:
           draft: false
-          prerelease: ${{ github.event_name != 'create' }} # Автосборки помечаются как Pre-release
+          prerelease: ${{ github.event_name != 'create' }}
           files: |
             dist/*.exe
             *.exe
+            rus-python/*.vsix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
