@@ -19,9 +19,12 @@ OutputBaseFilename=rupyInstaller
 ChangesAssociations=yes
 SetupMutex={#MyAppId}_Mutex
 
-; Настройка установки без обязательных прав администратора
+; Установка строго БЕЗ обязательных прав администратора
 PrivilegesRequired=none
 PrivilegesRequiredOverridesAllowed=dialog
+
+; Отключаем лишнюю отдельную страницу выбора папки в Пуск
+DisableProgramGroupPage=yes
 
 [Languages]
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
@@ -32,11 +35,16 @@ Name: "custom"; Description: "Выборочная установка"; Flags: i
 
 [Components]
 Name: "main"; Description: "Интерпретатор RuPy (основные файлы)"; Types: full custom; Flags: fixed
+Name: "startmenu"; Description: "Создать папку со ссылками в меню Пуск"; Types: full custom
 Name: "path"; Description: "Добавить RuPy в локальную переменную PATH пользователя"; Types: full custom
 Name: "context"; Description: "Добавить пункты в контекстное меню файлов .rupy"; Types: full custom
 
-[Files]
-Source: "dist\rupython.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: main
+; --- Секция создания ярлыков в меню Пуск ---
+; Ярлыки создаются только если выбрана галочка компонента "startmenu"
+[Icons]
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: startmenu
+Name: "{group}\Посетить GitHub проекта"; Filename: "https://github.com"; Components: startmenu
+Name: "{group}\Удалить {#MyAppName}"; Filename: "{uninstallexe}"; Components: startmenu
 
 [Registry]
 ; Запись в PATH
@@ -67,17 +75,13 @@ const
   WM_SETTINGCHANGE = $001A;
   SMTO_ABORTIFHUNG = 2;
 
-// Глобальная переменная для чекбокса GitHub
 var
   GitHubCheckBox: TNewCheckBox;
+  OpenGitHubOnClose: Boolean;
 
 // Импорт функции WinAPI для обновления окружения
 function SendMessageTimeout(hWnd: HWND; Msg: UINT; wParam: Longint; lParam: String; fuFlags: UINT; uTimeout: UINT; out lpdwResult: DWORD): LongInt;
   external 'SendMessageTimeout{#AW}@user32.dll stdcall';
-
-// Импорт функции WinAPI для безопасного открытия ссылок в обход багов shellexec
-function ShellExecute(hWnd: HWND; lpOperation, lpFile, lpParameters, lpDirectory: String; nShowCmd: Integer): LongWord;
-  external 'ShellExecuteW@shell32.dll stdcall';
 
 function NeedsAddPath: Boolean;
 var
@@ -95,22 +99,9 @@ procedure UpdateEnvironment;
 var
   dwResult: DWORD;
 begin
-  // Используем $FFFF вместо HWND_BROADCAST, чтобы избежать дублирования идентификаторов
   SendMessageTimeout($FFFF, WM_SETTINGCHANGE, 0, 'Environment', SMTO_ABORTIFHUNG, 5000, dwResult);
 end;
 
-// Создаем галочку на финальной странице завершения
-procedure InitializeWizard;
-begin
-  GitHubCheckBox := TNewCheckBox.Create(WizardForm);
-  GitHubCheckBox.Parent := WizardForm.FinishedPage;
-  GitHubCheckBox.Left := WizardForm.FinishedLabel.Left;
-  GitHubCheckBox.Top := WizardForm.FinishedLabel.Top + WizardForm.FinishedLabel.Height + ScaleY(12);
-  GitHubCheckBox.Width := WizardForm.FinishedLabel.Width;
-  GitHubCheckBox.Height := ScaleY(20);
-  GitHubCheckBox.Caption := 'Посетить страницу проекта на GitHub';
-  GitHubCheckBox.Checked := True; // Галочка стоит по умолчанию
-end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 var
@@ -118,8 +109,7 @@ var
 begin
   if CurStep = ssPostInstall then
   begin
-    // Безопасное обновление PATH через setx
-    if IsComponentSelected('path') then
+    if WizardIsComponentSelected('path') then
     begin
       Exec('cmd.exe', '/c setx PATH "%PATH%;' + ExpandConstant('{app}') + '"', '', SW_HIDE, ewNoWait, ResultCode);
     end;
@@ -127,13 +117,38 @@ begin
   end;
 end;
 
-// Проверяем состояние галочки при полном закрытии установщика
-procedure DeinitializeSetup;
+function NextButtonClick(CurPageID: Integer): Boolean;
 begin
-  if (GitHubCheckBox <> nil) and GitHubCheckBox.Checked then
+  Result := True;
+  if CurPageID = wpFinished then
   begin
-    // Открываем браузер через чистое WinAPI без вызова ошибки 2147746293
-    ShellExecute(0, 'open', 'https://github.com', '', '', 5); // 5 = SW_SHOW
+    if (GitHubCheckBox <> nil) and GitHubCheckBox.Checked then
+    begin
+      OpenGitHubOnClose := True;
+    end;
+  end;
+end;
+
+// Стопроцентный метод запуска ссылки через создание временного .url ярлыка Windows
+procedure DeinitializeWizard;
+var
+  UrlLines: TArrayOfString;
+  UrlPath: String;
+  ResultCode: Integer;
+begin
+  if OpenGitHubOnClose then
+  begin
+    UrlPath := ExpandConstant('{tmp}\github.url');
+    
+    SetArrayLength(UrlLines, 3);
+    UrlLines[0] := '[InternetShortcut]';
+    UrlLines[1] := 'URL=https://github.com';
+    UrlLines[2] := '';
+    
+    if SaveStringsToFile(UrlPath, UrlLines, False) then
+    begin
+      ShellExecAsOriginalUser('open', UrlPath, '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
+    end;
   end;
 end;
 
