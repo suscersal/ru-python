@@ -42,8 +42,104 @@ jobs:
           # Автоматически добавляем обязательные поля в package.json перед сборкой
           $json = Get-Content package.json | ConvertFrom-Json
           if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
-          if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com" } }
+          name: Автоматическая сборка раз в три дня
+
+on:
+  schedule:
+    - cron: '0 0 */3 * *' # Запуск каждые 3 дня в 00:00 UTC
+  workflow_dispatch: # Возможность ручного запуска
+
+# Добавляем права для корректной работы GITHUB_TOKEN (создание релизов и запись пакетов)
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Сборка проекта
+    runs-on: windows-latest
+
+    env:
+      PYTHONUTF8: 1
+
+    steps:
+      - name: Копирование кода
+        uses: actions/checkout@v4
+
+      - name: Установка Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Запуск скрипта сборки (build.py)
+        run: python build.py
+
+      - name: Установка Node.js (для сборки VS Code расширения)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Сборка расширения VS Code (.vsix)
+        run: |
+          npm install -g @vscode/vsce
+          cd rus-python
+          
+          # Автоматически добавляем обязательные поля в package.json перед сборкой
+          $json = Get-Content package.json | ConvertFrom-Json
+          if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
+          if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com/suscersal/ru-python" } }
           $json | ConvertTo-Json -Depth 10 | Set-Content package.json
+          
+          # Жесткое создание файла лицензии через перенаправление потока для избежания ворнингов
+          echo "MIT License" > LICENSE
+          
+          # Сборка расширения (флаг --no-validate удален)
+          vsce package --no-dependencies
+
+      # Компиляция инсталлятора Inno Setup
+      - name: Компиляция инсталлятора (Inno Setup)
+        run: |
+          iscc setup.iss
+
+      - name: Сохранение готовых файлов в артефакты
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rupython-artifacts
+          path: |
+            dist/
+            Setup_Build/rupyInstaller.exe
+            *.exe
+            *.log
+            rus-python/*.vsix
+          if-no-files-found: warn
+
+      # Создание релиза по тегу, расписанию или вручную с автогенерацией списка коммитов
+      - name: Создать Релиз и загрузить файлы
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('auto-{0}', github.sha) }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка {0}', github.sha) }}
+          generate_release_notes: true
+          body: |
+            ### Автоматическая сборка проекта
+            
+            **Информация о сборке:**
+            - **Триггер:** ${{ github.event_name }}
+            - **Коммит:** ${{ github.sha }}
+            
+            ---
+            ### Что нового:
+          draft: false
+          prerelease: ${{ github.event_name != 'create' }} # Автосборки помечаются как Pre-release
+          files: |
+            dist/*.exe
+            Setup_Build/rupyInstaller.exe
+            *.exe
+            rus-python/*.vsix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
           
           # Жесткое создание файла лицензии через перенаправление потока для избежания ворнингов
           echo "MIT License" > LICENSE
