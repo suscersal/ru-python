@@ -396,5 +396,103 @@
         "ru-name": "писать"
       }
     }
+  },
+  "time": {
+    "ru-name": "время",
+    "sources": {
+      "CLOCK_BOOTTIME": {
+        "ru-name": "время загрузки часов"
+      },
+      "CLOCK_MONOTONIC": {
+        "ru-name": "часы м о н о то н и с"
+      },
+      "CLOCK_REALTIME": {
+        "ru-name": "часы в реальном времени"
+      },
+      "CLOCK_TAI": {
+        "ru-name": "часы"
+      },
+      "CLOCK_THREAD_CPUTIME_ID": {
+        "ru-name": "часы"
+      },
+      "altzone": {
+        "ru-name": "альтернативная зона"
+      },
+      "asctime": {
+        "ru-name": "время подъема"
+      },
+      "clock_getres": {
+        "ru-name": "часы получить разрешение"
+      },
+      "clock_gettime": {
+        "ru-name": "часы получить время"
+      },
+      "clock_gettime_ns": {
+        "ru-name": "часы получают время нс"
+      },
+      "daylight": {
+        "ru-name": "дневной свет"
+      },
+      "get_clock_info": {
+        "ru-name": "получить информацию о часах"
+      },
+      "localtime": {
+        "ru-name": "местное время"
+      },
+      "mktime": {
+        "ru-name": "мктайм"
+      },
+      "monotonic": {
+        "ru-name": "монотонный"
+      },
+      "monotonic_ns": {
+        "ru-name": "монотонный нс"
+      },
+      "perf_counter": {
+        "ru-name": "счетчик производительности"
+      },
+      "perf_counter_ns": {
+        "ru-name": "счетчик производительности нс"
+      },
+      "process_time": {
+        "ru-name": "время процесса"
+      },
+      "process_time_ns": {
+        "ru-name": "время процесса нс"
+      },
+      "sleep": {
+        "ru-name": "спать"
+      },
+      "strftime": {
+        "ru-name": "отформатировать время как строку"
+      },
+      "strptime": {
+        "ru-name": "время анализа строки"
+      },
+      "struct_time": {
+        "ru-name": "структурировать время"
+      },
+      "thread_time": {
+        "ru-name": "время потока"
+      },
+      "thread_time_ns": {
+        "ru-name": "время потока нс"
+      },
+      "time": {
+        "ru-name": "время"
+      },
+      "time_ns": {
+        "ru-name": "время нс"
+      },
+      "timezone": {
+        "ru-name": "часовой пояс"
+      },
+      "tzname": {
+        "ru-name": "тцнаме"
+      },
+      "tzset": {
+        "ru-name": "цсет"
+      }
+    }
   }
 }
