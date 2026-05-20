@@ -1,290 +1,15 @@
 {
-  "math": {
-    "ru-name": "математика",
-    "sources": {
-      "acos": {
-        "ru-name": "арккосинус"
-      },
-      "acosh": {
-        "ru-name": "обратный гиперболический косинус"
-      },
-      "asin": {
-        "ru-name": "арксинус"
-      },
-      "asinh": {
-        "ru-name": "обратный гиперболический синус"
-      },
-      "atan": {
-        "ru-name": "арктангенс"
-      },
-      "atan2": {
-        "ru-name": "арктангенс двух аргументов"
-      },
-      "atanh": {
-        "ru-name": "обратный гиперболический тангенс"
-      },
-      "ceil": {
-        "ru-name": "округлить потолок"
-      },
-      "comb": {
-        "ru-name": "гребень"
-      },
-      "copysign": {
-        "ru-name": "копировать знак"
-      },
-      "cos": {
-        "ru-name": "косинус"
-      },
-      "cosh": {
-        "ru-name": "гиперболический косинус"
-      },
-      "degrees": {
-        "ru-name": "конвертировать в градусы"
-      },
-      "dist": {
-        "ru-name": "расстояние"
-      },
-      "e": {
-        "ru-name": "е"
-      },
-      "erf": {
-        "ru-name": "эрф"
-      },
-      "exp": {
-        "ru-name": "показательная функция"
-      },
-      "exp2": {
-        "ru-name": "эксп2"
-      },
-      "expm1": {
-        "ru-name": "экспоненциальный минус 1"
-      },
-      "fabs": {
-        "ru-name": "абсолютное значение с плавающей запятой"
-      },
-      "factorial": {
-        "ru-name": "факториал"
-      },
-      "floor": {
-        "ru-name": "круглый пол вниз"
-      },
-      "fma": {
-        "ru-name": "фма"
-      },
-      "fmod": {
-        "ru-name": "с плавающей запятой по модулю"
-      },
-      "frexp": {
-        "ru-name": "фр. опыт"
-      },
-      "gamma": {
-        "ru-name": "гамма"
-      },
-      "gcd": {
-        "ru-name": "наибольший общий делитель"
-      },
-      "hypot": {
-        "ru-name": "вычислить гипотенузу"
-      },
-      "inf": {
-        "ru-name": "бесконечность"
-      },
-      "isclose": {
-        "ru-name": "это близко"
-      },
-      "isfinite": {
-        "ru-name": "хто бесконечность"
-      },
-      "isinf": {
-        "ru-name": "это бесконечность"
-      },
-      "isnan": {
-        "ru-name": "это ничего"
-      },
-      "lcm": {
-        "ru-name": "наименьшее общее кратное"
-      },
-      "ldexp": {
-        "ru-name": "лд эксп"
-      },
-      "lgamma": {
-        "ru-name": "л гамма"
-      },
-      "log": {
-        "ru-name": "натуральный логарифм"
-      },
-      "log10": {
-        "ru-name": "десятичный логарифм"
-      },
-      "log2": {
-        "ru-name": "логарифм по основанию 2"
-      },
-      "modf": {
-        "ru-name": "мод ф"
-      },
-      "nan": {
-        "ru-name": "не число"
-      },
-      "nextafter": {
-        "ru-name": "следующий после"
-      },
-      "perm": {
-        "ru-name": "пермь"
-      },
-      "pi": {
-        "ru-name": "пи"
-      },
-      "pow": {
-        "ru-name": "привести к власти"
-      },
-      "prod": {
-        "ru-name": "произведение элементов"
-      },
-      "radians": {
-        "ru-name": "конвертировать в радианы"
-      },
-      "remainder": {
-        "ru-name": "остаток"
-      },
-      "sin": {
-        "ru-name": "синус"
-      },
-      "sinh": {
-        "ru-name": "гиперболический синус"
-      },
-      "sqrt": {
-        "ru-name": "вычислить квадратный корень"
-      },
-      "sumprod": {
-        "ru-name": "сумма производства"
-      },
-      "tan": {
-        "ru-name": "касательная"
-      },
-      "tanh": {
-        "ru-name": "гиперболический тангенс"
-      },
-      "tau": {
-        "ru-name": "тау"
-      },
-      "trunc": {
-        "ru-name": "ствол"
-      },
-      "ulp": {
-        "ru-name": "мутить"
-      }
-    }
-  },
   "os": {
-    "ru-name": "операционная система",
+    "ru-name": "ос",
     "sources": {
-      "CLD_STOPPED": {
-        "ru-name": "х л д остановлен"
-      },
-      "CLONE_FILES": {
-        "ru-name": "клонировать файлы"
-      },
-      "CLONE_FS": {
-        "ru-name": "клон е ф с"
-      },
-      "CLONE_NEWNET": {
-        "ru-name": "к л о н е н е в н е т"
-      },
-      "CLONE_NEWNS": {
-        "ru-name": "клон е н ы"
-      },
-      "CLONE_NEWPID": {
-        "ru-name": "к л о н е н е в п и д"
-      },
-      "CLONE_NEWTIME": {
-        "ru-name": "клон новое время"
-      },
-      "CLONE_NEWUSER": {
-        "ru-name": "клонировать новый пользователь"
-      },
-      "CLONE_NEWUTS": {
-        "ru-name": "кл о н е н е в у т с"
-      },
-      "CLONE_SIGHAND": {
-        "ru-name": "клон е сиг х а н д"
-      },
-      "CLONE_SYSVSEM": {
-        "ru-name": "клон е си с в с е м"
-      },
-      "CLONE_THREAD": {
-        "ru-name": "клонировать нить"
-      },
-      "CLONE_VM": {
-        "ru-name": "кл о н е в м"
-      },
       "DirEntry": {
         "ru-name": "запись в каталоге"
-      },
-      "EFD_NONBLOCK": {
-        "ru-name": "е ж д н о н б л о к к"
-      },
-      "EFD_SEMAPHORE": {
-        "ru-name": "е ф д семафор"
-      },
-      "EX_CONFIG": {
-        "ru-name": "е х к о н ф и г"
-      },
-      "EX_DATAERR": {
-        "ru-name": "е х д а т а е р р"
-      },
-      "EX_IOERR": {
-        "ru-name": "е х я о е р р"
-      },
-      "EX_NOHOST": {
-        "ru-name": "е х н о хост"
-      },
-      "EX_NOINPUT": {
-        "ru-name": "е х н о в п у т"
-      },
-      "EX_NOPERM": {
-        "ru-name": "е х н о п е р м"
       },
       "EX_OK": {
         "ru-name": "е х ок"
       },
-      "EX_OSERR": {
-        "ru-name": "е х о с е р р"
-      },
-      "EX_PROTOCOL": {
-        "ru-name": "е х п р о т о к о л"
-      },
-      "EX_SOFTWARE": {
-        "ru-name": "е х программное обеспечение"
-      },
-      "EX_TEMPFAIL": {
-        "ru-name": "е х т е м п ф а и л"
-      },
-      "EX_UNAVAILABLE": {
-        "ru-name": "е х у н а в а л а б л е"
-      },
-      "EX_USAGE": {
-        "ru-name": "е х у с а г е"
-      },
-      "F_LOCK": {
-        "ru-name": "стая"
-      },
       "F_OK": {
         "ru-name": "окей"
-      },
-      "F_TEST": {
-        "ru-name": "ф т е с т"
-      },
-      "F_TLOCK": {
-        "ru-name": "ф т л о к к"
-      },
-      "F_ULOCK": {
-        "ru-name": "блядь"
-      },
-      "GRND_NONBLOCK": {
-        "ru-name": "г р н д н о н б л о к к"
-      },
-      "GRND_RANDOM": {
-        "ru-name": "г р н д р н д о м"
       },
       "GenericAlias": {
         "ru-name": "общий псевдоним"
@@ -298,41 +23,20 @@
       "O_APPEND": {
         "ru-name": "о приложение"
       },
-      "O_ASYNC": {
-        "ru-name": "о асинхронизация"
+      "O_BINARY": {
+        "ru-name": "о б и н а р ь"
       },
       "O_CREAT": {
         "ru-name": "о творчестве"
       },
-      "O_DIRECT": {
-        "ru-name": "о прямой"
-      },
-      "O_DIRECTORY": {
-        "ru-name": "о директ о р ь"
-      },
       "O_EXCL": {
         "ru-name": "о е х с л"
       },
-      "O_LARGEFILE": {
-        "ru-name": "о большой файл"
+      "O_NOINHERIT": {
+        "ru-name": "о нет о в наследстве"
       },
-      "O_NDELAY": {
-        "ru-name": "в отпуске"
-      },
-      "O_NOATIME": {
-        "ru-name": "не обновлять время последнего доступа к файлу"
-      },
-      "O_NOCTTY": {
-        "ru-name": "о н о к т ь"
-      },
-      "O_NOFOLLOW": {
-        "ru-name": "о н о л о л о у"
-      },
-      "O_NONBLOCK": {
-        "ru-name": "о н о н блок"
-      },
-      "O_PATH": {
-        "ru-name": "о п а т ч"
+      "O_RANDOM": {
+        "ru-name": "или рандом"
       },
       "O_RDONLY": {
         "ru-name": "или д о н л ы"
@@ -340,11 +44,14 @@
       "O_RDWR": {
         "ru-name": "или р д ш р"
       },
-      "O_RSYNC": {
-        "ru-name": "или синхронизация"
+      "O_SHORT_LIVED": {
+        "ru-name": "о короткоживущий"
       },
-      "O_SYNC": {
-        "ru-name": "о синхронизации"
+      "O_TEMPORARY": {
+        "ru-name": "в р а м о р а я"
+      },
+      "O_TEXT": {
+        "ru-name": "о т е х т"
       },
       "O_TRUNC": {
         "ru-name": "о бегать"
@@ -352,17 +59,8 @@
       "O_WRONLY": {
         "ru-name": "оу р о н л ы"
       },
-      "PRIO_PGRP": {
-        "ru-name": "п р и о п г р п"
-      },
-      "PRIO_PROCESS": {
-        "ru-name": "пр и о п о ц е с ы"
-      },
-      "PRIO_USER": {
-        "ru-name": "п р и о у е р"
-      },
-      "P_ALL": {
-        "ru-name": "п а л л"
+      "P_DETACH": {
+        "ru-name": "п д е т а ч"
       },
       "P_NOWAIT": {
         "ru-name": "п н о подожди"
@@ -370,14 +68,8 @@
       "P_NOWAITO": {
         "ru-name": "п н о погоди"
       },
-      "P_PGID": {
-        "ru-name": "п п г я д"
-      },
-      "P_PID": {
-        "ru-name": "п п я д"
-      },
-      "P_PIDFD": {
-        "ru-name": "п п я г ж д"
+      "P_OVERLAY": {
+        "ru-name": "п о в е р л а й"
       },
       "P_WAIT": {
         "ru-name": "п подожди"
@@ -385,131 +77,20 @@
       "PathLike": {
         "ru-name": "путь как"
       },
-      "RTLD_GLOBAL": {
-        "ru-name": "р т л д г л о б а л"
-      },
-      "RTLD_LAZY": {
-        "ru-name": "р т л д л а з й"
-      },
-      "RTLD_LOCAL": {
-        "ru-name": "р т л д ло к а л"
-      },
-      "RTLD_NODELETE": {
-        "ru-name": "р т л д н о д е л е т е"
-      },
-      "RTLD_NOLOAD": {
-        "ru-name": "р т л д н о л о д"
-      },
-      "RTLD_NOW": {
-        "ru-name": "р т л д н о ш"
-      },
       "R_OK": {
         "ru-name": "р о к"
-      },
-      "SCHED_BATCH": {
-        "ru-name": "с е д б а т ч"
-      },
-      "SCHED_FIFO": {
-        "ru-name": "график"
-      },
-      "SCHED_IDLE": {
-        "ru-name": "расписание"
-      },
-      "SCHED_OTHER": {
-        "ru-name": "планировать"
-      },
-      "SCHED_RESET_ON_FORK": {
-        "ru-name": "с е д р е с т о н ф о р к"
-      },
-      "SCHED_RR": {
-        "ru-name": "с е др р р"
       },
       "SEEK_CUR": {
         "ru-name": "искать"
       },
-      "SEEK_DATA": {
-        "ru-name": "искать данные"
-      },
       "SEEK_END": {
         "ru-name": "искать"
-      },
-      "SEEK_HOLE": {
-        "ru-name": "ищи дыру"
       },
       "SEEK_SET": {
         "ru-name": "ищу набор"
       },
-      "SPLICE_F_MORE": {
-        "ru-name": "соединение еще"
-      },
-      "SPLICE_F_MOVE": {
-        "ru-name": "соединение"
-      },
-      "ST_MANDLOCK": {
-        "ru-name": "с т м и д л о к к"
-      },
-      "ST_NOATIME": {
-        "ru-name": "сейчас не время"
-      },
-      "ST_NODEV": {
-        "ru-name": "с т н о д е в"
-      },
-      "ST_NODIRATIME": {
-        "ru-name": "с т н о д и р а время"
-      },
-      "ST_NOEXEC": {
-        "ru-name": "с т н о е х е с"
-      },
-      "ST_NOSUID": {
-        "ru-name": "с т н о с у и д"
-      },
-      "ST_RDONLY": {
-        "ru-name": "стр д о н л ы"
-      },
-      "ST_RELATIME": {
-        "ru-name": "стр е л а в м е"
-      },
-      "ST_SYNCHRONOUS": {
-        "ru-name": "с т с синх р о н ы"
-      },
-      "TFD_NONBLOCK": {
-        "ru-name": "т ф д н о н б л о к к"
-      },
       "TMP_MAX": {
         "ru-name": "т м п м а х"
-      },
-      "WCONTINUED": {
-        "ru-name": "мы продолжаем"
-      },
-      "WEXITED": {
-        "ru-name": "мы вышли"
-      },
-      "WEXITSTATUS": {
-        "ru-name": "мы выходим из этого состояния"
-      },
-      "WIFCONTINUED": {
-        "ru-name": "с продолжением"
-      },
-      "WIFEXITED": {
-        "ru-name": "ж и ф е к е д"
-      },
-      "WIFSIGNALED": {
-        "ru-name": "с сигналом"
-      },
-      "WIFSTOPPED": {
-        "ru-name": "с остановкой"
-      },
-      "WNOHANG": {
-        "ru-name": "не вешаться"
-      },
-      "WNOWAIT": {
-        "ru-name": "ну н о подожди"
-      },
-      "WSTOPPED": {
-        "ru-name": "остановлено"
-      },
-      "WUNTRACED": {
-        "ru-name": "не отслеживается"
       },
       "W_OK": {
         "ru-name": "в о к"
@@ -534,9 +115,6 @@
       },
       "chmod": {
         "ru-name": "изменить режим разрешений"
-      },
-      "chown": {
-        "ru-name": "сменить владельца"
       },
       "close": {
         "ru-name": "закрывать"
@@ -565,9 +143,6 @@
       "environ": {
         "ru-name": "переменные среды"
       },
-      "environb": {
-        "ru-name": "окружающая среда б"
-      },
       "error": {
         "ru-name": "ошибка"
       },
@@ -592,12 +167,6 @@
       "extsep": {
         "ru-name": "доп.сентябрь"
       },
-      "fork": {
-        "ru-name": "вилка"
-      },
-      "forkpty": {
-        "ru-name": "вилка"
-      },
       "fsdecode": {
         "ru-name": "декодирование фс"
       },
@@ -610,14 +179,14 @@
       "fstat": {
         "ru-name": "фстат"
       },
-      "fwalk": {
-        "ru-name": "идти пешком"
-      },
       "get_blocking": {
         "ru-name": "получить блокировку"
       },
       "get_exec_path": {
         "ru-name": "получить путь выполнения программы"
+      },
+      "get_handle_inheritable": {
+        "ru-name": "получить дескриптор, передаваемый по наследству"
       },
       "get_inheritable": {
         "ru-name": "получить по наследству"
@@ -628,23 +197,8 @@
       "getcwd": {
         "ru-name": "получить текущий рабочий каталог"
       },
-      "getegid": {
-        "ru-name": "прятаться"
-      },
       "getenv": {
         "ru-name": "получить переменную среды"
-      },
-      "geteuid": {
-        "ru-name": "получить"
-      },
-      "getgid": {
-        "ru-name": "получить"
-      },
-      "getgrouplist": {
-        "ru-name": "получить список группы"
-      },
-      "getgroups": {
-        "ru-name": "получить группы"
       },
       "getlogin": {
         "ru-name": "получить логин"
@@ -652,35 +206,14 @@
       "getpid": {
         "ru-name": "получитьпид"
       },
-      "getpriority": {
-        "ru-name": "получить приоритет"
-      },
-      "getrandom": {
-        "ru-name": "получить случайный"
-      },
-      "getresuid": {
-        "ru-name": "получить возмещение ущерба"
-      },
-      "getsid": {
-        "ru-name": "получает идентификатор"
-      },
-      "getuid": {
-        "ru-name": "получить"
-      },
-      "grantpt": {
-        "ru-name": "предоставить пт"
-      },
       "isatty": {
         "ru-name": "недовольный"
       },
       "kill": {
         "ru-name": "убийство"
       },
-      "killpg": {
-        "ru-name": "убить стр."
-      },
-      "lchown": {
-        "ru-name": "я чаун"
+      "lchmod": {
+        "ru-name": "л чмод"
       },
       "linesep": {
         "ru-name": "линия сентябрь"
@@ -691,11 +224,14 @@
       "listdir": {
         "ru-name": "список содержимого каталога"
       },
-      "lockf": {
-        "ru-name": "блокировка"
+      "listdrives": {
+        "ru-name": "список дисков"
       },
-      "login_tty": {
-        "ru-name": "войти в систему, телетайп"
+      "listmounts": {
+        "ru-name": "список монтировок"
+      },
+      "listvolumes": {
+        "ru-name": "список томов"
       },
       "lseek": {
         "ru-name": "я ищу"
@@ -703,38 +239,17 @@
       "lstat": {
         "ru-name": "состояние ссылки"
       },
-      "major": {
-        "ru-name": "главный"
-      },
-      "makedev": {
-        "ru-name": "македев"
-      },
       "makedirs": {
         "ru-name": "создавать каталоги рекурсивно"
-      },
-      "minor": {
-        "ru-name": "незначительный"
       },
       "mkdir": {
         "ru-name": "создать каталог"
       },
-      "mkfifo": {
-        "ru-name": "мкфифо"
-      },
-      "mknod": {
-        "ru-name": "мкнод"
-      },
       "name": {
         "ru-name": "имя"
       },
-      "nice": {
-        "ru-name": "хороший"
-      },
       "open": {
         "ru-name": "открыть"
-      },
-      "openpty": {
-        "ru-name": "открытая площадка"
       },
       "pardir": {
         "ru-name": "номинальная режиссура"
@@ -742,50 +257,26 @@
       "path": {
         "ru-name": "путь"
       },
-      "pathconf": {
-        "ru-name": "путьконф"
-      },
       "pathsep": {
         "ru-name": "путь сентября"
       },
       "pipe": {
         "ru-name": "трубка"
       },
-      "pipe2": {
-        "ru-name": "труба2"
-      },
       "popen": {
         "ru-name": "открыть"
-      },
-      "pread": {
-        "ru-name": "р читать"
-      },
-      "preadv": {
-        "ru-name": "предварительная реклама"
       },
       "process_cpu_count": {
         "ru-name": "количество процессоров процесса"
       },
-      "ptsname": {
-        "ru-name": "имя"
-      },
       "putenv": {
         "ru-name": "установить переменную среды"
-      },
-      "pwrite": {
-        "ru-name": "п напиши"
-      },
-      "pwritev": {
-        "ru-name": "п пишу"
       },
       "read": {
         "ru-name": "читать"
       },
       "readlink": {
         "ru-name": "ссылка для чтения"
-      },
-      "register_at_fork": {
-        "ru-name": "зарегистрироваться на вилке"
       },
       "remove": {
         "ru-name": "удалять"
@@ -808,56 +299,17 @@
       "scandir": {
         "ru-name": "сканировать содержимое каталога"
       },
-      "sched_get_priority_max": {
-        "ru-name": "запланировано получить максимальный приоритет"
-      },
-      "sched_get_priority_min": {
-        "ru-name": "план получения приоритета мин."
-      },
-      "sched_getaffinity": {
-        "ru-name": "планирую получить близость"
-      },
-      "sched_getscheduler": {
-        "ru-name": "планировщик получения"
-      },
-      "sched_param": {
-        "ru-name": "параметр планирования"
-      },
-      "sched_setaffinity": {
-        "ru-name": "планирование установки сходства"
-      },
-      "sched_setparam": {
-        "ru-name": "заданный параметр расписания"
-      },
-      "sched_setscheduler": {
-        "ru-name": "планировщик установки расписания"
-      },
-      "sched_yield": {
-        "ru-name": "запланированная доходность"
-      },
-      "sendfile": {
-        "ru-name": "файл отправки"
-      },
       "sep": {
-        "ru-name": "системный разделитель пути к файлу"
+        "ru-name": "сентябрь"
       },
       "set_blocking": {
         "ru-name": "установить блокировку"
       },
+      "set_handle_inheritable": {
+        "ru-name": "установить дескриптор, наследуемый"
+      },
       "set_inheritable": {
         "ru-name": "установить наследуемый"
-      },
-      "setgroups": {
-        "ru-name": "установить группы"
-      },
-      "setns": {
-        "ru-name": "установить нс"
-      },
-      "setpriority": {
-        "ru-name": "установить приоритет"
-      },
-      "setsid": {
-        "ru-name": "сетсид"
       },
       "spawnl": {
         "ru-name": "спаун л"
@@ -865,32 +317,20 @@
       "spawnle": {
         "ru-name": "спаун ле"
       },
-      "spawnlp": {
-        "ru-name": "спавн лп"
-      },
-      "spawnlpe": {
-        "ru-name": "спавн лпе"
-      },
       "spawnve": {
         "ru-name": "порождать пять"
       },
-      "spawnvpe": {
-        "ru-name": "спаунить впе"
-      },
-      "splice": {
-        "ru-name": "сращивание"
-      },
       "st": {
         "ru-name": "ул."
+      },
+      "startfile": {
+        "ru-name": "стартовый файл"
       },
       "stat": {
         "ru-name": "статистика"
       },
       "stat_result": {
         "ru-name": "результат статистики"
-      },
-      "statvfs": {
-        "ru-name": "статвфс"
       },
       "strerror": {
         "ru-name": "ошибка"
@@ -910,26 +350,14 @@
       "symlink": {
         "ru-name": "символическая ссылка"
       },
-      "sync": {
-        "ru-name": "синхронизировать"
-      },
       "sys": {
         "ru-name": "система"
-      },
-      "sysconf": {
-        "ru-name": "системная конфигурация"
-      },
-      "sysconf_names": {
-        "ru-name": "имена системных конфигураций"
       },
       "system": {
         "ru-name": "система"
       },
       "terminal_size": {
         "ru-name": "размер терминала"
-      },
-      "timerfd_create": {
-        "ru-name": "время создания рфд"
       },
       "times": {
         "ru-name": "раз"
@@ -943,38 +371,17 @@
       "umask": {
         "ru-name": "маска"
       },
-      "uname": {
-        "ru-name": "не называть имя"
-      },
       "uname_result": {
         "ru-name": "безымянный результат"
       },
       "unlink": {
         "ru-name": "отсоединить"
       },
-      "unlockpt": {
-        "ru-name": "разблокировать точку"
-      },
-      "unshare": {
-        "ru-name": "не поделиться"
-      },
       "urandom": {
         "ru-name": "случайный"
       },
       "utime": {
         "ru-name": "тебе пора"
-      },
-      "wait": {
-        "ru-name": "ждать"
-      },
-      "wait4": {
-        "ru-name": "подожди4"
-      },
-      "waitid": {
-        "ru-name": "ждать идентификатор"
-      },
-      "waitid_result": {
-        "ru-name": "дождаться результата идентификатора"
       },
       "waitpid": {
         "ru-name": "ожидание"
@@ -987,331 +394,6 @@
       },
       "write": {
         "ru-name": "писать"
-      },
-      "writev": {
-        "ru-name": "писать"
-      }
-    }
-  },
-  "time": {
-    "ru-name": "время",
-    "sources": {
-      "CLOCK_BOOTTIME": {
-        "ru-name": "время загрузки часов"
-      },
-      "CLOCK_MONOTONIC": {
-        "ru-name": "часы м о н о то н и с"
-      },
-      "CLOCK_REALTIME": {
-        "ru-name": "часы в реальном времени"
-      },
-      "CLOCK_TAI": {
-        "ru-name": "часы"
-      },
-      "CLOCK_THREAD_CPUTIME_ID": {
-        "ru-name": "часы"
-      },
-      "altzone": {
-        "ru-name": "альтернативная зона"
-      },
-      "asctime": {
-        "ru-name": "время подъема"
-      },
-      "clock_getres": {
-        "ru-name": "часы получить разрешение"
-      },
-      "clock_gettime": {
-        "ru-name": "часы получить время"
-      },
-      "clock_gettime_ns": {
-        "ru-name": "часы получают время нс"
-      },
-      "daylight": {
-        "ru-name": "дневной свет"
-      },
-      "get_clock_info": {
-        "ru-name": "получить информацию о часах"
-      },
-      "localtime": {
-        "ru-name": "местное время"
-      },
-      "mktime": {
-        "ru-name": "мктайм"
-      },
-      "monotonic": {
-        "ru-name": "монотонный"
-      },
-      "monotonic_ns": {
-        "ru-name": "монотонный нс"
-      },
-      "perf_counter": {
-        "ru-name": "счетчик производительности"
-      },
-      "perf_counter_ns": {
-        "ru-name": "счетчик производительности нс"
-      },
-      "process_time": {
-        "ru-name": "время процесса"
-      },
-      "process_time_ns": {
-        "ru-name": "время процесса нс"
-      },
-      "sleep": {
-        "ru-name": "спать"
-      },
-      "strftime": {
-        "ru-name": "отформатировать время как строку"
-      },
-      "strptime": {
-        "ru-name": "время анализа строки"
-      },
-      "struct_time": {
-        "ru-name": "структурировать время"
-      },
-      "thread_time": {
-        "ru-name": "время потока"
-      },
-      "thread_time_ns": {
-        "ru-name": "время потока нс"
-      },
-      "time": {
-        "ru-name": "время"
-      },
-      "time_ns": {
-        "ru-name": "время нс"
-      },
-      "timezone": {
-        "ru-name": "часовой пояс"
-      },
-      "tzname": {
-        "ru-name": "тцнаме"
-      },
-      "tzset": {
-        "ru-name": "цсет"
-      }
-    }
-  },
-  "sys": {
-    "ru-name": "система",
-    "sources": {
-      "abiflags": {
-        "ru-name": "флаги аби"
-      },
-      "activate_stack_trampoline": {
-        "ru-name": "активировать батут стека"
-      },
-      "addaudithook": {
-        "ru-name": "добавить крючок аудита"
-      },
-      "argv": {
-        "ru-name": "значения аргументов"
-      },
-      "audit": {
-        "ru-name": "аудит"
-      },
-      "base_exec_prefix": {
-        "ru-name": "базовый префикс программы выполнения"
-      },
-      "base_prefix": {
-        "ru-name": "базовый префикс"
-      },
-      "breakpointhook": {
-        "ru-name": "перехват точки останова"
-      },
-      "builtin_module_names": {
-        "ru-name": "встроенные имена модулей"
-      },
-      "byteorder": {
-        "ru-name": "порядок байтов"
-      },
-      "call_tracing": {
-        "ru-name": "отслеживание вызовов"
-      },
-      "copyright": {
-        "ru-name": "авторское право"
-      },
-      "deactivate_stack_trampoline": {
-        "ru-name": "отключить батут стека"
-      },
-      "displayhook": {
-        "ru-name": "дисплей крючок"
-      },
-      "dont_write_bytecode": {
-        "ru-name": "не пиши байт-код"
-      },
-      "exc_info": {
-        "ru-name": "информация об исключении времени выполнения"
-      },
-      "excepthook": {
-        "ru-name": "кроме крючка"
-      },
-      "exception": {
-        "ru-name": "исключение"
-      },
-      "exec_prefix": {
-        "ru-name": "выполнить префикс программы"
-      },
-      "executable": {
-        "ru-name": "исполняемый файл"
-      },
-      "exit": {
-        "ru-name": "выход"
-      },
-      "flags": {
-        "ru-name": "флаги"
-      },
-      "float_info": {
-        "ru-name": "плавающая информация"
-      },
-      "float_repr_style": {
-        "ru-name": "стиль представления строки с плавающей запятой"
-      },
-      "get_asyncgen_hooks": {
-        "ru-name": "получить перехватчики асинхронного поколения"
-      },
-      "get_coroutine_origin_tracking_depth": {
-        "ru-name": "получить глубину отслеживания происхождения сопрограммы"
-      },
-      "getallocatedblocks": {
-        "ru-name": "получить выделенные блоки"
-      },
-      "getdefaultencoding": {
-        "ru-name": "получить кодировку по умолчанию"
-      },
-      "getfilesystemencodeerrors": {
-        "ru-name": "получить ошибки кодирования файловой системы"
-      },
-      "getfilesystemencoding": {
-        "ru-name": "получить кодировку файловой системы"
-      },
-      "getprofile": {
-        "ru-name": "получить профиль"
-      },
-      "getrecursionlimit": {
-        "ru-name": "получить предел рекурсии"
-      },
-      "getrefcount": {
-        "ru-name": "получить рефсчет"
-      },
-      "getsizeof": {
-        "ru-name": "получить размер"
-      },
-      "getswitchinterval": {
-        "ru-name": "получить интервал переключения"
-      },
-      "gettrace": {
-        "ru-name": "получить след"
-      },
-      "getunicodeinternedsize": {
-        "ru-name": "получить внутренний размер юникода"
-      },
-      "hash_info": {
-        "ru-name": "хеш-информация"
-      },
-      "hexversion": {
-        "ru-name": "шестнадцатеричная версия"
-      },
-      "implementation": {
-        "ru-name": "выполнение"
-      },
-      "int_info": {
-        "ru-name": "внутренняя информация"
-      },
-      "intern": {
-        "ru-name": "стажер"
-      },
-      "is_finalizing": {
-        "ru-name": "завершает работу"
-      },
-      "is_stack_trampoline_active": {
-        "ru-name": "активен ли батут стека?"
-      },
-      "maxsize": {
-        "ru-name": "максимальный размер"
-      },
-      "maxunicode": {
-        "ru-name": "максимальный юникод"
-      },
-      "meta_path": {
-        "ru-name": "метапуть"
-      },
-      "modules": {
-        "ru-name": "модули"
-      },
-      "monitoring": {
-        "ru-name": "мониторинг"
-      },
-      "orig_argv": {
-        "ru-name": "исходные значения аргументов"
-      },
-      "path": {
-        "ru-name": "путь"
-      },
-      "path_hooks": {
-        "ru-name": "крючки для пути"
-      },
-      "path_importer_cache": {
-        "ru-name": "кэш импортера путей"
-      },
-      "platform": {
-        "ru-name": "платформа"
-      },
-      "platlibdir": {
-        "ru-name": "платная библиотека"
-      },
-      "prefix": {
-        "ru-name": "префикс"
-      },
-      "set_asyncgen_hooks": {
-        "ru-name": "установить перехватчики асинхронного поколения"
-      },
-      "set_coroutine_origin_tracking_depth": {
-        "ru-name": "установить глубину отслеживания происхождения сопрограммы"
-      },
-      "setprofile": {
-        "ru-name": "установить профиль"
-      },
-      "setrecursionlimit": {
-        "ru-name": "установить предел рекурсии"
-      },
-      "setswitchinterval": {
-        "ru-name": "установить интервал переключения"
-      },
-      "settrace": {
-        "ru-name": "установить трассировку"
-      },
-      "stderr": {
-        "ru-name": "стандартный вывод ошибок"
-      },
-      "stdin": {
-        "ru-name": "стандартный ввод"
-      },
-      "stdout": {
-        "ru-name": "стандартный вывод"
-      },
-      "thread_info": {
-        "ru-name": "информация о теме"
-      },
-      "unraisablehook": {
-        "ru-name": "обработчик неустранимых ошибок"
-      },
-      "version": {
-        "ru-name": "версия"
-      },
-      "version_info": {
-        "ru-name": "информация о версии"
-      },
-      "warnoptions": {
-        "ru-name": "варианты предупреждения"
-      },
-      "api_version": {
-        "ru-name": "версия api"
-      },
-      "getandroidapilevel": {
-        "ru-name": "получить уровень api android"
-      },
-      "pycache_prefix": {
-        "ru-name": "префикс кэша py"
       }
     }
   }
