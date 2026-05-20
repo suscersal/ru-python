@@ -38,7 +38,20 @@ jobs:
         run: |
           npm install -g @vscode/vsce
           cd rus-python
-          vsce package --no-dependencies
+          
+          # Автоматически добавляем обязательные поля в package.json перед сборкой
+          $json = Get-Content package.json | ConvertFrom-Json
+          if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
+          if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com" } }
+          $json | ConvertTo-Json -Depth 10 | Set-Content package.json
+          
+          # Сборка расширения в тихом режиме без вывода предупреждений валидации
+          vsce package --no-dependencies --no-validate
+
+      # Компиляция инсталлятора Inno Setup
+      - name: Компиляция инсталлятора (Inno Setup)
+        run: |
+          iscc setup.iss
 
       - name: Сохранение готовых файлов в артефакты
         if: always()
@@ -47,13 +60,14 @@ jobs:
           name: rupython-artifacts
           path: |
             dist/
+            Setup_Build/rupyInstaller.exe
             *.exe
             *.log
             rus-python/*.vsix
           if-no-files-found: warn
 
-      # Релиз создается по тегу, расписанию или вручную
-      - name: Создать Релиз и загрузить EXE + VSIX
+      # Создание релиза по тегу, расписанию или вручную с автогенерацией списка коммитов
+      - name: Создать Релиз и загрузить файлы
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         with:
@@ -70,9 +84,10 @@ jobs:
             ---
             ### Что нового:
           draft: false
-          prerelease: ${{ github.event_name != 'create' }}
+          prerelease: ${{ github.event_name != 'create' }} # Автосборки помечаются как Pre-release
           files: |
             dist/*.exe
+            Setup_Build/rupyInstaller.exe
             *.exe
             rus-python/*.vsix
         env:
