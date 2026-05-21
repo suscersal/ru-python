@@ -2,7 +2,6 @@ import subprocess
 import os
 import sys
 import platform
-import requests
 import json
 
 RED = "\033[91m"
@@ -24,6 +23,7 @@ def install_if_missing(package):
 # 1. Проверка зависимостей сборщика
 install_if_missing("pyinstaller")
 install_if_missing("requests")
+import requests
 
 def deep_merge(dict1, dict2):
     """Рекурсивно объединяет dict2 в dict1. Возвращает True при изменениях."""
