@@ -2538,5 +2538,589 @@
         "ru-name": "цсет"
       }
     }
+  },
+  "ursina": {
+    "ru-name": "урсина 3d двигатель",
+    "sources": {
+      "AmbientLight": {
+        "ru-name": "рассеянный свет"
+      },
+      "Animation": {
+        "ru-name": "анимация"
+      },
+      "Animator": {
+        "ru-name": "аниматор"
+      },
+      "Audio": {
+        "ru-name": "аудио"
+      },
+      "BitMask32": {
+        "ru-name": "битовая маска32"
+      },
+      "Bounds": {
+        "ru-name": "границы"
+      },
+      "BoxCollider": {
+        "ru-name": "детектор столкновений коробок"
+      },
+      "BoxShape": {
+        "ru-name": "форма коробки"
+      },
+      "BulletBoxShape": {
+        "ru-name": "форма пули"
+      },
+      "BulletCapsuleShape": {
+        "ru-name": "форма капсулы пули"
+      },
+      "BulletDebugNode": {
+        "ru-name": "узел отладки пули"
+      },
+      "BulletPlaneShape": {
+        "ru-name": "форма плоскости пули"
+      },
+      "BulletRigidBodyNode": {
+        "ru-name": "узел твердого тела пули"
+      },
+      "BulletSphereShape": {
+        "ru-name": "форма сферы пули"
+      },
+      "BulletTriangleMesh": {
+        "ru-name": "треугольная сетка пули"
+      },
+      "BulletTriangleMeshShape": {
+        "ru-name": "форма сетки треугольника пули"
+      },
+      "BulletWorld": {
+        "ru-name": "пулевый мир"
+      },
+      "Button": {
+        "ru-name": "кнопка"
+      },
+      "ButtonGroup": {
+        "ru-name": "группа кнопок"
+      },
+      "ButtonList": {
+        "ru-name": "список кнопок"
+      },
+      "Capsule": {
+        "ru-name": "капсула"
+      },
+      "CapsuleCollider": {
+        "ru-name": "детектор столкновений капсул"
+      },
+      "CapsuleShape": {
+        "ru-name": "форма капсулы"
+      },
+      "CheckBox": {
+        "ru-name": "флажок"
+      },
+      "Circle": {
+        "ru-name": "круг"
+      },
+      "Collider": {
+        "ru-name": "детектор столкновений"
+      },
+      "CollisionBox": {
+        "ru-name": "поле столкновений"
+      },
+      "CollisionCapsule": {
+        "ru-name": "столкновительная капсула"
+      },
+      "CollisionNode": {
+        "ru-name": "узел столкновения"
+      },
+      "CollisionPolygon": {
+        "ru-name": "многоугольник столкновения"
+      },
+      "CollisionSphere": {
+        "ru-name": "сфера столкновения"
+      },
+      "Color": {
+        "ru-name": "цвет"
+      },
+      "Cone": {
+        "ru-name": "конус"
+      },
+      "ContentTypes": {
+        "ru-name": "типы контента"
+      },
+      "Cube": {
+        "ru-name": "куб"
+      },
+      "Cursor": {
+        "ru-name": "курсор"
+      },
+      "Cylinder": {
+        "ru-name": "цилиндр"
+      },
+      "Default": {
+        "ru-name": "по умолчанию"
+      },
+      "DirectionalLight": {
+        "ru-name": "направленный свет"
+      },
+      "Draggable": {
+        "ru-name": "перетаскиваемый"
+      },
+      "EditorCamera": {
+        "ru-name": "редактор камеры"
+      },
+      "Empty": {
+        "ru-name": "пустой"
+      },
+      "Entity": {
+        "ru-name": "сущность"
+      },
+      "FrameAnimation3d": {
+        "ru-name": "кадр анимация 3d"
+      },
+      "Func": {
+        "ru-name": "исполняемая функция"
+      },
+      "Grid": {
+        "ru-name": "сетка"
+      },
+      "InputField": {
+        "ru-name": "поле ввода"
+      },
+      "Keys": {
+        "ru-name": "ключи"
+      },
+      "LVector3f": {
+        "ru-name": "л вектор 3f"
+      },
+      "Light": {
+        "ru-name": "свет"
+      },
+      "LoopingList": {
+        "ru-name": "циклический список"
+      },
+      "Mat3": {
+        "ru-name": "мат3"
+      },
+      "Mat4": {
+        "ru-name": "мат4"
+      },
+      "Mesh": {
+        "ru-name": "сетка"
+      },
+      "MeshCollider": {
+        "ru-name": "детектор столкновений сетки"
+      },
+      "MeshModes": {
+        "ru-name": "режимы сетки"
+      },
+      "MeshShape": {
+        "ru-name": "форма сетки"
+      },
+      "NodePath": {
+        "ru-name": "путь к узлу"
+      },
+      "PandaAmbientLight": {
+        "ru-name": "панда окружающий свет"
+      },
+      "PandaDirectionalLight": {
+        "ru-name": "панда направленного света"
+      },
+      "PandaPointLight": {
+        "ru-name": "панда точечный свет"
+      },
+      "PandaSpotLight": {
+        "ru-name": "панда точечный светильник"
+      },
+      "Panel": {
+        "ru-name": "панель"
+      },
+      "Path": {
+        "ru-name": "путь"
+      },
+      "PhysicsBody": {
+        "ru-name": "физика тела"
+      },
+      "Pipe": {
+        "ru-name": "трубка"
+      },
+      "Plane": {
+        "ru-name": "самолет"
+      },
+      "PlaneShape": {
+        "ru-name": "форма плоскости"
+      },
+      "PointLight": {
+        "ru-name": "точечный свет"
+      },
+      "PostInitCaller": {
+        "ru-name": "пост-инициализация вызывающего объекта"
+      },
+      "Quad": {
+        "ru-name": "четверной"
+      },
+      "Quat": {
+        "ru-name": "кват"
+      },
+      "RigidBody": {
+        "ru-name": "твердое тело"
+      },
+      "Scrollable": {
+        "ru-name": "прокручиваемый"
+      },
+      "Sequence": {
+        "ru-name": "последовательность"
+      },
+      "Shader": {
+        "ru-name": "шейдер"
+      },
+      "Sky": {
+        "ru-name": "небо"
+      },
+      "Slider": {
+        "ru-name": "ползунок"
+      },
+      "SmoothFollow": {
+        "ru-name": "плавное следование"
+      },
+      "Space": {
+        "ru-name": "космос"
+      },
+      "SphereCollider": {
+        "ru-name": "детектор столкновений сфер"
+      },
+      "SphereShape": {
+        "ru-name": "форма сферы"
+      },
+      "SpotLight": {
+        "ru-name": "точечный свет"
+      },
+      "Sprite": {
+        "ru-name": "спрайт"
+      },
+      "SpriteSheetAnimation": {
+        "ru-name": "анимация листа спрайтов"
+      },
+      "Terrain": {
+        "ru-name": "местность"
+      },
+      "Text": {
+        "ru-name": "текст"
+      },
+      "TextField": {
+        "ru-name": "текстовое поле"
+      },
+      "Texture": {
+        "ru-name": "текстура"
+      },
+      "ThinSlider": {
+        "ru-name": "тонкий ползунок"
+      },
+      "Tooltip": {
+        "ru-name": "подсказка"
+      },
+      "TransformState": {
+        "ru-name": "трансформировать состояние"
+      },
+      "Ursina": {
+        "ru-name": "главное окно игры"
+      },
+      "Vec2": {
+        "ru-name": "вектор 2d"
+      },
+      "Vec3": {
+        "ru-name": "вектор 3d"
+      },
+      "Vec4": {
+        "ru-name": "вектор 4d"
+      },
+      "Wait": {
+        "ru-name": "ждать"
+      },
+      "WindowPanel": {
+        "ru-name": "игровая оконная панель"
+      },
+      "XUp": {
+        "ru-name": "х вверх"
+      },
+      "YUp": {
+        "ru-name": "ага"
+      },
+      "acos": {
+        "ru-name": "арккосинус"
+      },
+      "after": {
+        "ru-name": "после"
+      },
+      "application": {
+        "ru-name": "приложение"
+      },
+      "audio": {
+        "ru-name": "аудио"
+      },
+      "boxcast": {
+        "ru-name": "коробка литая"
+      },
+      "camel_to_snake": {
+        "ru-name": "верблюд к змее"
+      },
+      "camera": {
+        "ru-name": "камера"
+      },
+      "ceil": {
+        "ru-name": "округлить потолок"
+      },
+      "chunk_list": {
+        "ru-name": "список фрагментов"
+      },
+      "clamp": {
+        "ru-name": "зажим"
+      },
+      "collider": {
+        "ru-name": "детектор столкновений"
+      },
+      "color": {
+        "ru-name": "цвет"
+      },
+      "copy": {
+        "ru-name": "копировать"
+      },
+      "cos": {
+        "ru-name": "косинус"
+      },
+      "curve": {
+        "ru-name": "изгиб"
+      },
+      "dedent": {
+        "ru-name": "де дент"
+      },
+      "deepcopy": {
+        "ru-name": "глубокая копия"
+      },
+      "destroy": {
+        "ru-name": "разрушать"
+      },
+      "distance": {
+        "ru-name": "расстояние"
+      },
+      "distance_2d": {
+        "ru-name": "расстояние 2d"
+      },
+      "distance_xz": {
+        "ru-name": "расстояние хз"
+      },
+      "duplicate": {
+        "ru-name": "дубликат"
+      },
+      "entity": {
+        "ru-name": "сущность"
+      },
+      "enumerate_2d": {
+        "ru-name": "перечислить 2d"
+      },
+      "every": {
+        "ru-name": "каждый"
+      },
+      "find_sequence": {
+        "ru-name": "найти последовательность"
+      },
+      "flatten_completely": {
+        "ru-name": "полностью сгладить"
+      },
+      "flatten_list": {
+        "ru-name": "сгладить список"
+      },
+      "floor": {
+        "ru-name": "круглый пол вниз"
+      },
+      "generate_properties_for_class": {
+        "ru-name": "генерировать свойства для класса"
+      },
+      "grid_layout": {
+        "ru-name": "макет сетки"
+      },
+      "held_keys": {
+        "ru-name": "ключи"
+      },
+      "hit_info": {
+        "ru-name": "информация о хите"
+      },
+      "hsv": {
+        "ru-name": "оттенок насыщенность цвет"
+      },
+      "import_all_classes": {
+        "ru-name": "импортировать все классы"
+      },
+      "inf": {
+        "ru-name": "бесконечность"
+      },
+      "input_handler": {
+        "ru-name": "обработчик ввода"
+      },
+      "internal_sum": {
+        "ru-name": "внутренняя расчетная сумма"
+      },
+      "invoke": {
+        "ru-name": "вызывать"
+      },
+      "lerp": {
+        "ru-name": "я ошибаюсь"
+      },
+      "lerp_angle": {
+        "ru-name": "л. угол э.п.м."
+      },
+      "lights": {
+        "ru-name": "огни"
+      },
+      "load_blender_scene": {
+        "ru-name": "прочитать из сцены файла в блендере"
+      },
+      "load_model": {
+        "ru-name": "читать из файловой модели"
+      },
+      "load_texture": {
+        "ru-name": "читать из текстуры файла"
+      },
+      "main": {
+        "ru-name": "основной"
+      },
+      "make_gradient": {
+        "ru-name": "градиент"
+      },
+      "math": {
+        "ru-name": "математика"
+      },
+      "mesh": {
+        "ru-name": "сетка"
+      },
+      "mesh_importer": {
+        "ru-name": "импортер сетки"
+      },
+      "models": {
+        "ru-name": "модели"
+      },
+      "mouse": {
+        "ru-name": "мышь"
+      },
+      "multireplace": {
+        "ru-name": "множественная замена"
+      },
+      "os": {
+        "ru-name": "операционная система"
+      },
+      "pi": {
+        "ru-name": "пи"
+      },
+      "prefabs": {
+        "ru-name": "префабы"
+      },
+      "print_info": {
+        "ru-name": "распечатать информацию"
+      },
+      "print_on_screen": {
+        "ru-name": "распечатать на экране"
+      },
+      "print_warning": {
+        "ru-name": "распечатать предупреждение"
+      },
+      "printvar": {
+        "ru-name": "распечатать вар"
+      },
+      "random": {
+        "ru-name": "случайный"
+      },
+      "raycast": {
+        "ru-name": "лучевой приброс"
+      },
+      "re": {
+        "ru-name": "регулярное выражение"
+      },
+      "rgb": {
+        "ru-name": "красный зеленый синий цвет"
+      },
+      "rigidbody": {
+        "ru-name": "твердое тело"
+      },
+      "rotate_around_point_2d": {
+        "ru-name": "вращаться вокруг точки 2d"
+      },
+      "round_to_closest": {
+        "ru-name": "округлить до ближайшего"
+      },
+      "sample_gradient": {
+        "ru-name": "образец градиента"
+      },
+      "scene": {
+        "ru-name": "сцена"
+      },
+      "scripts": {
+        "ru-name": "сценарии"
+      },
+      "sequence": {
+        "ru-name": "последовательность"
+      },
+      "shader": {
+        "ru-name": "шейдер"
+      },
+      "sin": {
+        "ru-name": "синус"
+      },
+      "size_list": {
+        "ru-name": "список размеров"
+      },
+      "slerp": {
+        "ru-name": "сл эрп"
+      },
+      "snake_to_camel": {
+        "ru-name": "змея к верблюду"
+      },
+      "sqrt": {
+        "ru-name": "вычислить квадратный корень"
+      },
+      "string_utilities": {
+        "ru-name": "строковые утилиты"
+      },
+      "sum": {
+        "ru-name": "рассчитать сумму"
+      },
+      "sys": {
+        "ru-name": "система"
+      },
+      "terraincast": {
+        "ru-name": "рельеф местности"
+      },
+      "text": {
+        "ru-name": "текст"
+      },
+      "texture": {
+        "ru-name": "текстура"
+      },
+      "texture_importer": {
+        "ru-name": "импортер текстур"
+      },
+      "time": {
+        "ru-name": "время"
+      },
+      "traceback": {
+        "ru-name": "обратная трассировка"
+      },
+      "ursinamath": {
+        "ru-name": "урсина математика"
+      },
+      "ursinastuff": {
+        "ru-name": "медвежья штука"
+      },
+      "vec2": {
+        "ru-name": "вектор 2d"
+      },
+      "vec3": {
+        "ru-name": "вектор 3d"
+      },
+      "vec4": {
+        "ru-name": "вектор 4d"
+      },
+      "window": {
+        "ru-name": "окно игры"
+      },
+      "world_position_to_screen_position": {
+        "ru-name": "мировая позиция на экране"
+      }
+    }
   }
 }
