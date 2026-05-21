@@ -34,7 +34,7 @@ file_path = 'modules.json'
 
 
 def has_english_letters(text):
-    exceptions = {'api', 'android','id', 'url', 'json', 'py', 'git', 'termux'}
+    exceptions = {'api', 'android','id', 'url', 'json', 'py', 'git', 'termux','int','max'}
     
     words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
     
@@ -125,7 +125,7 @@ def prepare_technical_text(text):
         "cwd": ["current", "working", "directory"],
         "getcwd": ["get", "current", "working", "directory"],
         "chdir": ["change", "working", "directory"],
-        "environ": ["environment", "variables"],
+        "environ": ["environment",  "variables"],
         "getenv": ["get", "environment", "variable"],
         "putenv": ["set", "environment", "variable"],
         "exec": ["execute", "program"],
