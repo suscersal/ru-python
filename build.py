@@ -4,15 +4,14 @@ import sys
 import platform
 import requests
 import json
-import re
 
 RED = "\033[91m"
 GREEN = "\033[92m"
 YELLOW = "\033[93m"
 RESET = "\033[0m"
 
-# ИСПРАВЛЕНО: Прямая ссылка на сырой JSON-файл (Raw контент)
-GITHUB_RAW_URL = "https://github.com/suscersal/ru-python/blob/main/rus-python/modules.json"
+# Самый стабильный CDN-адрес для скачивания файлов из GitHub без блокировок DNS
+GITHUB_JSON_URL = "https://raw.githubusercontent.com/suscersal/ru-python/refs/heads/main/rus-python/modules.json"
 
 def install_if_missing(package):
     try:
@@ -26,7 +25,10 @@ def install_if_missing(package):
 install_if_missing("pyinstaller")
 
 def deep_merge(dict1, dict2):
-    """Рекурсивно объединяет dict2 в dict1. Возвращает True при изменениях."""
+    """
+    Рекурсивно объединяет dict2 (GitHub) в dict1 (Локальный).
+    Возвращает True, если появились новые ключи или переводы.
+    """
     is_updated = False
     for key, value in dict2.items():
         if key not in dict1:
@@ -37,69 +39,41 @@ def deep_merge(dict1, dict2):
                 is_updated = True
     return is_updated
 
-def clean_and_parse_json(raw_text, source_name=""):
-    """Очищает текст от возможных маркеров конфликтов Git и парсит JSON."""
-    cleaned = re.sub(r'<<<<<<< HEAD.*?=======', '', raw_text, flags=re.DOTALL)
-    cleaned = re.sub(r'>>>>>>> [a-f0-9]+', '', cleaned)
-    try:
-        return json.loads(cleaned)
-    except Exception as e:
-        print(f"{RED}--- Ошибка структуры JSON в {source_name}: {e} ---{RESET}")
-        return None
-
-# Функция умного слияния локального файла и данных с GitHub
+# Функция синхронизации модулей
 def sync_modules_with_github(target_path):
     print(f"{YELLOW}--- Синхронизация модулей с GitHub... ---{RESET}")
     
     local_data = {}
-    local_broken = False
     
-    # Чтение локального файла
+    # 1. Читаем локальный файл, если он есть
     if os.path.exists(target_path):
         try:
             with open(target_path, "r", encoding="utf-8") as f:
-                local_raw = f.read()
-            local_data = json.loads(local_raw)
+                local_data = json.load(f)
         except Exception as e:
-            print(f"{RED}--- Локальный {target_path} поврежден ({e}). Восстановление... ---{RESET}")
-            parsed = clean_and_parse_json(local_raw, "локальном файле")
-            if parsed is not None:
-                local_data = parsed
-                print(f"{GREEN}--- Локальный файл успешно реанимирован ---{RESET}")
-            else:
-                local_broken = True
+            print(f"{RED}--- Ошибка чтения локального файла: {e}. Пересоздаем... ---{RESET}")
 
-    # Скачивание с GitHub
-    github_data = None
+    # 2. Загружаем свежие переводы из репозитория
     try:
-        response = requests.get(GITHUB_RAW_URL, timeout=10)
+        headers = {"User-Agent": "Mozilla/5.0"}
+        response = requests.get(GITHUB_JSON_URL, headers=headers, timeout=10)
+        
         if response.status_code == 200:
-            github_data = clean_and_parse_json(response.text, "GitHub")
+            github_data = response.json()
+            
+            # Скрещиваем локальный файл и данные с гитхаба
+            if deep_merge(local_data, github_data) or not os.path.exists(target_path):
+                with open(target_path, "w", encoding="utf-8") as f:
+                    json.dump(local_data, f, ensure_ascii=False, indent=2)
+                print(f"{GREEN}--- Файл переводов успешно обновлен и синхронизирован ---{RESET}")
+            else:
+                print(f"{GREEN}--- Локальный файл уже содержит все актуальные переводы ---{RESET}")
         else:
-            print(f"{RED}--- Не удалось скачать. Статус GitHub: {response.status_code} ---{RESET}")
+            print(f"{RED}--- Не удалось получить данные. Статус сервера: {response.status_code} ---{RESET}")
+            print(f"{YELLOW}--- Продолжаем сборку на локальной копии ---{RESET}")
+            
     except Exception as e:
-        print(f"{RED}--- Ошибка сети при обращении к GitHub: {e} ---{RESET}")
-
-    # Логика обработки результатов
-    if github_data is None and (local_broken or not local_data):
-        print(f"{RED}--- Нет доступных источников данных. Создание базового шаблона ---{RESET}")
-        local_data = {"os": {"ru-name": "ос", "sources": {}}}
-        with open(target_path, "w", encoding="utf-8") as f:
-            json.dump(local_data, f, ensure_ascii=False, indent=2)
-        return
-
-    if github_data:
-        if deep_merge(local_data, github_data) or local_broken:
-            with open(target_path, "w", encoding="utf-8") as f:
-                json.dump(local_data, f, ensure_ascii=False, indent=2)
-            print(f"{GREEN}--- Данные успешно объединены и сохранены в {target_path} ---{RESET}")
-        else:
-            print(f"{GREEN}--- Локальный файл содержит актуальную версию переводов ---{RESET}")
-    else:
-        if not local_broken:
-            with open(target_path, "w", encoding="utf-8") as f:
-                json.dump(local_data, f, ensure_ascii=False, indent=2)
-            print(f"{YELLOW}--- Работа в режиме офлайн на локальной копии ---{RESET}")
+        print(f"{RED}--- Сеть недоступна ({e}). Продолжаем сборку на локальной копии ---{RESET}")
 
 # 2. Поиск PyInstaller
 scripts_path = os.path.join(os.path.dirname(sys.executable), "Scripts")
@@ -114,10 +88,10 @@ exe_name = "rupython"
 icon_path = "icon.ico"
 module_file = "modules.json"
 
-# Запуск синхронизации перед компиляцией
+# Запускаем обновление перед упаковкой в EXE
 sync_modules_with_github(module_file)
 
-# Base аргументы PyInstaller
+# Базовые аргументы компилятора
 args = [
     pyinstaller,
     "--onefile",
@@ -149,7 +123,7 @@ def test_run():
     else:
         print(f"{RED}--- Ошибка: Исполняемый файл не найден в папке dist ---{RESET}")
         
-# 4. Сборка
+# 4. Запуск сборщика
 print(f"{GREEN}--- Начинаю сборку {exe_name} ---{RESET}")
 try:
     result = subprocess.run(args)

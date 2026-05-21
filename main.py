@@ -4,7 +4,6 @@ import json
 import re
 import traceback
 import shutil
-import os
 import pathlib
 import requests
 
@@ -19,38 +18,88 @@ YELLOW = "\033[93m"
 RESET = "\033[0m"
 
 
+GITHUB_URL = "https://raw.githubusercontent.com/suscersal/ru-python/refs/heads/main/rus-python/modules.json"
+
 def get_resource_path(relative_path):
     """Возвращает абсолютный путь к ресурсу (работает для исходного кода и для PyInstaller)"""
     if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
-        # Если приложение запущено как скомпилированный .exe
-        base_path = sys._MEIPASS
-    else:
-        # Если приложение запущено как обычный .py скрипт
-        base_path = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
+
+def deep_merge(dict1, dict2):
+    """Рекурсивно объединяет dict2 в dict1. Возвращает True при изменениях."""
+    is_updated = False
+    for key, value in dict2.items():
+        if key not in dict1:
+            dict1[key] = value
+            is_updated = True
+        elif isinstance(dict1[key], dict) and isinstance(value, dict):
+            if deep_merge(dict1[key], value):
+                is_updated = True
+    return is_updated
+
+def sync_with_github(local_path):
+    """Сверяет локальный JSON с GitHub и добавляет новые модули/переводы"""
+    print("--- Проверка обновлений модулей на GitHub... ---")
+    try:
+        # Читаем то, что уже лежит рядом с .exe
+        with open(local_path, "r", encoding="utf-8") as f:
+            local_data = json.load(f)
+            
+        headers = {"User-Agent": "Mozilla/5.0"}
+        response = requests.get(GITHUB_URL, headers=headers, timeout=5)
         
-    return os.path.join(base_path, relative_path)
-
-
-
+        if response.status_code == 200:
+            github_data = response.json()
+            # Умное слияние, чтобы не затереть локальные правки пользователя
+            if deep_merge(local_data, github_data):
+                with open(local_path, "w", encoding="utf-8") as f:
+                    json.dump(local_data, f, ensure_ascii=False, indent=2)
+                print("--- Файл modules.json успешно обновлен с GitHub ---")
+            else:
+                print("--- Локальный файл уже содержит все переводы с GitHub ---")
+        else:
+            print(f"--- GitHub вернул статус: {response.status_code}. Работаем на локальном файле ---")
+    except Exception as e:
+        print(f"--- Не удалось обновиться с GitHub ({e}). Работаем на локальном файле ---")
 
 def load_config():
-    local_json = get_resource_path("modules.json")
-    # print(local_json)
-    source_json = os.path.join(os.path.dirname(__file__), 'rus-python', 'modules.json')
-
-    # 1. Синхронизация: если в папке исходников есть файл, копируем его к себе
-    if os.path.exists(source_json):
-        try:
-            print('файл modules.json обновлён')
-            shutil.copy2(source_json, local_json)
-        except Exception as e:
-            print(f"# Ошибка при копировании: {e}")
-
-    # 2. Загрузка (если файла нет совсем, создаем пустой словарь)
-    if os.path.exists(local_json):
-        with open(local_json, 'r', encoding='utf-8') as f:
+    # Проверяем, запущен ли скрипт как скомпилированный EXE
+    if getattr(sys, 'frozen', False):
+        # Путь к файлу РЯДОМ с запущенным .exe
+        exe_dir = os.path.dirname(sys.executable)
+        external_json = os.path.join(exe_dir, "modules.json")
+        
+        # 1. Если файла НЕТ рядом с .exe -> копируем его из вшитых ресурсов (_MEIPASS)
+        if not os.path.exists(external_json):
+            embedded_json = get_resource_path("modules.json")
+            if os.path.exists(embedded_json):
+                try:
+                    shutil.copy2(embedded_json, external_json)
+                    print("--- Файл modules.json извлечен из EXE и сохранен рядом ---")
+                except Exception as e:
+                    print(f"# Ошибка при извлечении вшитого файла: {e}")
+                    # Если скопировать не удалось (например, нет прав записи), читаем прямо из EXE
+                    external_json = embedded_json
+            else:
+                return {} # Если и внутри EXE файла нет
+                
+        # 2. Если файл ЕСТЬ рядом с .exe -> сверяем его с GitHub
+        else:
+            sync_with_github(external_json)
+            
+        # Загружаем итоговый файл
+        with open(external_json, "r", encoding="utf-8") as f:
             return json.load(f)
-    return {}
+            
+    # Если запущен как обычный .py скрипт
+    else:
+        # Ищем строго в папке исходников rus-python/modules.json
+        source_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rus-python', 'modules.json')
+        if os.path.exists(source_json):
+            with open(source_json, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return {}
 
 MOD_CONFIG = load_config()
 

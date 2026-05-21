@@ -210,7 +210,8 @@ def prepare_technical_text(text):
         "tbl": ["data", "table"],
         "col": ["table", "column"],
         "impl": ["implementation"],
-	"unraisablehook": ["unraisable","hook"]
+	    "unraisablehook": ["unraisable","hook"],
+        "abc": [ "Abstract", "Base", "Classes"]
 
     }
     
