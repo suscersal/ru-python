@@ -67,9 +67,11 @@ def prepare_technical_text(text):
     # 1. Очистка спецсимволов и разделение snake_case
     text = text.replace('_', ' ').replace('-', ' ').replace('.', ' ')
     
-    # 2. Разделение CamelCase (например, IsNaN -> Is Na N)
+    # 2. Правильное разделение CamelCase (например, IsNaN -> Is Na N)
     text = re.sub(r'(?<!^)(?=[A-Z])', ' ', text)
     
+    # Получаем исходные слова для проверки их оригинального регистра
+    original_words = text.split()
     words = text.lower().split()
     segmented_words = []
     
@@ -114,6 +116,33 @@ def prepare_technical_text(text):
         "cumprod": ["cumulative", "product"],
         "cumsum": ["cumulative", "sum"],
         "diff": ["calculate", "difference"],
+
+         # --- ИГРОВОЙ ДВИЖОК URSINA ENGINE (ursina) ---
+        "pos": ["position"],
+        "rot": ["rotation"],
+        "rotx": ["rotation", "x", "axis"],
+        "roty": ["rotation", "y", "axis"],
+        "rotz": ["rotation", "z", "axis"],
+        "scale": ["scale", "size"],
+        "scalex": ["scale", "x", "axis"],
+        "scaley": ["scale", "y", "axis"],
+        "scalez": ["scale", "z", "axis"],
+        "cam": ["camera"],
+        "col": ["collider"],    
+        "collider": ["collision", "detector"],
+        "tex": ["texture", "image"],
+        "anim": ["animation"],
+        "rgb": ["red", "green", "blue", "color"],
+        "rgba": ["red", "green", "blue", "alpha", "color"],
+        "hsv": ["hue", "saturation", "value", "color"],
+        "vec2": ["vector", "2d"],
+        "vec3": ["vector", "3d"],
+        "vec4": ["vector", "4d"],
+        "dt": ["delta", "time"], 
+        "fps": ["frames", "per", "second"],
+        "sfx": ["sound", "effects"],
+        "bgm": ["background", "music"],
+        "window": ["game", "window"],
         
         # --- ФАЙЛОВАЯ СИСТЕМА И ОС (os, sys, shutil, pathlib) ---
         "os": ["operating","system"],
@@ -211,12 +240,29 @@ def prepare_technical_text(text):
         "col": ["table", "column"],
         "impl": ["implementation"],
 	    "unraisablehook": ["unraisable","hook"],
-        "abc": [ "Abstract", "Base", "Classes"]
+        "abc": [ "Abstract", "Base", "Classes"],
+        "box": ["box"],
+        "sphere": ["sphere"],
+        "capsule": ["capsule"],
+        "mesh": ["mesh"],
+        "collider": ["collider"],
+
 
     }
     
-    for w in words:
-        if w in abbreviations:
+    for i, w in enumerate(words):
+        # Проверяем оригинальное слово на заглавную букву
+        orig_word = original_words[i]
+        
+        if w == "ursina":
+            if orig_word[0].isupper():
+                # Если с большой буквы (Ursina) -> главное окно
+                segmented_words.extend(["game", "main", "window"])
+            else:
+                # Если с маленькой буквы (ursina) -> сам движок (не дробим через wordsegment)
+                segmented_words.extend(["ursina", "3d", "engine"])
+                
+        elif w in abbreviations:
             segmented_words.extend(abbreviations[w])
         else:
             seg = wordsegment.segment(w)
