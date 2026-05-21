@@ -1,6 +1,6 @@
 {
   "os": {
-    "ru-name": "ос",
+    "ru-name": "операционная система",
     "sources": {
       "DirEntry": {
         "ru-name": "запись в каталоге"
@@ -400,8 +400,6 @@
   "time": {
     "ru-name": "время",
     "sources": {
-<<<<<<< HEAD
-=======
       "CLOCK_BOOTTIME": {
         "ru-name": "время загрузки часов"
       },
@@ -417,15 +415,12 @@
       "CLOCK_THREAD_CPUTIME_ID": {
         "ru-name": "часы"
       },
->>>>>>> a585b29cb29748383c958998c07b01ece3fe6dcd
       "altzone": {
         "ru-name": "альтернативная зона"
       },
       "asctime": {
         "ru-name": "время подъема"
       },
-<<<<<<< HEAD
-=======
       "clock_getres": {
         "ru-name": "часы получить разрешение"
       },
@@ -435,7 +430,6 @@
       "clock_gettime_ns": {
         "ru-name": "часы получают время нс"
       },
->>>>>>> a585b29cb29748383c958998c07b01ece3fe6dcd
       "daylight": {
         "ru-name": "дневной свет"
       },
@@ -495,7 +489,6 @@
       },
       "tzname": {
         "ru-name": "тцнаме"
-<<<<<<< HEAD
       }
     }
   },
@@ -2540,11 +2533,9 @@
       },
       "which": {
         "ru-name": "который"
-=======
       },
       "tzset": {
         "ru-name": "цсет"
->>>>>>> a585b29cb29748383c958998c07b01ece3fe6dcd
       }
     }
   }

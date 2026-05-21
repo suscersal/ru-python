@@ -116,6 +116,7 @@ def prepare_technical_text(text):
         "diff": ["calculate", "difference"],
         
         # --- ФАЙЛОВАЯ СИСТЕМА И ОС (os, sys, shutil, pathlib) ---
+        "os": ["operating","system"],
         "mkdir": ["make", "directory"],
         "makedirs": ["make", "directories", "recursively"],
         "rmdir": ["remove", "directory"],
@@ -306,7 +307,7 @@ need_to_save = False
 if mode == "1":
     module = input('Название модуля: ').strip()
     if module not in data:
-        data[module] = {"ru-name": module, "sources": {}}
+        data[module] = {"ru-name": translate_as_action( module_name,translator), "sources": {}}
         need_to_save = True
 
     func = input('Какому слову/команде дать перевод (англ): ').strip()
