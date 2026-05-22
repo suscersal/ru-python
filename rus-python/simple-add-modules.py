@@ -26,6 +26,9 @@ for module_name, pip_name in required_libraries.items():
             print(f"Пожалуйста, установите ее вручную: pip install {pip_name}")
             sys.exit(1)
 
+def install_module(name):
+	subprocess.check_call([sys.executable, "-m", "pip", "install", name])
+
 from deep_translator import GoogleTranslator
 import wordsegment
 wordsegment.load()  # Загрузка словаря для разделения слов
@@ -239,7 +242,7 @@ def prepare_technical_text(text):
         "tbl": ["data", "table"],
         "col": ["table", "column"],
         "impl": ["implementation"],
-	    "unraisablehook": ["unraisable","hook"],
+	"unraisablehook": ["unraisable","hook"],
         "abc": [ "Abstract", "Base", "Classes"],
         "box": ["box"],
         "sphere": ["sphere"],
@@ -395,14 +398,34 @@ if mode == "1":
             need_to_save = True
             print(f"Успешно сохранено описание: {func} -> {final_translation}")
 
-elif mode == "2":
-    module_name = input('Какой Python-модуль автоматически перевести в развернутые фразы?: ').strip()
+if mode == "2":
+    # Словарь соответствий: "Имя для pip": "Имя для import"
+    MODULE_MAPPING = {
+        "pillow": "PIL",
+        "scikit-learn": "sklearn",
+        "beautifulsoup4": "bs4",
+        "opencv-python": "cv2"
+    }
+
+    raw_module_name = input('Какой Python-модуль автоматически перевести в развернутые фразы?: ').strip()
+    
+    # Приводим к нижнему регистру для надежной проверки в словаре
+    module_name = MODULE_MAPPING.get(raw_module_name.lower(), raw_module_name)
+
     try:
         imported_module = importlib.import_module(module_name)
     except ModuleNotFoundError:
         print(f"Ошибка: Модуль '{module_name}' не найден в системе.")
-        sys.exit(1)
-
+        print("Начинаю установку...")
+        try:
+            # Устанавливаем по исходному имени (например, Pillow)
+            install_module(raw_module_name) 
+            # Импортируем по правильному имени (например, PIL)
+            imported_module = importlib.import_module(module_name)
+        except Exception as e:
+            print(f"Ошибка установки модуля {raw_module_name}. Ошибка: {e}")
+            # Прерываем выполнение режима, так как модуль не доступен
+        
     if module_name not in data:
         data[module_name] = {"ru-name": translate_as_action( module_name,translator), "sources": {}}
 
