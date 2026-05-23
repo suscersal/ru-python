@@ -2,13 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Запустить расширение",
+            "name": "Запустить расширение (корень репозитория)",
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
-            "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}"
-            ]
+            "extensionDevelopmentPath": "${workspaceFolder}/rus-python"
+        },
+        {
+            "name": "Запустить расширение (папка rus-python)",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "extensionDevelopmentPath": "${workspaceFolder}"
         }
     ]
 }

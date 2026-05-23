@@ -423,6 +423,7 @@ def run_rupy(input_file):
 if __name__ == "__main__":
     import sys
     
+    #проверка на запуск .exe
     if len(sys.argv) > 1:
         target_file = sys.argv[1]
     else:

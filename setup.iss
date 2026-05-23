@@ -19,7 +19,7 @@ OutputBaseFilename=rupyInstaller
 ChangesAssociations=yes
 SetupMutex={#MyAppId}_Mutex
 
-; Установка строго БЕЗ обязательных прав администратора
+; Установка строго БЕЗ обязательных прав администратора (в реестр пользователя HKCU)
 PrivilegesRequired=none
 PrivilegesRequiredOverridesAllowed=dialog
 
@@ -39,16 +39,18 @@ Name: "startmenu"; Description: "Создать папку со ссылками
 Name: "path"; Description: "Добавить RuPy в локальную переменную PATH пользователя"; Types: full custom
 Name: "context"; Description: "Добавить пункты в контекстное меню файлов .rupy"; Types: full custom
 
-; --- Секция создания ярлыков в меню Пуск ---
-; Ярлыки создаются только если выбрана галочка компонента "startmenu"
+[Files]
+; Укажите путь к скомпилированным файлам вашего проекта
+Source: ".\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main
+
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: startmenu
 Name: "{group}\Посетить GitHub проекта"; Filename: "https://github.com"; Components: startmenu
 Name: "{group}\Удалить {#MyAppName}"; Filename: "{uninstallexe}"; Components: startmenu
 
 [Registry]
-; Запись в PATH
-Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};{app}"; Check: NeedsAddPath; Components: path
+; Запись в PATH пользователя с флагом сохранения оригинального типа строки
+Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; ValueData: "{code:GetCleanPath}"; Check: NeedsAddPath; Components: path; Flags: preservestringtype
 
 ; --- Ассоциация файлов и Контекстное меню ---
 Root: HKA; Subkey: "Software\Classes\.rupy"; ValueType: string; ValueName: ""; ValueData: "RuPy.File"; Flags: uninsdeletevalue
@@ -64,6 +66,10 @@ Root: HKA; Subkey: "Software\Classes\RuPy.File\shell\EditInVSCode"; ValueType: s
 Root: HKA; Subkey: "Software\Classes\RuPy.File\shell\EditInVSCode"; ValueType: string; ValueName: "Icon"; ValueData: """{localappdata}\Programs\Microsoft VS Code\Code.exe"""; Components: context; Flags: uninsdeletevalue
 Root: HKA; Subkey: "Software\Classes\RuPy.File\shell\EditInVSCode\command"; ValueType: string; ValueName: ""; ValueData: """{localappdata}\Programs\Microsoft VS Code\Code.exe"" ""%1"""; Components: context; Flags: uninsdeletevalue
 
+
+// ==========================================
+// СЕКЦИЯ КОДА С ПРАВИЛЬНЫМ ПОРЯДКОМ ФУНКЦИЙ
+// ==========================================
 [Code]
 #ifdef UNICODE
   #define AW "W"
@@ -79,22 +85,49 @@ var
   GitHubCheckBox: TNewCheckBox;
   OpenGitHubOnClose: Boolean;
 
-// Импорт функции WinAPI для обновления окружения
+// Импорт функции WinAPI для обновления окружения проводника Windows
 function SendMessageTimeout(hWnd: HWND; Msg: UINT; wParam: Longint; lParam: String; fuFlags: UINT; uTimeout: UINT; out lpdwResult: DWORD): LongInt;
   external 'SendMessageTimeout{#AW}@user32.dll stdcall';
 
+// 1. Проверка необходимости добавления пути в реестр
 function NeedsAddPath: Boolean;
 var
   OrigPath: String;
+  ParamPath: String;
 begin
   if not RegQueryStringValue(HKEY_CURRENT_USER, 'Environment', 'Path', OrigPath) then
   begin
     Result := True;
     Exit;
   end;
-  Result := Pos(';' + UpperCase(ExpandConstant('{app}')) + ';', ';' + UpperCase(OrigPath) + ';') = 0;
+  OrigPath := Trim(UpperCase(OrigPath));
+  ParamPath := Trim(UpperCase(ExpandConstant('{app}')));
+  if Pos(';' + ParamPath + ';', ';' + OrigPath + ';') = 0 then
+    Result := True
+  else
+    Result := False;
 end;
 
+// 2. Генерация чистой строки пути для секции [Registry] (Вызывается на строке 44)
+function GetCleanPath(Param: String): String;
+var
+  CurrentPath: String;
+begin
+  if RegQueryStringValue(HKEY_CURRENT_USER, 'Environment', 'Path', CurrentPath) then
+  begin
+    CurrentPath := Trim(CurrentPath);
+    if (CurrentPath <> '') and (CurrentPath[Length(CurrentPath)] <> ';') then
+      CurrentPath := CurrentPath + ';';
+      
+    Result := CurrentPath + ExpandConstant('{app}');
+  end
+  else
+  begin
+    Result := ExpandConstant('{app}');
+  end;
+end;
+
+// 3. Отправка широковещательного уведомления системе об изменении переменных
 procedure UpdateEnvironment;
 var
   dwResult: DWORD;
@@ -102,17 +135,12 @@ begin
   SendMessageTimeout($FFFF, WM_SETTINGCHANGE, 0, 'Environment', SMTO_ABORTIFHUNG, 5000, dwResult);
 end;
 
+// 4. Отрисовка галочки для GitHub на финальном окно
 
 procedure CurStepChanged(CurStep: TSetupStep);
-var
-  ResultCode: Integer;
 begin
   if CurStep = ssPostInstall then
   begin
-    if WizardIsComponentSelected('path') then
-    begin
-      Exec('cmd.exe', '/c setx PATH "%PATH%;' + ExpandConstant('{app}') + '"', '', SW_HIDE, ewNoWait, ResultCode);
-    end;
     UpdateEnvironment;
   end;
 end;
@@ -129,31 +157,12 @@ begin
   end;
 end;
 
-// Стопроцентный метод запуска ссылки через создание временного .url ярлыка Windows
-procedure DeinitializeWizard;
-var
-  UrlLines: TArrayOfString;
-  UrlPath: String;
-  ResultCode: Integer;
-begin
-  if OpenGitHubOnClose then
-  begin
-    UrlPath := ExpandConstant('{tmp}\github.url');
-    
-    SetArrayLength(UrlLines, 3);
-    UrlLines[0] := '[InternetShortcut]';
-    UrlLines[1] := 'URL=https://github.com';
-    UrlLines[2] := '';
-    
-    if SaveStringsToFile(UrlPath, UrlLines, False) then
-    begin
-      ShellExecAsOriginalUser('open', UrlPath, '', '', SW_SHOWNORMAL, ewNoWait, ResultCode);
-    end;
-  end;
-end;
+
 
 procedure CurUninstallStepChanged(JustAfterAnsi: TUninstallStep);
 begin
   if JustAfterAnsi = usPostUninstall then
+  begin
     UpdateEnvironment;
+  end;
 end;

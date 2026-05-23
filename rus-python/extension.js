@@ -5,7 +5,7 @@ const fs = require('fs');
 function activate(context) {
     console.log('Расширение RuPy активно!');
 
-    // --- 1. ЗАГРУЗКА БАЗЫ ИЗ JSON (С АВТОСОЗДАНИЕМ) ---
+    // --- 1. ЗАГРУЗКА БАЗЫ ИЗ JSON ---
     const modulesPath = path.join(context.extensionPath, 'modules.json');
     let modulesData = {};
 
@@ -42,19 +42,28 @@ function activate(context) {
         const importDecs = [];
         const funcDecs = [];
 
-        for (const [moduleName, data] of Object.entries(modulesData)) {
-            const importRegEx = new RegExp(`использовать\\s+${moduleName}`, 'g');
+        for (const [pyMod, modData] of Object.entries(modulesData)) {
+            const ruMod = modData["ru-name"] || pyMod;
+
+            // Исправлено регулярное выражение для поддержки русских букв в границах слов
+            const importRegEx = new RegExp(`использовать\\s+${ruMod}(?![\\w\\а-яА-ЯёЁ])`, 'g');
             let m;
             while ((m = importRegEx.exec(text))) {
                 importDecs.push({ range: new vscode.Range(editor.document.positionAt(m.index), editor.document.positionAt(m.index + m.length)) });
             }
 
-            if (text.includes(`использовать ${moduleName}`) && data.функции) {
-                for (const funcName of Object.keys(data.функции)) {
-                    const funcRegEx = new RegExp(`${moduleName}\\.${funcName}`, 'g');
+            if (text.includes(`использовать ${ruMod}`) && modData.sources) {
+                for (const [pySrc, srcData] of Object.entries(modData.sources)) {
+                    const ruSrc = srcData["ru-name"] || pySrc;
+                    // Экранируем пробелы, если русское имя состоит из нескольких слов (например, "запись в каталоге")
+                    const escapedRuSrc = ruSrc.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+                    const funcRegEx = new RegExp(`(?<=\\b${ruMod}\\.)${escapedRuSrc}(?![\\w\\а-яА-ЯёЁ])`, 'g');
+                    
                     let fm;
                     while ((fm = funcRegEx.exec(text))) {
-                        funcDecs.push({ range: new vscode.Range(editor.document.positionAt(fm.index), editor.document.positionAt(fm.index + fm.length)) });
+                        // Вычисляем точную позицию подсвечиваемого слова после точки
+                        const startPos = fm.index;
+                        funcDecs.push({ range: new vscode.Range(editor.document.positionAt(startPos), editor.document.positionAt(startPos + fm[0].length)) });
                     }
                 }
             }
@@ -63,30 +72,81 @@ function activate(context) {
         editor.setDecorations(funcDecorationType, funcDecs);
     }
 
-    // --- 3. ДИНАМИЧЕСКИЕ СНИППЕТЫ ---
-    let completionProvider = vscode.languages.registerCompletionItemProvider('rupy', {
-        provideCompletionItems(document) {
-            const text = document.getText();
-            const completions = [];
+        // --- 3. ДИНАМИЧЕСКИЕ ПОДСКАЗКИ (СНИППЕТЫ С ОПИСАНИЕМ) ---
+    
+    // Провайдер №1: Подсказки названий модулей
+    let moduleNameProvider = vscode.languages.registerCompletionItemProvider('rupy', {
+        provideCompletionItems(document, position) {
+            const linePrefix = document.lineAt(position).text.substr(0, position.character);
+            
+            if (!linePrefix.endsWith('использовать ') && !linePrefix.endsWith('из ')) {
+                return undefined;
+            }
 
+            const completions = [];
             for (const [pyMod, modData] of Object.entries(modulesData)) {
                 const ruMod = modData["ru-name"];
-                if (text.includes(`использовать ${ruMod}`)) {
-                    const sources = modData["sources"] || {};
-                    for (const [pySrc, srcData] of Object.entries(sources)) {
-                        const ruSrc = srcData["ru-name"];
-                        const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
-                        item.insertText = new vscode.SnippetString(`${ruMod}.${ruSrc}(\${1})`);
-                        item.detail = `Из модуля ${ruMod} (Python: ${pyMod}.${pySrc})`;
-                        completions.push(item);
-                    }
+                if (ruMod) {
+                    const item = new vscode.CompletionItem(ruMod, vscode.CompletionItemKind.Module);
+                    item.detail = `Модуль RuPy (Python: ${pyMod})`;
+                    
+                    // ДОКУМЕНТАЦИЯ КАК В СНИППЕТАХ
+                    const docMarkdown = new vscode.MarkdownString();
+                    docMarkdown.appendMarkdown(`Импортирует встроенный модуль \`${ruMod}\`.\n\n`);
+                    docMarkdown.appendMarkdown(`* Оригинальный модуль Python: \`${pyMod}\``);
+                    item.documentation = docMarkdown;
+
+                    completions.push(item);
                 }
             }
             return completions;
         }
-    });
+    }, ' ');
 
-    // --- 4. ЗАПУСК ЧЕРЕЗ RUPYTHON (С ИСПРАВЛЕНИЕМ ОШИБКИ И ВЫБОРОМ EXE) ---
+    // Провайдер №2: Подсказки функций через точку с документацией
+    let moduleFunctionsProvider = vscode.languages.registerCompletionItemProvider('rupy', {
+        provideCompletionItems(document, position) {
+            const linePrefix = document.lineAt(position).text.substr(0, position.character);
+            
+            for (const [pyMod, modData] of Object.entries(modulesData)) {
+                const ruMod = modData["ru-name"] || pyMod;
+                
+                if (linePrefix.endsWith(`${ruMod}.`)) {
+                    const completions = [];
+                    const sources = modData["sources"] || {};
+                    
+                    for (const [pySrc, srcData] of Object.entries(sources)) {
+                        const ruSrc = srcData["ru-name"] || pySrc;
+                        const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
+                        
+                        item.insertText = new vscode.SnippetString(`${ruSrc}(\${1})`);
+                        item.detail = `Функция из модуля ${ruMod}`;
+                        
+                        // ДОКУМЕНТАЦИЯ КАК В СНИППЕТАХ
+                        const docMarkdown = new vscode.MarkdownString();
+                        docMarkdown.appendMarkdown(`### ${ruMod}.${ruSrc}(\u2026)\n`);
+                        docMarkdown.appendMarkdown(`___\n`); // Горизонтальная линия
+                        docMarkdown.appendMarkdown(`* **Оригинал:** \`${pyMod}.${pySrc}\`\n`);
+                        
+                        // Если в вашем modules.json у функции появится поле "description"
+                        if (srcData.description) {
+                            docMarkdown.appendMarkdown(`\n${srcData.description}`);
+                        } else {
+                            docMarkdown.appendMarkdown(`\n*Описание для этой функции еще не добавлено.*`);
+                        }
+                        
+                        item.documentation = docMarkdown;
+                        completions.push(item);
+                    }
+                    return completions;
+                }
+            }
+            return undefined;
+        }
+    }, '.');
+
+
+    // --- 4. ЗАПУСК ЧЕРЕЗ RUPYTHON ---
     let runCommand = vscode.commands.registerCommand('rupy.run', async function () {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
@@ -136,27 +196,22 @@ function activate(context) {
 
         const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
         terminal.show();
-        // Символ & необходим для корректного вызова путей с кавычками в PowerShell
         terminal.sendText(`& "${rupythonPath}" "${editor.document.fileName}"`);
     });
 
-        // --- 5. СОЗДАНИЕ НОВОГО ФАЙЛА RUPY (БЕЗ СОХРАНЕНИЯ НА ДИСК) ---
+    // --- 5. СОЗДАНИЕ НОВОГО ФАЙЛА RUPY ---
     let createNewFileCommand = vscode.commands.registerCommand('rupy.createNewFile', async function () {
-        // Открываем пустой документ с привязкой к языку rupy, без жесткого пути к диску C:\
         const doc = await vscode.workspace.openTextDocument({
             language: 'rupy',
             content: 'вывести "Привет мир!"\n'
         });
-        
-        // Показываем его в редакторе
         await vscode.window.showTextDocument(doc);
     });
 
-
-
-    // РЕГИСТРАЦИЯ ВСЕХ ПОДПИСОК (Исправлено)
+    // РЕГИСТРАЦИЯ ВСЕХ ПОДПИСОК
     context.subscriptions.push(
-        completionProvider,
+        moduleNameProvider,
+        moduleFunctionsProvider,
         runCommand,
         createNewFileCommand,
         vscode.workspace.onDidChangeTextDocument(updateDecorations),

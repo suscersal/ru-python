@@ -3,7 +3,7 @@
   "displayName": "Ru Python",
   "description": "Позволяет писать на русском синтаксис python",
   "publisher": "SUSCERSAL",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/suscersal/ru-python"
@@ -51,6 +51,11 @@
             "title": "Файл RuPython",
             "category": "RuPy",
             "icon": "$(file-add)" 
+        },
+        {
+            "command": "rupy.reloadSnippets",
+            "title": "Перезагрузить сниппеты RuPy",
+            "category": "RuPy"
         }
     ],
     "menus": {
@@ -75,6 +80,19 @@
                 "default": "rupython",
                 "description": "Абсолютный путь к файлу rupython.exe (например, C:\\Program Files\\RuPy\\rupython.exe). Если оставить по умолчанию, будет использоваться глобальная команда."
             }
+        }
+    },
+    "configurationDefaults": {
+        "[rupy]": {
+            "editor.quickSuggestions": {
+                "other": "on",
+                "comments": "off",
+                "strings": "on"
+            },
+            "editor.suggest.showSnippets": "top",
+            "editor.suggest.snippetsPreventQuickSuggestions": false,
+            "editor.wordBasedSuggestions": "off",
+            "editor.tabCompletion": "on"
         }
     }
   }
