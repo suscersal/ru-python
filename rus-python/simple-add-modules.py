@@ -6,7 +6,7 @@ import inspect
 import json
 import re
 import time
-
+import PIL
 # Автоматическая установка базовых библиотек
 required_libraries = {
     "deep_translator": "deep-translator",

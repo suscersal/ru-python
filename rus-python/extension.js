@@ -124,7 +124,6 @@ function activate(context) {
                 });
             }
 
-            // --- БЛОК 2: ПОДСВЕТКА ФУНКЦИЙ (время.время) ---
             // --- БЛОК 2: ПОДСВЕТКА ФУНКЦИЙ И ИХ МОДУЛЕЙ (время.время) ---
             if (text.includes(`использовать ${ruMod}`) && modData.sources) {
                 for (const [pySrc, srcData] of Object.entries(modData.sources)) {
