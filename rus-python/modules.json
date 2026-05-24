@@ -3122,16 +3122,5 @@
         "ru-name": "мировая позиция на экране"
       }
     }
-  },
-  "PIL": {
-    "ru-name": "п я л",
-    "sources": {
-      "UnidentifiedImageError": {
-        "ru-name": "неопознанная ошибка изображения"
-      },
-      "annotations": {
-        "ru-name": "аннотации"
-      }
-    }
   }
 }
