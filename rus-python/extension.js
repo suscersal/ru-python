@@ -88,34 +88,99 @@ function activate(context) {
         if (!editor || editor.document.languageId !== 'rupy') return;
 
         const text = editor.document.getText();
-        const importDecs = [];
+        const importDecs = []; // Для названий модулей (Зеленый)
+        const keywordDecs = []; // Для ключевого слова "использовать" (Розовый)
         const funcDecs = [];
 
         for (const [pyMod, modData] of Object.entries(modulesData)) {
+            if (!modData) continue;
             const ruMod = modData["ru-name"] || pyMod;
 
-            const importRegEx = new RegExp(`использовать\\s+${ruMod}(?![\\w\\а-яА-ЯёЁ])`, 'g');
+            // --- БЛОК 1: ПОДСВЕТКА ИМПОРТА (использовать время) ---
+            // Здесь две группы: m[1] = "использовать", m[2] = имя модуля
+            const importRegEx = new RegExp(`(использовать)\\s+(${ruMod})(?![\\w\\а-яА-ЯёЁ])`, 'g');
             let m;
-            while ((m = importRegEx.exec(text))) {
-                importDecs.push({ range: new vscode.Range(editor.document.positionAt(m.index), editor.document.positionAt(m.index + m.length)) });
+            while ((m = importRegEx.exec(text)) !== null) {
+                if (!m[1] || !m[2]) continue; // Защита от пустых совпадений
+
+                const fullMatchIndex = m.index;
+                const keywordText = m[1]; // "использовать"
+                const moduleText = m[2];  // например, "время"
+
+                const moduleStartIndex = fullMatchIndex + m[0].indexOf(moduleText);
+
+                keywordDecs.push({
+                    range: new vscode.Range(
+                        editor.document.positionAt(fullMatchIndex),
+                        editor.document.positionAt(fullMatchIndex + keywordText.length)
+                    )
+                });
+
+                importDecs.push({
+                    range: new vscode.Range(
+                        editor.document.positionAt(moduleStartIndex),
+                        editor.document.positionAt(moduleStartIndex + moduleText.length)
+                    )
+                });
             }
 
+            // --- БЛОК 2: ПОДСВЕТКА ФУНКЦИЙ (время.время) ---
+            // --- БЛОК 2: ПОДСВЕТКА ФУНКЦИЙ И ИХ МОДУЛЕЙ (время.время) ---
             if (text.includes(`использовать ${ruMod}`) && modData.sources) {
                 for (const [pySrc, srcData] of Object.entries(modData.sources)) {
+                    if (!srcData) continue;
+
                     const ruSrc = srcData["ru-name"] || pySrc;
                     const escapedRuSrc = ruSrc.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-                    const funcRegEx = new RegExp(`(?<=\\b${ruMod}\\.)${escapedRuSrc}(?![\\w\\а-яА-ЯёЁ])`, 'g');
+
+                    // Регулярное выражение захватывает: 
+                    // m[1] — имя модуля (время)
+                    // m[2] — имя функции (время)
+                    const funcRegEx = new RegExp(`(?:^|[^\\w\\а-яА-ЯёЁ])(${ruMod})\\s*\\.\\s*(${escapedRuSrc})(?![\\w\\а-яА-ЯёЁ])`, 'g');
 
                     let fm;
-                    while ((fm = funcRegEx.exec(text))) {
-                        const startPos = fm.index;
-                        funcDecs.push({ range: new vscode.Range(editor.document.positionAt(startPos), editor.document.positionAt(startPos + fm[0].length)) });
+                    while ((fm = funcRegEx.exec(text)) !== null) {
+                        if (!fm[1] || !fm[2]) continue;
+
+                        const fullMatchText = fm[0];
+                        const moduleNameText = fm[1];   // Первое слово "время"
+                        const functionNameText = fm[2]; // Второе слово "время"
+                        const fullMatchIndex = fm.index;
+
+                        // 1. Находим позицию названия модуля и добавляем в ЗЕЛЕНУЮ подсветку
+                        const modStartIndex = fullMatchIndex + fullMatchText.indexOf(moduleNameText);
+                        importDecs.push({
+                            range: new vscode.Range(
+                                editor.document.positionAt(modStartIndex),
+                                editor.document.positionAt(modStartIndex + moduleNameText.length)
+                            )
+                        });
+
+                        // 2. Находим позицию функции (после точки) и добавляем в подсветку ФУНКЦИЙ
+                        const funcStartIndex = fullMatchIndex + fullMatchText.lastIndexOf(functionNameText);
+                        funcDecs.push({
+                            range: new vscode.Range(
+                                editor.document.positionAt(funcStartIndex),
+                                editor.document.positionAt(funcStartIndex + functionNameText.length)
+                            )
+                        });
                     }
                 }
             }
+
+
         }
-        editor.setDecorations(importDecorationType, importDecs);
+
+
+        // Применяем стили к редактору
+        editor.setDecorations(importDecorationType, importDecs); // Название модуля (Зеленый)
         editor.setDecorations(funcDecorationType, funcDecs);
+
+        // ВАЖНО: Если у вас еще не объявлен стиль для розового цвета, 
+        // мы можем использовать встроенный или создать новый, но сейчас применим его к импортам
+        if (typeof keywordDecorationType !== 'undefined') {
+            editor.setDecorations(keywordDecorationType, keywordDecs);
+        }
     }
 
     // --- 4. ДИНАМИЧЕСКИЕ ПОДСКАЗКИ (СНИППЕТЫ С ОПИСАНИЕМ) ---
@@ -148,18 +213,18 @@ function activate(context) {
         }
     }, ' ');
 
-        // Провайдер №2: Подсказки функций через точку с ОРИГИНАЛЬНОЙ документацией из Python
+    // Провайдер №2: Подсказки функций через точку с ОРИГИНАЛЬНОЙ документацией из Python
     let moduleFunctionsProvider = vscode.languages.registerCompletionItemProvider('rupy', {
         async provideCompletionItems(document, position) {
             const linePrefix = document.lineAt(position).text.substr(0, position.character);
-            
+
             for (const [pyMod, modData] of Object.entries(modulesData)) {
                 const ruMod = modData["ru-name"] || pyMod;
-                
+
                 if (linePrefix.endsWith(`${ruMod}.`)) {
                     const completions = [];
                     const sources = modData["sources"] || {};
-                    
+
                     // Получаем сохраненный или системный путь к rupython / python
                     const config = vscode.workspace.getConfiguration('rupy');
                     const pythonCmd = config.get('path') === 'rupython' ? 'python' : config.get('path');
@@ -167,15 +232,15 @@ function activate(context) {
                     for (const [pySrc, srcData] of Object.entries(sources)) {
                         const ruSrc = srcData["ru-name"] || pySrc;
                         const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
-                        
+
                         item.insertText = new vscode.SnippetString(`${ruSrc}(\${1})`);
                         item.detail = `Функция из модуля ${ruMod}`;
-                        
+
                         const docMarkdown = new vscode.MarkdownString();
                         docMarkdown.appendMarkdown(`### ${ruMod}.${ruSrc}(\u2026)\n`);
                         docMarkdown.appendMarkdown(`___\n`);
                         docMarkdown.appendMarkdown(`* **Оригинал в Python:** \`${pyMod}.${pySrc}\`\n\n`);
-                        
+
                         // ДИНАМИЧЕСКИЙ ЗАПРОС ОРИГИНАЛЬНОГО ОПИСАНИЯ ИЗ PYTHON
                         let originalDoc = '';
                         try {
@@ -192,7 +257,7 @@ function activate(context) {
                         } else {
                             docMarkdown.appendMarkdown(`*У этого метода встроенное описание в Python отсутствует.*`);
                         }
-                        
+
                         item.documentation = docMarkdown;
                         completions.push(item);
                     }
