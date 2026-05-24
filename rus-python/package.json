@@ -91,7 +91,7 @@
             },
             "editor.suggest.showSnippets": "top",
             "editor.suggest.snippetsPreventQuickSuggestions": false,
-            "editor.wordBasedSuggestions": "off",
+            "editor.wordBasedSuggestions": "on",
             "editor.tabCompletion": "on"
         }
     }

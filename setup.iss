@@ -45,7 +45,6 @@ Source: ".\dist\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs create
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Components: startmenu
-Name: "{group}\Посетить GitHub проекта"; Filename: "https://github.com"; Components: startmenu
 Name: "{group}\Удалить {#MyAppName}"; Filename: "{uninstallexe}"; Components: startmenu
 
 [Registry]
@@ -81,11 +80,7 @@ const
   WM_SETTINGCHANGE = $001A;
   SMTO_ABORTIFHUNG = 2;
 
-var
-  GitHubCheckBox: TNewCheckBox;
-  OpenGitHubOnClose: Boolean;
-
-// Импорт функции WinAPI для обновления окружения проводника Windows
+// Импорт функции WinAPI для обновления окружения проводника Windows без перезагрузки системы
 function SendMessageTimeout(hWnd: HWND; Msg: UINT; wParam: Longint; lParam: String; fuFlags: UINT; uTimeout: UINT; out lpdwResult: DWORD): LongInt;
   external 'SendMessageTimeout{#AW}@user32.dll stdcall';
 
@@ -108,18 +103,22 @@ begin
     Result := False;
 end;
 
-// 2. Генерация чистой строки пути для секции [Registry] (Вызывается на строке 44)
+// 2. Генерация чистой строки пути для секции [Registry]
 function GetCleanPath(Param: String): String;
 var
   CurrentPath: String;
+  NewPath: String;
 begin
   if RegQueryStringValue(HKEY_CURRENT_USER, 'Environment', 'Path', CurrentPath) then
   begin
     CurrentPath := Trim(CurrentPath);
-    if (CurrentPath <> '') and (CurrentPath[Length(CurrentPath)] <> ';') then
-      CurrentPath := CurrentPath + ';';
+    NewPath := CurrentPath;
+    
+    // Проверяем, нужна ли точка с запятой в конце текущего PATH, чтобы пути не склеились
+    if (NewPath <> '') and (NewPath[Length(NewPath)] <> ';') then
+      NewPath := NewPath + ';';
       
-    Result := CurrentPath + ExpandConstant('{app}');
+    Result := NewPath + ExpandConstant('{app}');
   end
   else
   begin
@@ -132,11 +131,11 @@ procedure UpdateEnvironment;
 var
   dwResult: DWORD;
 begin
+  // Оповещаем систему и Проводник Windows о смене переменных окружения
   SendMessageTimeout($FFFF, WM_SETTINGCHANGE, 0, 'Environment', SMTO_ABORTIFHUNG, 5000, dwResult);
 end;
 
-// 4. Отрисовка галочки для GitHub на финальном окно
-
+// Вызывается автоматически сразу после завершения процесса копирования файлов
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep = ssPostInstall then
@@ -145,20 +144,7 @@ begin
   end;
 end;
 
-function NextButtonClick(CurPageID: Integer): Boolean;
-begin
-  Result := True;
-  if CurPageID = wpFinished then
-  begin
-    if (GitHubCheckBox <> nil) and GitHubCheckBox.Checked then
-    begin
-      OpenGitHubOnClose := True;
-    end;
-  end;
-end;
-
-
-
+// Вызывается автоматически сразу после удаления программы из системы
 procedure CurUninstallStepChanged(JustAfterAnsi: TUninstallStep);
 begin
   if JustAfterAnsi = usPostUninstall then
