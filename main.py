@@ -422,20 +422,23 @@ def run_rupy(input_file):
 
 if __name__ == "__main__":
     import sys
-    
+    param = None
     #проверка на запуск .exe
     if len(sys.argv) > 1:
-        target_file = sys.argv[1]
+        if '-' not in sys.argv[1]:
+            target_file = sys.argv[1]
+        else:
+            param = sys.argv[1:]
     else:
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
         target_file = os.path.join(current_dir, "test.rupy")
     
-   
-    if os.path.exists(target_file):
-        run_rupy(target_file)
-    else:
-        print(f"{RED}--- ОШИБКА ---")
-        print(f"Файл не найден по пути: {target_file}{RESET}")
-        print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на main.py{RESET}")
+    if param == None:
+        if os.path.exists(target_file):
+            run_rupy(target_file)
+        else:
+            print(f"{RED}--- ОШИБКА ---")
+            print(f"Файл не найден по пути: {target_file}{RESET}")
+            print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на main.py{RESET}")
 

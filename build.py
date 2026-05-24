@@ -99,7 +99,7 @@ args = [
     pyinstaller,
     "--onefile",
     "--name", exe_name,
-    "--clean"
+    "--clean",
 ]
 
 if os.path.exists(icon_path):
