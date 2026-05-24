@@ -212,60 +212,151 @@ function activate(context) {
         }
     }, ' ');
 
-    // Провайдер №2: Подсказки функций через точку с ОРИГИНАЛЬНОЙ документацией из Python
+        // Провайдер №2: Подсказки функций через точку с динамической подгрузкой документации
     let moduleFunctionsProvider = vscode.languages.registerCompletionItemProvider('rupy', {
         async provideCompletionItems(document, position) {
             const linePrefix = document.lineAt(position).text.substr(0, position.character);
+            
+            // ИСПРАВЛЕНО: Убрали лишний \$ на конце регулярного выражения
+            const match = linePrefix.match(/([\а-яА-ЯёЁ\w]+)\s*\.\s*$/);
+            if (!match) return undefined;
 
-            for (const [pyMod, modData] of Object.entries(modulesData)) {
-                const ruMod = modData["ru-name"] || pyMod;
+            const ruModName = match[1]; // Извлекаем имя модуля перед точкой
+            let pyMod = null;
+            let modData = null;
 
-                if (linePrefix.endsWith(`${ruMod}.`)) {
-                    const completions = [];
-                    const sources = modData["sources"] || {};
-
-                    // Получаем сохраненный или системный путь к rupython / python
-                    const config = vscode.workspace.getConfiguration('rupy');
-                    const pythonCmd = config.get('path') === 'rupython' ? 'python' : config.get('path');
-
-                    for (const [pySrc, srcData] of Object.entries(sources)) {
-                        const ruSrc = srcData["ru-name"] || pySrc;
-                        const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
-
-                        item.insertText = new vscode.SnippetString(`${ruSrc}(\${1})`);
-                        item.detail = `Функция из модуля ${ruMod}`;
-
-                        const docMarkdown = new vscode.MarkdownString();
-                        docMarkdown.appendMarkdown(`### ${ruMod}.${ruSrc}(\u2026)\n`);
-                        docMarkdown.appendMarkdown(`___\n`);
-                        docMarkdown.appendMarkdown(`* **Оригинал в Python:** \`${pyMod}.${pySrc}\`\n\n`);
-
-                        // ДИНАМИЧЕСКИЙ ЗАПРОС ОРИГИНАЛЬНОГО ОПИСАНИЯ ИЗ PYTHON
-                        let originalDoc = '';
-                        try {
-                            // Вызываем фоновую команду Python для чтения встроенного __doc__ функции
-                            const pythonScript = `import ${pyMod}; print(${pyMod}.${pySrc}.__doc__)`;
-                            originalDoc = execSync(`"${pythonCmd}" -c "${pythonScript}"`, { encoding: 'utf8', timeout: 800 }).trim();
-                        } catch (e) {
-                            // Если не удалось извлечь системный docstring, используем заглушку
-                            originalDoc = srcData.description || '*Оригинальное системное описание недоступно.*';
-                        }
-
-                        if (originalDoc && originalDoc !== 'None') {
-                            docMarkdown.appendMarkdown(`**Документация модуля:**\n\`\`\`text\n${originalDoc}\n\`\`\``);
-                        } else {
-                            docMarkdown.appendMarkdown(`*У этого метода встроенное описание в Python отсутствует.*`);
-                        }
-
-                        item.documentation = docMarkdown;
-                        completions.push(item);
-                    }
-                    return completions;
+            // ИСПРАВЛЕНО: Проверяем как русское, так и английское название модуля
+            for (const [key, data] of Object.entries(modulesData)) {
+                if (key === ruModName || (data && data["ru-name"] === ruModName)) {
+                    pyMod = key;
+                    modData = data;
+                    break;
                 }
             }
-            return undefined;
+
+            // Если модуля нет в нашей базе modules.json, пробуем использовать его имя напрямую как pyMod
+            if (!pyMod) {
+                pyMod = ruModName;
+                modData = modulesData[pyMod] || {};
+            }
+
+            const ruMod = (modData && modData["ru-name"]) || pyMod;
+            const completions = [];
+            const sources = (modData && modData.sources) || {};
+
+            // Сначала смотрим заготовленные переводы из modules.json
+            for (const [pySrc, srcData] of Object.entries(sources)) {
+                const ruSrc = srcData["ru-name"] || pySrc;
+                const item = new vscode.CompletionItem(ruSrc, vscode.CompletionItemKind.Function);
+
+                item.insertText = new vscode.SnippetString(`${ruSrc}(\${1})`);
+                item.detail = `Функция из модуля ${ruMod}`;
+
+                item.data = {
+                    pyMod: pyMod,
+                    pySrc: pySrc,
+                    ruMod: ruMod,
+                    ruSrc: ruSrc,
+                    fallbackDesc: srcData.description || ''
+                };
+
+                completions.push(item);
+            }
+
+            // Если в JSON пусто или это сторонний модуль, запрашиваем список методов у Python НАПРЯМУЮ,
+            // чтобы окно IntelliSense не оставалось пустым (как на скриншоте)
+            if (completions.length === 0) {
+                const pythonCmd = getPythonCommand();
+                const pythonScript = `
+import ${pyMod}
+import json
+methods = []
+for name in dir(${pyMod}):
+    if name.startswith('_'): continue
+    try:
+        if callable(getattr(${pyMod}, name)): methods.append(name)
+    except: continue
+print(json.dumps(methods))
+                `.strip().replace(/\n/g, '; ');
+
+                try {
+                    const { stdout } = await execAsync(`"${pythonCmd}" -c "${pythonScript}"`, { timeout: 1000 });
+                    const dynamicMethods = JSON.parse(stdout.trim());
+
+                    for (const pySrc of dynamicMethods) {
+                        const item = new vscode.CompletionItem(pySrc, vscode.CompletionItemKind.Function);
+                        item.insertText = new vscode.SnippetString(`${pySrc}(\${1})`);
+                        item.detail = `Динамическая функция из ${pyMod}`;
+                        
+                        item.data = {
+                            pyMod: pyMod,
+                            pySrc: pySrc,
+                            ruMod: pyMod,
+                            ruSrc: pySrc,
+                            fallbackDesc: ''
+                        };
+                        completions.push(item);
+                    }
+                } catch (e) {
+                    console.error("[RuPy] Не удалось динамически прочитать модуль через Python:", e);
+                }
+            }
+
+            return completions;
         }
     }, '.');
+
+    // ЭТАП 2 ДЛЯ ПРОВАЙДЕРА №2: Загрузка docstring (Оставляем асинхронной без изменений)
+    moduleFunctionsProvider.resolveCompletionItem = async function (item) {
+        if (!item.data) return item;
+
+        const { pyMod, pySrc, ruMod, ruSrc, fallbackDesc } = item.data;
+        const pythonCmd = getPythonCommand();
+        const docMarkdown = new vscode.MarkdownString();
+
+        docMarkdown.appendMarkdown(`### ${ruMod}.${ruSrc}(\u2026)\n`);
+        docMarkdown.appendMarkdown(`___\n`);
+        docMarkdown.appendMarkdown(`* **Оригинал в Python:** \`${pyMod}.${pySrc}\`\n\n`);
+
+        try {
+            const pythonScript = `
+import ${pyMod}
+import inspect
+import json
+obj = getattr(${pyMod}, '${pySrc}')
+sig = ''
+try: sig = str(inspect.signature(obj))
+except: pass
+doc = getattr(obj, '__doc__', '') or ''
+print(json.dumps({'sig': sig, 'doc': doc.strip()}))
+            `.strip().replace(/\n/g, '; ');
+
+            const { stdout } = await execAsync(`"${pythonCmd}" -c "${pythonScript}"`, { timeout: 800 });
+            const result = JSON.parse(stdout.trim());
+
+            if (result.sig) {
+                docMarkdown.value = `### ${ruMod}.${ruSrc}${result.sig}\n___\n* **Оригинал в Python:** \`${pyMod}.${pySrc}\`\n\n`;
+            }
+
+            if (result.doc && result.doc !== 'None') {
+                docMarkdown.appendMarkdown(`**Документация модуля:**\n\`\`\`text\n${result.doc}\n\`\`\``);
+            } else if (fallbackDesc) {
+                docMarkdown.appendMarkdown(`**Документация модуля:**\n\`\`\`text\n${fallbackDesc}\n\`\`\``);
+            } else {
+                docMarkdown.appendMarkdown(`*У этого метода встроенное описание в Python отсутствует.*`);
+            }
+        } catch (e) {
+            if (fallbackDesc) {
+                docMarkdown.appendMarkdown(`**Документация модуля:**\n\`\`\`text\n${fallbackDesc}\n\`\`\``);
+            } else {
+                docMarkdown.appendMarkdown(`*Оригинальное системное описание недоступно.*`);
+            }
+        }
+
+        item.documentation = docMarkdown;
+        return item;
+    };
+
 
 
 

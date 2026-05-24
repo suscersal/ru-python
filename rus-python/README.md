@@ -1,6 +1,6 @@
 ## Подробности по расширению.
 
-* Самодельные snippets и самодельная русификация модулей [клик](https://github.com/suscersal/ru-python/edit/main/rus-python/README.md)
+* Самодельные snippets и самодельная русификация модулей [клик](https://github.com/suscersal/ru-python/blob/main/rus-python/README.md)
 
 ## Пример добавления кастомной русификации:
 ```
@@ -19,4 +19,6 @@
     }
   }
 ```
-_ну в принципе можно посмотреть готовый [файл](https://github.com/suscersal/ru-python/blob/main/rus-python/modules.json) (буду не против комитов на дополнение(в будущем хочу реализовать добавление через сайт))_
+_ну в принципе можно посмотреть готовый [файл](https://github.com/suscersal/ru-python/blob/main/rus-python/modules.json) (буду не против комитов на дополнение(в будущем хочу реализовать добавление через сайт))._ 
+
+_Вот скрипт на простой перевод: [тык](https://github.com/suscersal/ru-python/blob/main/rus-python/simple-add-modules.py)_

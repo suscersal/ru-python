@@ -6,13 +6,11 @@ import inspect
 import json
 import re
 import time
-import PIL
 # Автоматическая установка базовых библиотек
 required_libraries = {
     "deep_translator": "deep-translator",
     "wordsegment": "wordsegment"
 }
-
 for module_name, pip_name in required_libraries.items():
     try:
         importlib.import_module(module_name)
