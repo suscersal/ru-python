@@ -21,6 +21,15 @@ jobs:
       - name: Копирование кода
         uses: actions/checkout@v4
 
+      # Шаг для генерации точной даты и времени сборки
+      - name: Получение даты и времени
+        id: datetime
+        shell: powershell
+        run: |
+          # Форматируем дату и время (например: 25.05.2026 21:15)
+          $current_time = Get-Date -Format "dd.MM.yyyy HH:mm"
+          echo "build_time=$current_time" >> $env:GITHUB_OUTPUT
+
       - name: Установка Python 3.13
         uses: actions/setup-python@v5
         with:
@@ -35,21 +44,38 @@ jobs:
           node-version: 20
 
       - name: Сборка расширения VS Code (.vsix)
+        shell: powershell
         run: |
           npm install -g @vscode/vsce
           cd rus-python
           
-          # Автоматически добавляем обязательные поля в package.json перед сборкой
+          # Читаем package.json
           $json = Get-Content package.json | ConvertFrom-Json
+          
+          # АВТОПОВЫШЕНИЕ ВЕРСИИ: увеличиваем patch-версию (последнее число)
+          if ($json.version) {
+              $versionParts = $json.version -split '\.'
+              if ($versionParts.Count -eq 3) {
+                  $patch = [int]$versionParts[2] + 1
+                  $json.version = "$($versionParts[0]).$($versionParts[1]).$patch"
+                  Write-Host "Новая версия расширения: $($json.version)"
+              }
+          } else {
+              $json | Add-Member -NotePropertyName "version" -NotePropertyValue "1.0.0"
+          }
+          
+          # Автоматически добавляем обязательные поля, если их нет
           if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
           if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com" } }
+          
+          # Сохраняем измененный package.json обратно
           $json | ConvertTo-Json -Depth 10 | Set-Content package.json
           
-          # Жесткое создание файла лицензии через перенаправление потока для избежания ворнингов
-          echo "MIT License" > LICENSE
+          # Безопасное создание файла лицензии в правильной кодировке UTF-8 без BOM
+          "MIT License" | Set-Content LICENSE -Encoding utf8
           
-          # Сборка расширения
-          vsce package --no-dependencies
+          # Сборка расширения с игнорированием проверок git-тегов
+          vsce package --no-dependencies --no-git-tag-check
 
       # Компиляция инсталлятора Inno Setup
       - name: Компиляция инсталлятора (Inno Setup)
@@ -69,18 +95,20 @@ jobs:
             rus-python/*.vsix
           if-no-files-found: warn
 
-      # Создание релиза по тегу, расписанию или вручную с автогенерацией списка коммитов
+      # Создание релиза по тегу, расписанию или вручную с выводом даты и времени
       - name: Создать Релиз и загрузить файлы
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         with:
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('auto-{0}', github.sha) }}
-          name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка {0}', github.sha) }}
+          # Добавили дату и время прямо в название релиза
+          name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка от {0}', steps.datetime.outputs.build_time) }}
           generate_release_notes: true
           body: |
             ### Автоматическая сборка проекта
             
             **Информация о сборке:**
+            - **Дата и время:** ${{ steps.datetime.outputs.build_time }} (UTC раннера)
             - **Триггер:** ${{ github.event_name }}
             - **Коммит:** ${{ github.sha }}
             
