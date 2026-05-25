@@ -2540,7 +2540,7 @@
     }
   },
   "ursina": {
-    "ru-name": "урсина 3d двигатель",
+    "ru-name": "ursina",
     "sources": {
       "AmbientLight": {
         "ru-name": "рассеянный свет"
