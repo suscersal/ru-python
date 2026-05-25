@@ -43,14 +43,18 @@ jobs:
         with:
           node-version: 20
 
-      - name: Сборка расширения VS Code (.vsix)
+            - name: Сборка расширения VS Code (.vsix)
         shell: powershell
         run: |
+          # Принудительно переводим вывод консоли PowerShell в UTF-8, чтобы не было кракозябр
+          [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+          $OutputEncoding = [System.Text.Encoding]::UTF8
+          
           npm install -g @vscode/vsce
           cd rus-python
           
           # Читаем package.json
-          $json = Get-Content package.json | ConvertFrom-Json
+          $json = Get-Content package.json -Raw | ConvertFrom-Json
           
           # АВТОПОВЫШЕНИЕ ВЕРСИИ: увеличиваем patch-версию (последнее число)
           if ($json.version) {
@@ -68,14 +72,15 @@ jobs:
           if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
           if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com" } }
           
-          # Сохраняем измененный package.json обратно
-          $json | ConvertTo-Json -Depth 10 | Set-Content package.json
+          # Сохраняем измененный package.json обратно в правильной кодировке
+          $json | ConvertTo-Json -Depth 10 | Set-Content package.json -Encoding utf8
           
-          # Безопасное создание файла лицензии в правильной кодировке UTF-8 без BOM
+          # Безопасное создание файла лицензии
           "MIT License" | Set-Content LICENSE -Encoding utf8
           
-          # Сборка расширения с игнорированием проверок git-тегов
-          vsce package --no-dependencies --no-git-tag-check
+          # Сборка расширения без упавших флагов (используем только валидный --no-dependencies)
+          vsce package --no-dependencies
+
 
       # Компиляция инсталлятора Inno Setup
       - name: Компиляция инсталлятора (Inno Setup)
