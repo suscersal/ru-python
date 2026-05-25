@@ -43,7 +43,7 @@ jobs:
         with:
           node-version: 20
 
-            - name: Сборка расширения VS Code (.vsix)
+      - name: Сборка расширения VS Code (.vsix)
         shell: powershell
         run: |
           # Принудительно переводим вывод консоли PowerShell в UTF-8, чтобы не было кракозябр
@@ -56,12 +56,15 @@ jobs:
           # Читаем package.json
           $json = Get-Content package.json -Raw | ConvertFrom-Json
           
-          # АВТОПОВЫШЕНИЕ ВЕРСИИ: увеличиваем patch-версию (последнее число)
+          # АВТОПОВЫШЕНИЕ ВЕРСИИ: разбиваем строку по точкам и увеличиваем Patch-версию
           if ($json.version) {
-              $versionParts = $json.version -split '\.'
+              $versionParts = $json.version.Split('.')
               if ($versionParts.Count -eq 3) {
+                  $major = [int]$versionParts[0]
+                  $minor = [int]$versionParts[1]
                   $patch = [int]$versionParts[2] + 1
-                  $json.version = "$($versionParts[0]).$($versionParts[1]).$patch"
+                  
+                  $json.version = "${major}.${minor}.${patch}"
                   Write-Host "Новая версия расширения: $($json.version)"
               }
           } else {
@@ -78,8 +81,9 @@ jobs:
           # Безопасное создание файла лицензии
           "MIT License" | Set-Content LICENSE -Encoding utf8
           
-          # Сборка расширения без упавших флагов (используем только валидный --no-dependencies)
+          # Сборка расширения
           vsce package --no-dependencies
+
 
 
       # Компиляция инсталлятора Inno Setup
