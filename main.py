@@ -420,25 +420,117 @@ def run_rupy(input_file):
 
 
 
+import os
+import sys
+import winreg
+
+def find_python_in_registry():
+    """Ищет путь к python.exe через системный реестр Windows."""
+    # Проверяем две основные ветки реестра: текущего пользователя и системную
+    registry_roots = [winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE]
+    relative_path = r"SOFTWARE\Python\PythonCore"
+    
+    for root_key in registry_roots:
+        try:
+            with winreg.OpenKey(root_key, relative_path) as core_key:
+                # Перебираем установленные версии (например, '3.10', '3.11')
+                for i in range(winreg.QueryInfoKey(core_key)[0]):
+                    version_name = winreg.EnumKey(core_key, i)
+                    install_path_str = rf"{relative_path}\{version_name}\InstallPath"
+                    
+                    try:
+                        with winreg.OpenKey(root_key, install_path_str) as ip_key:
+                            # Извлекаем прямой путь к исполняемому файлу
+                            exe_path, _ = winreg.QueryValueEx(ip_key, "ExecutablePath")
+                            if os.path.exists(exe_path):
+                                return exe_path
+                    except OSError:
+                        continue
+        except OSError:
+            continue
+    return None
+
+def find_local_python():
+    """Основная функция поиска Python на ПК."""
+    # Шаг 1: Пробуем найти через реестр Windows
+    registry_path = find_python_in_registry()
+    if registry_path:
+        return registry_path
+
+    # Шаг 2: Если в реестре нет, сканируем стандартную папку AppData
+    local_app_data = os.environ.get('LOCALAPPDATA', '')
+    if local_app_data:
+        python_dir = os.path.join(local_app_data, 'Programs', 'Python')
+        if os.path.exists(python_dir):
+            for root, dirs, files in os.walk(python_dir):
+                if 'python.exe' in files:
+                    full_path = os.path.join(root, 'python.exe')
+                    if os.path.exists(full_path):
+                        return full_path
+                        
+    return "Python не найден на ПК"
+
+# Проверка работы функции
+print("Найденный путь к Python:", find_local_python())
+
+
 if __name__ == "__main__":
-    import sys
     param = None
-    #проверка на запуск .exe
+    target_file = None
+
+    # 1. Исправление определения текущей директории для .py и .exe
+    if getattr(sys, 'frozen', False):
+        # Если запущен скомпилированный .exe, берем папку, где лежит этот .exe
+        current_dir = os.path.dirname(os.path.abspath(sys.executable))
+    else:
+        # Если запущен обычный скрипт .py
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # 2. Обработка аргументов командной строки
     if len(sys.argv) > 1:
-        if '-' not in sys.argv[1]:
+        if not sys.argv[1].startswith('-'):
             target_file = sys.argv[1]
         else:
             param = sys.argv[1:]
     else:
-
-        current_dir = os.path.dirname(os.path.abspath(__file__))
         target_file = os.path.join(current_dir, "test.rupy")
     
-    if param == None:
-        if os.path.exists(target_file):
+    # 3. Логика выполнения в зависимости от параметров
+    if param is None:
+        if target_file and os.path.exists(target_file):
             run_rupy(target_file)
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
-            print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на main.py{RESET}")
-
+            print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
+    else:
+        if param[0] == '-install':
+            print("Запущена установка ассоциации файлов и модулей...")
+            
+            python_path = find_local_python() 
+            print(f"Найденный интерпретатор для установки: {python_path}")
+            
+            if "не найден" in python_path:
+                print(f"{RED}Ошибка: Не удалось установить модуль. Python не найден в системе.{RESET}")
+            else:
+                if len(param) > 1:
+                    module_name = param[1]
+                    print(f"Установка модуля {module_name} через pip...")
+                    
+                    import subprocess
+                    try:
+                        # Запускаем команду: python.exe -m pip install имя_модуля
+                        result = subprocess.run(
+                            [python_path, "-m", "pip", "install", module_name],
+                            capture_output=False, # Вывод pip будет идти прямо в консоль пользователя
+                            text=True
+                        )
+                        if result.returncode == 0:
+                            print(f"\n{YELLOW}Модуль {module_name} успешно установлен!{RESET}")
+                        else:
+                            print(f"\n{RED}Произошла ошибка при установке модуля.{RESET}")
+                    except Exception as e:
+                        print(f"{RED}Не удалось запустить pip: {e}{RESET}")
+                else:
+                    print(f"{YELLOW}Флаг -install запущен без указания модуля. Выполняется стандартная настройка.{RESET}")
+                    # Здесь можно оставить ваш код для настройки ассоциации файлов .rupy
