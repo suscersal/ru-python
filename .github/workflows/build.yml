@@ -53,8 +53,8 @@ jobs:
           npm install -g @vscode/vsce
           cd rus-python
           
-          # Читаем package.json
-          $json = Get-Content package.json -Raw | ConvertFrom-Json
+          # ЧИТАЕМ СТРОГО В UTF-8, чтобы не сломать русский текст в description и displayName
+          $json = Get-Content package.json -Raw -Encoding utf8 | ConvertFrom-Json
           
           # АВТОПОВЫШЕНИЕ ВЕРСИИ
           if ($json.version) {
@@ -71,20 +71,27 @@ jobs:
               $json | Add-Member -NotePropertyName "version" -NotePropertyValue "1.0.0"
           }
           
+          # ИСПРАВЛЕНИЕ ИМЕНИ: Убираем префикс издателя из поля name, если он там есть
+          if ($json.name -match "suscersal\.") {
+              $json.name = $json.name -replace "suscersal\.", ""
+          }
+          $json.name = $json.name.ToLower()
+          
           # Автоматически добавляем обязательные поля
           if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
           if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com" } }
           
-          # Преобразуем в JSON строку
+          # Преобразуем обратно в красивый JSON-текст
           $jsonString = $json | ConvertTo-Json -Depth 10
           
-          # Жесткое сохранение в UTF-8 БЕЗ BOM с помощью .NET
+          # Сохраняем в чистом UTF-8 БЕЗ BOM
           $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
           [System.IO.File]::WriteAllText((Get-Item package.json).FullName, $jsonString, $utf8NoBom)
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) "LICENSE"), "MIT License", $utf8NoBom)
           
           # Сборка расширения
           vsce package --no-dependencies
+
 
 
 
