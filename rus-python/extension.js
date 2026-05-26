@@ -8,48 +8,36 @@ const { execSync } = require('child_process');
  * Ищет команду в текущем PATH или читает свежие данные напрямую из реестра Windows.
  */
 function findRupythonExecutable() {
-    // Сначала пробуем вызвать команду напрямую в окружении VS Code
-    try {
-        execSync('rupython --version', { stdio: 'ignore' });
-        return 'rupython';
-    } catch (e) {
-        // Команда не ответила глобально, переходим к глубокому поиску в реестре
-    }
+    // Вытаскиваем готовый PATH из памяти процесса (работает мгновенно)
+    const pathEnv = process.env.PATH || process.env.Path || '';
+    if (!pathEnv) return null;
 
-    // Поиск для Windows по путям из реестра (как на вашем скриншоте)
-    if (process.platform === 'win32') {
+    // Разделяем пути в зависимости от ОС (в Windows разделитель ';', в Linux/Mac ':')
+    const delimiter = process.platform === 'win32' ? ';' : ':';
+    const paths = pathEnv.split(delimiter);
+
+    for (let p of paths) {
+        let folder = p.trim();
+        if (!folder) continue;
+
+        // Формируем имя файла под нужную ОС
+        const exeName = process.platform === 'win32' ? 'rupython.exe' : 'rupython';
+        const fullExePath = path.join(folder, exeName);
+
+        // fs.existsSync работает с кэшем ОС и проверяет файл за доли миллисекунды
         try {
-            const registryOutput = execSync('reg query HKCU\\Environment /v Path', { encoding: 'utf8' });
-            const match = registryOutput.match(/Path\s+REG_(?:EXPAND_)?SZ\s+(.+)/i);
-
-            if (match && match[1]) {
-                const rawPathString = match[1].trim();
-                const paths = rawPathString.split(';');
-
-                for (let p of paths) {
-                    let folder = p.trim();
-                    if (!folder) continue;
-
-                    // Раскрываем системные переменные, если они есть в пути
-                    folder = folder.replace(/%([^%]+)%/g, (_, varName) => {
-                        return process.env[varName.toUpperCase()] || process.env[varName.toLowerCase()] || `%${varName}%`;
-                    });
-
-                    const fullExePath = path.join(folder, 'rupython.exe');
-
-                    if (fs.existsSync(fullExePath)) {
-                        console.log(`[RuPy] Успешно найден по пути из реестра: ${fullExePath}`);
-                        return fullExePath;
-                    }
-                }
+            if (fs.existsSync(fullExePath)) {
+                console.log(`[RuPy] Успешно найден исполняемый файл: ${fullExePath}`);
+                return fullExePath;
             }
-        } catch (registryError) {
-            console.error('[RuPy] Ошибка чтения реестра Windows:', registryError);
+        } catch (e) {
+            // Пропускаем папки, к которым нет доступа
         }
     }
 
     return null;
 }
+
 
 function activate(context) {
     console.log('Расширение RuPy активно!');
@@ -360,74 +348,76 @@ print(json.dumps({'sig': sig, 'doc': doc.strip()}))
 
 
 
-    // --- 5. КОМАНДА ЗАПУСКА КОДА ---
-    let runCommand = vscode.commands.registerCommand('rupy.run', async function () {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) return;
+// --- 5. КОМАНДА ЗАПУСКА КОДА ---
+let runCommand = vscode.commands.registerCommand('rupy.run', async function () {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) return;
 
-        if (editor.document.isUntitled) {
-            const uri = await vscode.window.showSaveDialog({
-                filters: { 'RuPy Files': ['rupy'] },
-                title: 'Сохранить файл перед запуском'
-            });
-            if (!uri) return;
-            fs.writeFileSync(uri.fsPath, editor.document.getText(), 'utf8');
+    // 1. Быстрое сохранение файла
+    if (editor.document.isUntitled) {
+        const uri = await vscode.window.showSaveDialog({
+            filters: { 'RuPy Files': ['rupy'] },
+            title: 'Сохранить файл перед запуском'
+        });
+        if (!uri) return;
+        fs.writeFileSync(uri.fsPath, editor.document.getText(), 'utf8');
+    } else {
+        await editor.document.save();
+    }
+
+    const config = vscode.workspace.getConfiguration('rupy');
+    let rupythonPath = config.get('path') || 'rupython';
+
+    // 2. Умный поиск (запускается ТОЛЬКО если путь не настроен)
+    if (rupythonPath === 'rupython') {
+        // Если findRupythonExecutable тяжелая, она выполнится только 1 раз за всё время
+        const detectedPath = findRupythonExecutable();
+
+        if (detectedPath) {
+            rupythonPath = detectedPath;
+            // Сохраняем без await, чтобы не ждать диск
+            config.update('path', rupythonPath, vscode.ConfigurationTarget.Global);
         } else {
-            await editor.document.save();
-        }
+            const choice = await vscode.window.showErrorMessage(
+                'Команда "rupython" не найдена автоматически. Указать путь к файлу вручную?',
+                'Выбрать .exe файл', 'Отмена'
+            );
 
-        const config = vscode.workspace.getConfiguration('rupy');
-        // ИСПРАВЛЕНО: Теперь ключ "path" совпадает с тем, что объявлено в package.json (rupy.path)
-        let rupythonPath = config.get('path') || 'rupython';
+            if (choice === 'Выбрать .exe файл') {
+                const exeUri = await vscode.window.showOpenDialog({
+                    canSelectMany: false,
+                    filters: { 'Исполняемые файлы': ['exe'] },
+                    title: 'Выберите файл rupython.exe'
+                });
 
-        // ИСПОЛЬЗОВАНИЕ УМНОГО ПОИСКА
-        if (rupythonPath === 'rupython') {
-            const detectedPath = findRupythonExecutable();
-
-            if (detectedPath) {
-                rupythonPath = detectedPath;
-                // Автоматически сохраняем найденный путь, чтобы больше не выполнять тяжелый поиск по файловой системе
-                await config.update('path', rupythonPath, vscode.ConfigurationTarget.Global);
-            } else {
-                const choice = await vscode.window.showErrorMessage(
-                    'Команда "rupython" не найдена автоматически. Указать путь к файлу вручную?',
-                    'Выбрать .exe файл', 'Отмена'
-                );
-
-                if (choice === 'Выбрать .exe файл') {
-                    const exeUri = await vscode.window.showOpenDialog({
-                        canSelectMany: false,
-                        filters: { 'Исполняемые файлы': ['exe'] },
-                        title: 'Выберите файл rupython.exe'
-                    });
-
-                    if (exeUri && exeUri[0]) {
-                        rupythonPath = exeUri[0].fsPath;
-                        await config.update('path', rupythonPath, vscode.ConfigurationTarget.Global);
-                    } else {
-                        return;
-                    }
+                if (exeUri && exeUri[0]) {
+                    rupythonPath = exeUri[0].fsPath;
+                    config.update('path', rupythonPath, vscode.ConfigurationTarget.Global);
                 } else {
                     return;
                 }
+            } else {
+                return;
             }
         }
-        const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
-        terminal.show();
+    }
 
-        // Проверяем, какой терминал запущен. Если это PowerShell (pwsh/powershell), добавляем оператор '&'
-        const terminalName = (terminal.name || '').toLowerCase();
-        const isPowerShell = terminalName.includes('powershell') || terminalName.includes('pwsh') || process.platform === 'win32';
+    // 3. Мгновенная отправка в терминал
+    const terminal = vscode.window.activeTerminal || vscode.window.createTerminal("RuPy");
+    terminal.show(true);
 
-        if (isPowerShell) {
-            // Для PowerShell: & "путь" "аргумент"
-            terminal.sendText(`& "${rupythonPath}" "${editor.document.fileName}"`);
-        } else {
-            // Для CMD, Bash, Zsh: "путь" "аргумент"
-            terminal.sendText(`"${rupythonPath}" "${editor.document.fileName}"`);
-        }
+    // Самая быстрая проверка PowerShell без обращений к API настроек
+    const shellPath = (vscode.env.shell || '').toLowerCase();
+    const isPowerShell = shellPath.includes('powershell') || shellPath.includes('pwsh') || shellPath.endsWith('powershell.exe');
 
-    });
+    if (isPowerShell) {
+        terminal.sendText(`& "${rupythonPath}" "${editor.document.fileName}"`);
+    } else {
+        terminal.sendText(`"${rupythonPath}" "${editor.document.fileName}"`);
+    }
+});
+
+
     // --- 6. СОЗДАНИЕ НОВОГО ФАЙЛА RUPY ---
     let createNewFileCommand = vscode.commands.registerCommand('rupy.createNewFile', async function () {
         const doc = await vscode.workspace.openTextDocument({ language: 'rupy', content: 'вывести "Привет мир!"\n' });

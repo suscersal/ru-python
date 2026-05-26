@@ -6,14 +6,20 @@
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
-            "extensionDevelopmentPath": "${workspaceFolder}/rus-python"
+            "extensionDevelopmentPath": "${workspaceFolder}/rus-python",
+            "env": {
+                "VSCODE_LOG_NATIVE": "true"
+            }
         },
         {
             "name": "Запустить расширение (папка rus-python)",
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
-            "extensionDevelopmentPath": "${workspaceFolder}"
+            "extensionDevelopmentPath": "${workspaceFolder}",
+            "env": {
+                "VSCODE_LOG_NATIVE": "true"
+            }
         }
     ]
 }

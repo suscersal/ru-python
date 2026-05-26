@@ -3,7 +3,7 @@
   "displayName": "Russ Python",
   "description": "Позволяет писать на русском синтаксис python",
   "publisher": "SUSCERSAL",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "icon": "icon.png",
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   "contributes": {
     "languages": [{
         "id": "rupy",
-        "aliases": ["Ru Python", "rupy", "RuPy"],
+        "aliases": ["Russ Python", "rupy", "RuPy"],
         "extensions": [".rupy"],
         "configuration": "./language-configuration.json",
         "icon": { 
