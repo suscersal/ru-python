@@ -7,7 +7,6 @@ import shutil
 import pathlib
 import requests
 import subprocess
-import winreg
 import re
 
 
@@ -154,6 +153,10 @@ def run_rupy(input_file):
         content = re.sub(rf"\.вывести\b", ".write", content)
         content = re.sub(rf"\.прочитать\b", ".read", content)
         content = re.sub(rf"\.прочитать_строку\b", ".readline", content)
+        
+        
+        content = re.sub(rf"\Истина\b", "True", content)
+        content = re.sub(rf"\Ложь\b", "False", content)
 
 
         
@@ -546,6 +549,7 @@ def run_rupy(input_file):
 
 
 def find_python_in_registry():
+    import winreg
     """Ищет путь к python.exe через системный реестр Windows."""
     # Проверяем две основные ветки реестра: текущего пользователя и системную
     registry_roots = [winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE]
@@ -592,7 +596,7 @@ def find_local_python():
     return "Python не найден на ПК"
 
 # Проверка работы функции
-print("Найденный путь к Python:", find_local_python())
+#print("Найденный путь к Python:", find_local_python())
 
 
 if __name__ == "__main__":
