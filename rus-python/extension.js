@@ -3,6 +3,67 @@ const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
 
+
+class RuPyFormattingProvider {
+    provideDocumentFormattingEdits(document, options, token) {
+        const edits = [];
+        const lineCount = document.lineCount;
+        let indentLevel = 0;
+        const tabSize = options.tabSize || 4;
+        const indentString = options.insertSpaces ? ' '.repeat(tabSize) : '\t';
+
+        for (let i = 0; i < lineCount; i++) {
+            const line = document.lineAt(i);
+            if (line.isEmptyOrWhitespace) {
+                // Оставляем пустые строки пустыми (без лишних пробелов)
+                if (line.text.length > 0) {
+                    edits.push(vscode.TextEdit.replace(line.range, ''));
+                }
+                continue;
+            }
+
+            let trimmedText = line.text.trim();
+
+            // Логика уменьшения отступа для закрывающих конструкций (если они есть в RuPy)
+            // Например, если строка начинается с "конец", "иначе", "выход" и т.д.
+            if (trimmedText.startsWith('иначе') || trimmedText.startsWith('когда')) {
+                indentLevel = Math.max(0, indentLevel - 1);
+            }
+
+            // Формируем правильный отступ для текущей строки
+            const correctIndent = indentString.repeat(indentLevel);
+            
+            // Базовое форматирование пробелов внутри строки:
+            // 1. Ставим ровно по одному пробелу вокруг операторов (=, +, -, *, /, ==)
+            // 2. Убираем пробелы перед запятыми и двоеточиями, оставляем один ПОСЛЕ
+            let formattedText = trimmedText
+                .replace(/\s*([=\+\-\*\/]|==)\s*/g, ' $1 ') // Пробелы вокруг операторов
+                .replace(/\s*([:,])\s*/g, '$1 ')            // Пробел строго ПОСЛЕ знаков препинания
+                .replace(/\s+/g, ' ');                     // Схлопывание двойных пробелов
+
+            // Восстанавливаем строку с правильным отступом
+            const newLineText = correctIndent + formattedText.trim();
+
+            if (line.text !== newLineText) {
+                edits.push(vscode.TextEdit.replace(line.range, newLineText));
+            }
+
+            // Логика увеличения отступа для СЛЕДУЮЩЕЙ строки
+            // Например, если текущая строка заканчивается двоеточием (как в Python) или ключевым словом
+            if (trimmedText.endsWith(':') || trimmedText.startsWith('если') || trimmedText.startsWith('функция')) {
+                indentLevel++;
+            }
+        }
+
+        return edits;
+    }
+}
+
+
+
+
+
+
 /**
  * 1. ФУНКЦИЯ АВТОМАТИЧЕСКОГО ПОИСКА ИНТЕРПРЕТАТОРА
  * Ищет команду в текущем PATH или читает свежие данные напрямую из реестра Windows.
@@ -77,52 +138,75 @@ function activate(context) {
 
         const text = editor.document.getText();
         const importDecs = []; // Для названий модулей (Зеленый)
-        const keywordDecs = []; // Для ключевого слова "использовать" (Розовый)
-        const funcDecs = [];
+        const keywordDecs = []; // Для ключевых слов (Розовый)
+        const funcDecs = []; // Для названий функций (Синий/Желтый)
 
         for (const [pyMod, modData] of Object.entries(modulesData)) {
             if (!modData) continue;
             const ruMod = modData["ru-name"] || pyMod;
 
-            // --- БЛОК 1: ПОДСВЕТКА ИМПОРТА (использовать время) ---
-            // Здесь две группы: m[1] = "использовать", m[2] = имя модуля
-            const importRegEx = new RegExp(`(использовать)\\s+(${ruMod})(?![\\w\\а-яА-ЯёЁ])`, 'g');
+            // --- БЛОК 1: ПОДСВЕТКА ИМПОРТА (использовать время [как в]) ---
+            // Теперь выражение может опционально захватывать "как <алиас>"
+            const importRegEx = new RegExp(`(использовать)\\s+(${ruMod})(?:\\s+(как)\\s+([\\w\\а-яА-ЯёЁ]+))?(?![\\w\\а-яА-ЯёЁ])`, 'g');
             let m;
             while ((m = importRegEx.exec(text)) !== null) {
-                if (!m[1] || !m[2]) continue; // Защита от пустых совпадений
+                if (!m[1] || !m[2]) continue;
 
                 const fullMatchIndex = m.index;
+                const fullMatchText = m[0];
                 const keywordText = m[1]; // "использовать"
                 const moduleText = m[2];  // например, "время"
 
-                const moduleStartIndex = fullMatchIndex + m[0].indexOf(moduleText);
-
+                // Подсвечиваем "использовать"
                 keywordDecs.push({
                     range: new vscode.Range(
-                        editor.document.positionAt(fullMatchIndex),
-                        editor.document.positionAt(fullMatchIndex + keywordText.length)
+                        editor.document.positionAt(fullMatchIndex + fullMatchText.indexOf(keywordText)),
+                        editor.document.positionAt(fullMatchIndex + fullMatchText.indexOf(keywordText) + keywordText.length)
                     )
                 });
 
+                // Подсвечиваем имя модуля
+                const moduleStartIndex = fullMatchIndex + fullMatchText.indexOf(moduleText);
                 importDecs.push({
                     range: new vscode.Range(
                         editor.document.positionAt(moduleStartIndex),
                         editor.document.positionAt(moduleStartIndex + moduleText.length)
                     )
                 });
+
+                // Если в строке есть слово "как" (группа m[3])
+                if (m[3]) {
+                    const asText = m[3]; // "как"
+                    const aliasText = m[4]; // например, "д"
+
+                    // Подсвечиваем "как" в розовый
+                    const asStartIndex = fullMatchIndex + fullMatchText.indexOf(asText);
+                    keywordDecs.push({
+                        range: new vscode.Range(
+                            editor.document.positionAt(asStartIndex),
+                            editor.document.positionAt(asStartIndex + asText.length)
+                        )
+                    });
+
+                    // Алиас подсвечиваем в зеленый (или синий, по вашему выбору — пусть пока будет в importDecs)
+                    const aliasStartIndex = fullMatchIndex + fullMatchText.lastIndexOf(aliasText);
+                    importDecs.push({
+                        range: new vscode.Range(
+                            editor.document.positionAt(aliasStartIndex),
+                            editor.document.positionAt(aliasStartIndex + aliasText.length)
+                        )
+                    });
+                }
             }
 
             // --- БЛОК 2: ПОДСВЕТКА ФУНКЦИЙ И ИХ МОДУЛЕЙ (время.время) ---
-            if (text.includes(`использовать ${ruMod}`) && modData.sources) {
+            if (modData.sources) { // Убрал strict-проверку на 'использовать', чтобы подсвечивало и при 'из ... использовать'
                 for (const [pySrc, srcData] of Object.entries(modData.sources)) {
                     if (!srcData) continue;
 
                     const ruSrc = srcData["ru-name"] || pySrc;
                     const escapedRuSrc = ruSrc.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-                    // Регулярное выражение захватывает: 
-                    // m[1] — имя модуля (время)
-                    // m[2] — имя функции (время)
                     const funcRegEx = new RegExp(`(?:^|[^\\w\\а-яА-ЯёЁ])(${ruMod})\\s*\\.\\s*(${escapedRuSrc})(?![\\w\\а-яА-ЯёЁ])`, 'g');
 
                     let fm;
@@ -130,11 +214,10 @@ function activate(context) {
                         if (!fm[1] || !fm[2]) continue;
 
                         const fullMatchText = fm[0];
-                        const moduleNameText = fm[1];   // Первое слово "время"
-                        const functionNameText = fm[2]; // Второе слово "время"
+                        const moduleNameText = fm[1];   
+                        const functionNameText = fm[2]; 
                         const fullMatchIndex = fm.index;
 
-                        // 1. Находим позицию названия модуля и добавляем в ЗЕЛЕНУЮ подсветку
                         const modStartIndex = fullMatchIndex + fullMatchText.indexOf(moduleNameText);
                         importDecs.push({
                             range: new vscode.Range(
@@ -143,7 +226,6 @@ function activate(context) {
                             )
                         });
 
-                        // 2. Находим позицию функции (после точки) и добавляем в подсветку ФУНКЦИЙ
                         const funcStartIndex = fullMatchIndex + fullMatchText.lastIndexOf(functionNameText);
                         funcDecs.push({
                             range: new vscode.Range(
@@ -155,20 +237,78 @@ function activate(context) {
                 }
             }
 
+                        // --- БЛОК 3: ПОДСВЕТКА СЛОЖНОГО ИМПОРТА (из время использовать время [как в]) ---
+            if (modData.sources) {
+                for (const [pySrc, srcData] of Object.entries(modData.sources)) {
+                    if (!srcData) continue;
+
+                    const ruSrc = srcData["ru-name"] || pySrc;
+                    const escapedRuSrc = ruSrc.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+                    // Захватывает структуру: из (1) модуль (2) использовать (3) функция (4) [как (5) алиас (6)]
+                    const fromRegEx = new RegExp(`\\b(из)\\s+(${ruMod})\\s+(использовать)\\s+(${escapedRuSrc})(?:\\s+(как)\\s+([\\w\\а-яА-ЯёЁ]+))?\\b`, 'g');
+                    
+                    let exM;
+                    while ((exM = fromRegEx.exec(text)) !== null) {
+                        const fullMatchIndex = exM.index;
+                        const fullMatchText = exM[0];
+                        
+                        const izText = exM[1];        // "из"
+                        const modText = exM[2];       // "время" (модуль)
+                        const useText = exM[3];       // "использовать"
+                        const funcText = exM[4];      // "время" (функция)
+
+                        // 1. Подсвечиваем "из" (Розовый)
+                        const izRelIndex = fullMatchText.indexOf(izText);
+                        const izStart = fullMatchIndex + izRelIndex;
+                        keywordDecs.push({ range: new vscode.Range(editor.document.positionAt(izStart), editor.document.positionAt(izStart + izText.length)) });
+
+                        // 2. Подсвечиваем модуль (Зеленый)
+                        const modRelIndex = fullMatchText.indexOf(modText);
+                        const modStart = fullMatchIndex + modRelIndex;
+                        importDecs.push({ range: new vscode.Range(editor.document.positionAt(modStart), editor.document.positionAt(modStart + modText.length)) });
+
+                        // 3. Подсвечиваем "использовать" (Розовый)
+                        const useRelIndex = fullMatchText.indexOf(useText, modRelIndex + modText.length);
+                        const useStart = fullMatchIndex + useRelIndex;
+                        keywordDecs.push({ range: new vscode.Range(editor.document.positionAt(useStart), editor.document.positionAt(useStart + useText.length)) });
+
+                        // 4. Подсвечиваем функцию (Зеленый)
+                        const funcRelIndex = fullMatchText.indexOf(funcText, useRelIndex + useText.length);
+                        const funcStart = fullMatchIndex + funcRelIndex;
+                        funcDecs.push({ range: new vscode.Range(editor.document.positionAt(funcStart), editor.document.positionAt(funcStart + funcText.length)) });
+
+                        // 5. Если в конце строки есть конструкция "как алиас" (группы 5 и 6)
+                        if (exM[5] && exM[6]) {
+                            const asText = exM[5];     // "как"
+                            const aliasText = exM[6];  // "а"
+
+                            // Подсвечиваем "как" (Розовый) — считаем индекс ОТНОСИТЕЛЬНО строки совпадения
+                            const asRelIndex = fullMatchText.indexOf(asText, funcRelIndex + funcText.length);
+                            const asStart = fullMatchIndex + asRelIndex;
+                            keywordDecs.push({ range: new vscode.Range(editor.document.positionAt(asStart), editor.document.positionAt(asStart + asText.length)) });
+
+                            // Подсвечиваем алиас (Зеленый)
+                            const aliasRelIndex = fullMatchText.lastIndexOf(aliasText);
+                            const aliasStart = fullMatchIndex + aliasRelIndex;
+                            funcDecs.push({ range: new vscode.Range(editor.document.positionAt(aliasStart), editor.document.positionAt(aliasStart + aliasText.length)) });
+                        }
+                    }
+                }
+            }
+
 
         }
 
-
         // Применяем стили к редактору
-        editor.setDecorations(importDecorationType, importDecs); // Название модуля (Зеленый)
+        editor.setDecorations(importDecorationType, importDecs); 
         editor.setDecorations(funcDecorationType, funcDecs);
 
-        // ВАЖНО: Если у вас еще не объявлен стиль для розового цвета, 
-        // мы можем использовать встроенный или создать новый, но сейчас применим его к импортам
         if (typeof keywordDecorationType !== 'undefined') {
             editor.setDecorations(keywordDecorationType, keywordDecs);
         }
     }
+
 
     // --- 4. ДИНАМИЧЕСКИЕ ПОДСКАЗКИ (СНИППЕТЫ С ОПИСАНИЕМ) ---
 
@@ -344,6 +484,17 @@ print(json.dumps({'sig': sig, 'doc': doc.strip()}))
         item.documentation = docMarkdown;
         return item;
     };
+
+
+
+
+    // Регистрируем форматировщик для файлов с селектором 'rupy'
+    const formattingProvider = vscode.languages.registerDocumentFormattingEditProvider(
+        { scheme: 'file', language: 'rupy' }, 
+        new RuPyFormattingProvider()
+    );
+
+    context.subscriptions.push(formattingProvider);
 
 
 

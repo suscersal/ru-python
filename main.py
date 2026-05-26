@@ -179,28 +179,36 @@ def run_rupy(input_file):
             continue # pass добавили (или нет), идем дальше
 
         elif cmd == 'вывести':
-            # 1. Берем всё, что идет после слова "вывести"
+            import re
             expression = " ".join(parts[1:])
             
-            # 2. Проходим по всем модулям в JSON и заменяем русские имена на английские
+            # Проходим по всем модулям в JSON
             for py_mod_name, mod_data in MOD_CONFIG.items():
                 ru_mod_name = mod_data.get("ru-name")
+                sources = mod_data.get("sources", {})
                 
-                # Если в выражении есть "время."
+                # 1. Заменяем вызовы через точку (время.спать -> time.sleep)
                 if f"{ru_mod_name}." in expression:
-                    # Заменяем модуль: время. -> time.
                     expression = expression.replace(f"{ru_mod_name}.", f"{py_mod_name}.")
                     
-                    # Заменяем функции из этого модуля: .время -> .time
-                    sources = mod_data.get("sources", {})
                     for py_src, src_data in sources.items():
                         ru_src = src_data.get("ru-name")
-                        if f".{ru_src}" in expression:
-                            expression = expression.replace(f".{ru_src}", f".{py_src}")
+                        # Безопасная замена функции после точки
+                        expression = re.sub(rf"\.{ru_src}\b", f".{py_src}", expression)
+                
+                # 2. Прямой вызов функции (спать() -> sleep())
+                # Ищем только ЦЕЛОЕ СЛОВО, чтобы не сломать "сикссевен"
+                else:
+                    for py_src, src_data in sources.items():
+                        ru_src = src_data.get("ru-name")
+                        # \b гарантирует, что мы заменим "время", но не тронем часть слова "сикссевен"
+                        expression = re.sub(rf"\b{ru_src}\b", py_src, expression)
             
-            # 3. Записываем итоговый принт
+            # Записываем итоговый принт
             py_lines.append(f"{prefix}print({expression})")
             continue
+
+
 
 
         elif cmd == 'ввод':
@@ -225,41 +233,112 @@ def run_rupy(input_file):
             continue
 
 
-            
-        elif cmd == 'использовать' or 'использовать' in cmd:
-            module_to_import = content.replace('использовать ', '').strip()
-            found_in_config = False
-            for py_mod_name, mod_data in MOD_CONFIG.items():
-                if mod_data.get("ru-name") == module_to_import:
-                    # Если нашли в JSON (например, "время"), пишем английский "import time"
-                    # print(py_mod_name)
-                    py_lines.append(f"{prefix}import {py_mod_name}")
-                    found_in_config = True
-                    break
-            
-            if not found_in_config:
-                # Если в JSON модуля нет, оставляем как было (на случай обычных библиотек)
-                py_lines.append(f"{prefix}import {module_to_import}")
-            continue # Переходим к следующей строке кода
-
+    
         elif cmd == 'из':
-            # Синтаксис: из модуль использовать функция
-            # Пример: из math использовать sqrt -> from math import sqrt
-            if ' использовать ' in content:
-                # Разделяем строку по ключевому слову ' использовать '
-                from_part, import_part = content.split(' использовать ', 1)
-                
-                # Извлекаем имя модуля (убираем само слово 'из')
-                module_name = from_part.replace('из', '', 1).strip()
-                # Извлекаем то, что импортируем
-                imported_items = import_part.strip()
-                
-                py_lines.append(f"{prefix}from {module_name} import {imported_items}")
-            else:
-                # Если синтаксис нарушен, пишем как есть
-                py_lines.append(f"{prefix}{content}")
-       
+            # Пример: из время использовать время как в
+            # Безопасно убираем начальное "из " из строки content, если оно там осталось
+            clean_content = content.replace('из ', '', 1).strip() if content.startswith('из ') else content.strip()
             
+            if ' использовать ' in clean_content:
+                from_part, import_part = clean_content.split(' использовать ', 1)
+                module_name = from_part.strip()
+                
+                # 1. Переводим имя модуля
+                target_mod_data = None
+                for py_mod_name, mod_data in MOD_CONFIG.items():
+                    if mod_data.get("ru-name") == module_name:
+                        module_name = py_mod_name
+                        target_mod_data = mod_data
+                        break
+                
+                # 2. Разбираемся с "как" внутри импортируемой части
+                if ' как ' in import_part:
+                    imported_items, alias = import_part.split(' как ', 1)
+                    imported_items = imported_items.strip()
+                    alias = alias.strip()
+                    
+                    # Переводим функцию из sources
+                    if target_mod_data and "sources" in target_mod_data:
+                        for py_src, src_data in target_mod_data["sources"].items():
+                            if src_data.get("ru-name") == imported_items:
+                                imported_items = py_src
+                                break
+                                
+                    py_lines.append(f"{prefix}from {module_name} import {imported_items} as {alias}")
+                else:
+                    imported_items = import_part.strip()
+                    if target_mod_data and "sources" in target_mod_data:
+                        for py_src, src_data in target_mod_data["sources"].items():
+                            if src_data.get("ru-name") == imported_items:
+                                imported_items = py_src
+                                break
+                                
+                    py_lines.append(f"{prefix}from {module_name} import {imported_items}")
+            else:
+                py_lines.append(f"{prefix}{content}")
+            continue
+
+
+
+        elif cmd == 'использовать':
+            # Пример: использовать время как д
+            # Очищаем content от слова "использовать ", если оно там есть
+            clean_content = content.replace('использовать ', '', 1).strip() if content.startswith('использовать ') else content.strip()
+            
+            if ' как ' in clean_content:
+                module_to_import, alias = clean_content.split(' как ', 1)
+                module_to_import = module_to_import.strip()
+                alias = alias.strip()
+                
+                found_in_config = False
+                for py_mod_name, mod_data in MOD_CONFIG.items():
+                    if mod_data.get("ru-name") == module_to_import:
+                        py_lines.append(f"{prefix}import {py_mod_name} as {alias}")
+                        found_in_config = True
+                        break
+                
+                if not found_in_config:
+                    py_lines.append(f"{prefix}import {module_to_import} as {alias}")
+            
+            else:
+                module_to_import = clean_content
+                found_in_config = False
+                for py_mod_name, mod_data in MOD_CONFIG.items():
+                    if mod_data.get("ru-name") == module_to_import:
+                        py_lines.append(f"{prefix}import {py_mod_name}")
+                        found_in_config = True
+                        break
+                
+                if not found_in_config:
+                    py_lines.append(f"{prefix}import {module_to_import}")
+            continue
+
+
+
+        elif cmd == 'как':
+            # Синтаксис: использовать время как в -> первая команда перехватит "использовать",
+            # но если ваша архитектура бьет строку так, что "как" становится отдельной командой:
+            # Пример: использовать pandas как pd
+            if 'использовать ' in content and ' как ' in content:
+                base_part, alias = content.split(' как ', 1)
+                alias = alias.strip()
+                module_to_import = base_part.replace('использовать ', '').strip()
+                
+                found_in_config = False
+                for py_mod_name, mod_data in MOD_CONFIG.items():
+                    if mod_data.get("ru-name") == module_to_import:
+                        py_lines.append(f"{prefix}import {py_mod_name} as {alias}")
+                        found_in_config = True
+                        break
+                
+                if not found_in_config:
+                    py_lines.append(f"{prefix}import {module_to_import} as {alias}")
+            else:
+                py_lines.append(f"{prefix}{content}")
+            continue
+
+
+
             
         elif cmd == 'иначе':
             py_lines.append(f"{prefix}else:")
@@ -296,15 +375,24 @@ def run_rupy(input_file):
         elif cmd == 'для':
             if ' в ' in content:
                 py_lines.append(f"{prefix}for {parts[1]} in {parts[3]}:")
+
+            elif 'раз' in parts or 'раза' in parts:
+                py_lines.append(f"{prefix}for {parts[1]} in range({parts[2]}):")
+            
             else:
                 py_lines.append(f"{prefix}for {parts[1]} in range({parts[-1]}):")
+                
             indent_level += 1
 
-        elif 'раза' in parts:
+        elif 'раз' in parts:
             var_name = parts[0] if len(parts) >= 3 else "_"
             count = parts[1] if len(parts) >= 3 else parts[0]
+            
             py_lines.append(f"{prefix}for {var_name} in range({count}):")
             indent_level += 1
+
+        elif cmd == 'пропустить':
+            py_lines.append(f"{prefix}pass")
 
         elif cmd == 'класс':
             py_lines.append(f"{prefix}class {parts[1]}:")
