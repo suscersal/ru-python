@@ -6,7 +6,9 @@ import traceback
 import shutil
 import pathlib
 import requests
-
+import subprocess
+import winreg
+import re
 
 
 
@@ -141,13 +143,19 @@ def run_rupy(input_file):
             py_lines.append('')
             continue
         raw_line = line.strip()
-        # print(raw_line)
-        # if not raw_line or raw_line.startswith("#"):
-        #     py_lines.append("")
-        #     continue
-        
+
         # 1. Глобальные замены
         content = raw_line.replace('это.', 'self.')
+
+        content = re.sub(r"\bи\b", "and", content)
+        content = re.sub(r"\bили\b", "or", content)
+        content = re.sub(r"\bне\b", "not", content)
+
+        content = re.sub(rf"\.вывести\b", ".write", content)
+        content = re.sub(rf"\.прочитать\b", ".read", content)
+        content = re.sub(rf"\.прочитать_строку\b", ".readline", content)
+
+
         
         # 2. Умная обработка методов списков (сразу с записью и выходом из цикла)
         if '.добавить ' in content or '.удалить ' in content:
@@ -178,8 +186,8 @@ def run_rupy(input_file):
                 py_lines.append(f"{prefix}    pass")
             continue # pass добавили (или нет), идем дальше
 
+
         elif cmd == 'вывести':
-            import re
             expression = " ".join(parts[1:])
             
             # Проходим по всем модулям в JSON
@@ -197,11 +205,11 @@ def run_rupy(input_file):
                         expression = re.sub(rf"\.{ru_src}\b", f".{py_src}", expression)
                 
                 # 2. Прямой вызов функции (спать() -> sleep())
-                # Ищем только ЦЕЛОЕ СЛОВО, чтобы не сломать "сикссевен"
+                # Ищем только ЦЕЛОЕ СЛОВО, чтобы не сломать 
                 else:
                     for py_src, src_data in sources.items():
                         ru_src = src_data.get("ru-name")
-                        # \b гарантирует, что мы заменим "время", но не тронем часть слова "сикссевен"
+                        # \b гарантирует, что мы заменим "время", но не тронем часть слова 
                         expression = re.sub(rf"\b{ru_src}\b", py_src, expression)
             
             # Записываем итоговый принт
@@ -339,6 +347,34 @@ def run_rupy(input_file):
 
 
 
+
+        elif 'открыть' in cmd:
+            # Исходная строка: открыть("лог.txt", "запись") как файл
+            line_content = content.strip()
+            
+            # 1. Заменяем русские режимы на понятные для Python латинские буквы
+            line_content = line_content.replace('"запись"', '"w"').replace("'запись'", "'w'")
+            line_content = line_content.replace('"чтение"', '"r"').replace("'чтение'", "'r'")
+            line_content = line_content.replace('"добавление"', '"a"').replace("'добавление'", "'a'")
+            
+            # 2. Автоматически добавляем поддержку UTF-8 перед закрытием скобки функции open
+            if ')' in line_content:
+                # Находим последнюю скобку в вызове открыть(...) и вставляем кодировку
+                line_content = line_content.replace(')', ', encoding="utf-8")', 1)
+            
+            # 3. Заменяем первое слово "открыть" на "open"
+            line_content = re.sub(rf"\bоткрыть\b", "open", line_content, count=1)
+            
+            # 4. Заменяем ключевое слово "как" на английское "as"
+            line_content = re.sub(rf"\bкак\b", "as", line_content)
+            
+            # 5. Формируем конструкцию с "with" и двоеточием в конце
+            py_lines.append(f"{prefix}with {line_content}:")
+            
+            indent_level += 1
+            continue
+
+     
             
         elif cmd == 'иначе':
             py_lines.append(f"{prefix}else:")
@@ -508,9 +544,6 @@ def run_rupy(input_file):
 
 
 
-import os
-import sys
-import winreg
 
 def find_python_in_registry():
     """Ищет путь к python.exe через системный реестр Windows."""
@@ -605,7 +638,6 @@ if __name__ == "__main__":
                     module_name = param[1]
                     print(f"Установка модуля {module_name} через pip...")
                     
-                    import subprocess
                     try:
                         # Запускаем команду: python.exe -m pip install имя_модуля
                         result = subprocess.run(
