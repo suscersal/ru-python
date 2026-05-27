@@ -134,31 +134,33 @@ def run_rupy(input_file):
         lines = f.readlines()
 
     py_lines = []
+    all_defs = []
+    all_vars = []
     indent_level = 0
-    
+   # \n это поможет исправить баг с комментариями 
     for line in lines:
-        # print(line)
         if line == '\n':
             py_lines.append('')
             continue
         raw_line = line.strip()
 
         # 1. Глобальные замены
-        content = raw_line.replace('это.', 'self.')
+        if "#" not in raw_line:
+           content = raw_line.replace('это.', 'self.')
+           #print(all_vars)
+           if 'и' not in all_vars and  'пусть и' not in content and 'как' not in content:
+             content = re.sub(r"\bи\b", "and", content)
+           content = re.sub(r"\bили\b", "or", content)
+           content = re.sub(r"\bне\b", "not", content)
 
-        content = re.sub(r"\bи\b", "and", content)
-        content = re.sub(r"\bили\b", "or", content)
-        content = re.sub(r"\bне\b", "not", content)
+           content = re.sub(rf"\.вывести\b", ".write", content)
+           content = re.sub(rf"\.прочитать\b", ".read", content)
+           content = re.sub(rf"\.прочитать_строку\b", ".readline", content)
+           content = re.sub(rf"\Истина\b", "True", content)
+           content = re.sub(rf"\Ложь\b", "False", content)
 
-        content = re.sub(rf"\.вывести\b", ".write", content)
-        content = re.sub(rf"\.прочитать\b", ".read", content)
-        content = re.sub(rf"\.прочитать_строку\b", ".readline", content)
-        
-        
-        content = re.sub(rf"\Истина\b", "True", content)
-        content = re.sub(rf"\Ложь\b", "False", content)
-
-
+        if 'инвентарь' in line:
+            print(line,content)
         
         # 2. Умная обработка методов списков (сразу с записью и выходом из цикла)
         if '.добавить ' in content or '.удалить ' in content:
@@ -189,9 +191,29 @@ def run_rupy(input_file):
                 py_lines.append(f"{prefix}    pass")
             continue # pass добавили (или нет), идем дальше
 
-
+        elif line.strip().startswith('#'):
+          #  print(parts)
+            py_lines.append(f'{prefix}#{' '.join(parts[1:])}')
+            #print(py_lines[len(py_lines)-1])
+            #print("комент")
+            continue
         elif cmd == 'вывести':
+            def world_in_worlds_list(world,l):
+                for i in l:
+                    if world in i:
+                        return True
+                return False
+            # Если строка начинается с комментария (после удаления пробелов), пропускаем её
+            if line.strip().startswith('#'):
+               continue
+            
             expression = " ".join(parts[1:])
+            
+            if world_in_worlds_list('self.',parts):
+                py_lines.append(f"{prefix}print({expression})")
+                continue
+                
+           # print(expression,parts,len(py_lines),cmd)
             
             # Проходим по всем модулям в JSON
             for py_mod_name, mod_data in MOD_CONFIG.items():
@@ -201,11 +223,13 @@ def run_rupy(input_file):
                 # 1. Заменяем вызовы через точку (время.спать -> time.sleep)
                 if f"{ru_mod_name}." in expression:
                     expression = expression.replace(f"{ru_mod_name}.", f"{py_mod_name}.")
+   
                     
                     for py_src, src_data in sources.items():
                         ru_src = src_data.get("ru-name")
                         # Безопасная замена функции после точки
                         expression = re.sub(rf"\.{ru_src}\b", f".{py_src}", expression)
+                        
                 
                 # 2. Прямой вызов функции (спать() -> sleep())
                 # Ищем только ЦЕЛОЕ СЛОВО, чтобы не сломать 
@@ -214,7 +238,8 @@ def run_rupy(input_file):
                         ru_src = src_data.get("ru-name")
                         # \b гарантирует, что мы заменим "время", но не тронем часть слова 
                         expression = re.sub(rf"\b{ru_src}\b", py_src, expression)
-            
+ 
+            #print(expression+"\n")
             # Записываем итоговый принт
             py_lines.append(f"{prefix}print({expression})")
             continue
@@ -234,7 +259,12 @@ def run_rupy(input_file):
 
 
         elif cmd == 'пусть':
-            py_lines.append(f"{prefix}{' '.join(parts[1:])}")
+            #print(parts,all_defs)
+            all_vars.append(parts[1])
+            if parts[3] not in all_defs:
+               py_lines.append(f"{prefix}{' '.join(parts[1:])}")
+            else:
+                py_lines.append(f"{prefix}{' '.join(parts[1:4])}({','.join(parts[4:])})")
 
         elif cmd == 'если':
             # Убираем слово 'если' и берем всё остальное как условие
@@ -400,6 +430,7 @@ def run_rupy(input_file):
                     err_type = "Exception"
                     
                 py_lines.append(f"{prefix}except {err_type} as {err_var}:")
+                all_vars.append(err_var)
             else:
                 remainder = args_str.strip()
                 if remainder:
@@ -449,13 +480,13 @@ def run_rupy(input_file):
                 py_lines.append(f"{prefix}def {func_name}(self{', ' + args if args else ''}):")
             else:
                 py_lines.append(f"{prefix}def {func_name}({args}):")
+            all_defs.append(func_name)
             indent_level += 1
 
         elif cmd == 'вернуть':
             py_lines.append(f"{prefix}return {' '.join(parts[1:])}")
             
-        elif "#" in cmd:
-            py_lines.append(f'{prefix}#{' '.join(parts[1:])}')
+        
         else:
             is_processed = False
             for py_mod, mod_data in MOD_CONFIG.items():
@@ -486,7 +517,7 @@ def run_rupy(input_file):
                     break
         
             if is_processed: continue
-
+            
             # АВТО-СКОБКИ ДЛЯ ВЫЗОВОВ МЕТОДОВ И ФУНКЦИЙ
             if ' ' in content and '=' not in content and '(' not in content:
                 # Находим первое слово (это имя функции/метода)
@@ -498,6 +529,7 @@ def run_rupy(input_file):
                     content = f"{func_part.strip()}({args_part.strip()})"
             
             py_lines.append(f"{prefix}{content}")
+            print("елс",content)
 
 
 
