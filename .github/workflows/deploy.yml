@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'main.py'
+  workflow_dispatch: # Возможность ручного запуска
 
 jobs:
   run-code:
