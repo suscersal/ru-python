@@ -2,9 +2,9 @@ name: Тест на проверку работоспособности
 
 on:
   push:
-    paths:
-      - 'main.py'
-      - '.github/workflows/deploy.yml
+    paths: ['main.py', '.github/workflows/deploy.yml']
+
+
   workflow_dispatch: # Возможность ручного запуска
 
 jobs:
