@@ -1,1 +1,6 @@
 winreg
+json
+shutil
+pathlib
+requests
+subprocess
