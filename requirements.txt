@@ -1,4 +1,3 @@
-winreg
 json
 shutil
 pathlib
