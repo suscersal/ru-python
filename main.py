@@ -7,8 +7,6 @@ import shutil
 import pathlib
 import requests
 import subprocess
-import re
-
 
 
 os.system('')
@@ -137,7 +135,7 @@ def run_rupy(input_file):
     all_defs = []
     all_vars = []
     indent_level = 0
-   # \n это поможет исправить баг с комментариями 
+    \n это поможет исправить баг с комментариями 
     for line in lines:
         if line == '\n':
             py_lines.append('')
