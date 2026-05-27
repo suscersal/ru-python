@@ -27,5 +27,8 @@ jobs:
           }
 
       - name: Запуск скрипта main.py
+        env:
+          PYTHONUTF8: "1"  
         run: python main.py
+
 
