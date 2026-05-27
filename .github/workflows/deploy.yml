@@ -1,4 +1,4 @@
-name: Run Main Script
+name: Тест на проверку работоспособности 
 
 on:
   push:
@@ -7,22 +7,24 @@ on:
 
 jobs:
   run-code:
+    name: Выполнение кода
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Клонирование репозитория
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Настройка среды Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
+          python-version: '3.13'
 
-      - name: Install dependencies
+      - name: Установка зависимостей
         run: |
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
+          if (Test-Path requirements.txt) {
+              pip install -r requirements.txt
+          }
 
-      - name: Run main.py
+      - name: Запуск скрипта main.py
         run: python main.py
+
