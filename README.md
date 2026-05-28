@@ -1,4 +1,5 @@
-[![Visual Studio Marketplace](https://shields.io)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+[![Installs](https://shields.io)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+
 
 
 
