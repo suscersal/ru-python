@@ -1,4 +1,4 @@
-[![Доступно в VS Code Marketplace](https://demolab.com)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+[![Visual Studio Marketplace](https://img.shields.io/badge/VS%20Code%20Marketplace-installs-%23007ACC?style=flat-square&logo=visual-studio-code&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 
 
 
