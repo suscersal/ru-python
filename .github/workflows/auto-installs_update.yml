@@ -2,7 +2,7 @@ name: Update Download Count Badge
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Каждые 6 часов (00:00, 06:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'  # Каждые 6 часов
   workflow_dispatch:        # Запуск вручную
 
 jobs:
@@ -10,22 +10,45 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      
-      - name: Update badge in README
+      - name: Get download count
+        id: count
         run: |
-          python3 << 'EOF'
-          import urllib.request
-          import json
-          import re
+          # Получаем JSON от VS Code Marketplace
+          curl -s -X POST https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json;api-version=3.0-preview.1" \
+            -d '{"filters":[{"criteria":[{"filterType":7,"value":"suscersal.russ-python"}]}],"flags":914}' \
+            > /tmp/marketplace.json
+          
+          # Извлекаем downloadCount через Python
+          COUNT=$(python3 -c "
+import json
+with open('/tmp/marketplace.json') as f:
+    data = json.load(f)
+stats = data['results'][0]['extensions'][0]['statistics']
+download_count = [s['value'] for s in stats if s['statisticName'] == 'downloadCount'][0]
+print(int(download_count))
+")
+          
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "::notice::Download count: $COUNT"
+      
+      - name: Update README
+        run: |
+          # Заменяем число в badge
+          sed -i "s/downloads-[0-9]+/downloads-${COUNT}/" README.md
+        env:
+          COUNT: ${{ steps.count.outputs.count }}
+      
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if git diff --quiet && git diff --staged --quiet; 
           
           # Get download count from VS Code Marketplace
           data = json.dumps({
