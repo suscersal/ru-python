@@ -1,3 +1,6 @@
+[![Visual Studio Marketplace](https://shields.io)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+
+
 # Транслятор rupy в Python
 
 ## Готовый бинарник
