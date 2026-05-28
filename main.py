@@ -135,12 +135,16 @@ def run_rupy(input_file):
     all_defs = []
     all_vars = []
     indent_level = 0
-#    \n это поможет исправить баг с комментариями 
     for line in lines:
         if line == '\n':
             py_lines.append('')
             continue
         raw_line = line.strip()
+        
+        if line.strip().startswith('#'):
+            print(line)
+            py_lines.append(line[:len(line)-1])
+            continue
 
         # 1. Глобальные замены
         if "#" not in raw_line:
@@ -157,8 +161,7 @@ def run_rupy(input_file):
            content = re.sub(rf"\Истина\b", "True", content)
            content = re.sub(rf"\Ложь\b", "False", content)
 
-        if 'инвентарь' in line:
-            print(line,content)
+        
         
         # 2. Умная обработка методов списков (сразу с записью и выходом из цикла)
         if '.добавить ' in content or '.удалить ' in content:
@@ -527,7 +530,7 @@ def run_rupy(input_file):
                     content = f"{func_part.strip()}({args_part.strip()})"
             
             py_lines.append(f"{prefix}{content}")
-            print("елс",content)
+            
 
 
 
