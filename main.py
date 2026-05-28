@@ -142,7 +142,7 @@ def run_rupy(input_file):
         raw_line = line.strip()
         
         if line.strip().startswith('#'):
-            print(line)
+            #print(line)
             py_lines.append(line[:len(line)-1])
             continue
 
