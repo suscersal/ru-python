@@ -1,5 +1,4 @@
-[![VS Code Marketplace Installs](https://dynamic-badge-formatter.demolab.com/json?url=https%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dsuscersal.russ-python&query=%24.statistics%5B%3F(%40.statisticName%3D%3D%27install%27)%5D.value&formatter=metric&label=VS%20Code%20Marketplace&style=flat-square&logo=visual-studio-code&logoColor=white&color=orange)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
-
+![Downloads](https://img.shields.io/badge/downloads-27-blue)
 
 
 
