@@ -32,7 +32,7 @@ jobs:
       
       - name: Update README
         run: |
-          sed -i "s/downloads-[0-9]+/downloads-${COUNT}/" README.md
+          sed -i -E "s/downloads-[0-9]+/downloads-${COUNT}/" README.md
         env:
           COUNT: ${{ steps.count.outputs.count }}
       
