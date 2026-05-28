@@ -1,3 +1,5 @@
+[![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=visualstudiocode&logoColor=white) ![Downloads](https://img.shields.io/badge/Загрузки-27-blue)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+
 ## Подробности по расширению.
 
 * Самодельные snippets и самодельная русификация модулей [клик](https://github.com/suscersal/ru-python/blob/main/rus-python/README.md)
