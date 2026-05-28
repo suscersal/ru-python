@@ -1,0 +1,82 @@
+name: Update Download Count Badge
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Каждые 6 часов (00:00, 06:00, 12:00, 18:00 UTC)
+  workflow_dispatch:        # Запуск вручную
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      
+      - name: Update badge in README
+        run: |
+          python3 << 'EOF'
+          import urllib.request
+          import json
+          import re
+          
+          # Get download count from VS Code Marketplace
+          data = json.dumps({
+              'filters': [{'criteria': [{'filterType': 7, 'value': 'suscersal.russ-python'}]}],
+              'flags': 914
+          }).encode('utf-8')
+          
+          req = urllib.request.Request(
+              'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery',
+              data=data,
+              headers={
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json;api-version=3.0-preview.1'
+              },
+              method='POST'
+          )
+          
+          with urllib.request.urlopen(req) as response:
+              result = json.loads(response.read().decode('utf-8'))
+          
+          stats = result['results'][0]['extensions'][0]['statistics']
+          download_count = int([s['value'] for s in stats if s['statisticName'] == 'downloadCount'][0])
+          
+          print(f"Download count: {download_count}")
+          
+          # Update README.md
+          with open('README.md', 'r', encoding='utf-8') as f:
+              readme = f.read()
+          
+          # Replace existing badge
+          new_badge = f'![Downloads](https://img.shields.io/badge/downloads-{download_count}-blue)'
+          readme = re.sub(
+              r'![Downloads](https://img.shields.io/badge/downloads-d+-blue)',
+              new_badge,
+              readme
+          )
+          
+          with open('README.md', 'w', encoding='utf-8') as f:
+              f.write(readme)
+          
+          print("README.md updated successfully")
+          EOF
+      
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --quiet && git diff --staged --quiet || (
+            git commit -m "chore: update download count to $DOWNLOAD_COUNT"
+            git push
+          )
+        env:
+          DOWNLOAD_COUNT: ${{ steps.get_count.outputs.download_count }}
