@@ -2,8 +2,8 @@ name: Update Download Count Badge
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Каждые 6 часов
-  workflow_dispatch:        
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 
 jobs:
   update-badge:
@@ -16,29 +16,19 @@ jobs:
       - name: Get download count
         id: count
         run: |
-          # Получаем JSON от VS Code Marketplace
           curl -s -X POST https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery \
             -H "Content-Type: application/json" \
             -H "Accept: application/json;api-version=3.0-preview.1" \
             -d '{"filters":[{"criteria":[{"filterType":7,"value":"suscersal.russ-python"}]}],"flags":914}' \
             > /tmp/marketplace.json
           
-          # Извлекаем downloadCount через Python
-          COUNT=$(python3 -c "
-import json
-with open('/tmp/marketplace.json') as f:
-    data = json.load(f)
-stats = data['results'][0]['extensions'][0]['statistics']
-download_count = [s['value'] for s in stats if s['statisticName'] == 'downloadCount'][0]
-print(int(download_count))
-")
+          COUNT=$(python3 -c "import json; f=open('/tmp/marketplace.json'); d=json.load(f); stats=d['results'][0]['extensions'][0]['statistics']; print(int([s['value'] for s in stats if s['statisticName']=='downloadCount'][0]))")
           
           echo "count=$COUNT" >> $GITHUB_OUTPUT
-          echo "::notice::Download count: $COUNT"
+          echo "Download count: $COUNT"
       
       - name: Update README
         run: |
-          # Заменяем число в badge
           sed -i "s/downloads-[0-9]+/downloads-${COUNT}/" README.md
         env:
           COUNT: ${{ steps.count.outputs.count }}
@@ -48,58 +38,6 @@ print(int(download_count))
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add README.md
-          if git diff --quiet && git diff --staged --quiet; 
-          
-          # Get download count from VS Code Marketplace
-          data = json.dumps({
-              'filters': [{'criteria': [{'filterType': 7, 'value': 'suscersal.russ-python'}]}],
-              'flags': 914
-          }).encode('utf-8')
-          
-          req = urllib.request.Request(
-              'https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery',
-              data=data,
-              headers={
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json;api-version=3.0-preview.1'
-              },
-              method='POST'
-          )
-          
-          with urllib.request.urlopen(req) as response:
-              result = json.loads(response.read().decode('utf-8'))
-          
-          stats = result['results'][0]['extensions'][0]['statistics']
-          download_count = int([s['value'] for s in stats if s['statisticName'] == 'downloadCount'][0])
-          
-          print(f"Download count: {download_count}")
-          
-          # Update README.md
-          with open('README.md', 'r', encoding='utf-8') as f:
-              readme = f.read()
-          
-          # Replace existing badge
-          new_badge = f'![Downloads](https://img.shields.io/badge/downloads-{download_count}-blue)'
-          readme = re.sub(
-              r'![Downloads](https://img.shields.io/badge/downloads-d+-blue)',
-              new_badge,
-              readme
-          )
-          
-          with open('README.md', 'w', encoding='utf-8') as f:
-              f.write(readme)
-          
-          print("README.md updated successfully")
-          EOF
-      
-      - name: Commit and push if changed
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git diff --quiet && git diff --staged --quiet || (
-            git commit -m "chore: update download count to $DOWNLOAD_COUNT"
-            git push
-          )
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update downloads"; git push)
         env:
-          DOWNLOAD_COUNT: ${{ steps.get_count.outputs.download_count }}
+          COUNT: ${{ steps.count.outputs.count }}
