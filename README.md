@@ -1,4 +1,4 @@
-[![VS Code Marketplace Installs](https://img.shields.io/endpoint?url=https%3A%2F%2Fdynamic-badge-formatter.demolab.com%2Fjson%3Furl%3Dhttps%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dsuscersal.russ-python%26query%3D%24.statistics%5B%3F(%40.statisticName%3D%3D%27install%27)%5D.value%26formatter%3Dmetric%26label%3DVS%20Code%20Marketplace%26style%3Dflat-square%26logo%3Dvisual-studio-code%26logoColor%3Dwhite%26color%3Dorange%26link%3Dhttps%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dsuscersal.russ-python)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+[![VS Code Marketplace Installs](https://dynamic-badge-formatter.demolab.com/json?url=https%3A%2F%2Fmarketplace.visualstudio.com%2Fitems%3FitemName%3Dsuscersal.russ-python&query=%24.statistics%5B%3F(%40.statisticName%3D%3D%27install%27)%5D.value&formatter=metric&label=VS%20Code%20Marketplace&style=flat-square&logo=visual-studio-code&logoColor=white&color=orange)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 
 
 
