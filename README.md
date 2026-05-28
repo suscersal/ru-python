@@ -1,4 +1,4 @@
-[![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=visualstudiocode&logoColor=white)](https://visualstudio.com)
+[![Доступно в VS Code Marketplace](https://demolab.com)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 
 
 
