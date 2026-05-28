@@ -1,5 +1,8 @@
-[![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=visualstudiocode&logoColor=white) ![Downloads](https://img.shields.io/badge/Загрузки-31-blue)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
-
+[![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
+[![Marketplace Version](https://vsmarketplacebadges.dev/version-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
+[![Downloads](https://vsmarketplacebadges.dev/downloads-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
+[![Installs](https://vsmarketplacebadges.dev/installs-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
+[![Rating](https://vsmarketplacebadges.dev/rating-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 ## Подробности по расширению.
 
 * Самодельные snippets и самодельная русификация модулей [клик](https://github.com/suscersal/ru-python/blob/main/rus-python/README.md)
