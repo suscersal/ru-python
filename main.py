@@ -716,7 +716,8 @@ if __name__ == "__main__":
             print(f"Файл не найден по пути: {target_file}{RESET}")
             print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
     else:
-        
+        if param[0] == '--не придумал ещё':
+            pass
         elif param[0] == '-install':
             print("Запущена установка ассоциации файлов и модулей...")
             
