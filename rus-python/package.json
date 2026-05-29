@@ -4,6 +4,7 @@
   "description": "Позволяет писать на русском синтаксис python",
   "publisher": "SUSCERSAL",
   "version": "0.0.5",
+"readme": "./README-NPM.md",
   "icon": "icon.png",
   "repository": {
     "type": "git",
