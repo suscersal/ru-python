@@ -103,6 +103,19 @@ def load_config():
 MOD_CONFIG = load_config()
 
 
+def safe_sub(pattern, replacement, text):
+    # Группа 1 ловит кавычки. Группа 2 ловит ваш исходный паттерн.
+    # Мы убираем \b из начала паттерна, если там есть точка (например, \.вывести)
+    full_pattern = r'("[^"\\]*(?:\\.[^"\\]*)*"|\'[^\'\\]*(?:\\.[^\'\\]*)*\')|(' + pattern + ')'
+    
+    def re_callback(match):
+        if match.group(1):
+            return match.group(1)  # Найдена строка в кавычках — возвращаем как есть
+        return replacement         # Найдено ключевое слово — заменяем
+        
+    return re.sub(full_pattern, re_callback, text)
+    
+
 def get_russian_error(raw_error):
     raw_error_str = str(raw_error)
     try:
@@ -134,6 +147,8 @@ def run_rupy(input_file):
     py_lines = []
     all_defs = []
     all_vars = []
+    
+    
     indent_level = 0
     for line in lines:
         if line == '\n':
@@ -145,22 +160,37 @@ def run_rupy(input_file):
             #print(line)
             py_lines.append(line[:len(line)-1])
             continue
-
-        # 1. Глобальные замены
+        
         if "#" not in raw_line:
-           content = raw_line.replace('это.', 'self.')
-           #print(all_vars)
-           if 'и' not in all_vars and  'пусть и' not in content and 'как' not in content:
-             content = re.sub(r"\bи\b", "and", content)
-           content = re.sub(r"\bили\b", "or", content)
-           content = re.sub(r"\bне\b", "not", content)
+    # Заменяем "это.", обходя кавычки
+            content = safe_sub(r'это\.', 'self.', raw_line)
+    
+    # Замена логических операторов
+            if 'и' not in all_vars and 'пусть и' not in content and 'как' not in content:
+               content = safe_sub(r'\bи\b', 'and', content)
+        
+            content = safe_sub(r'\bили\b', 'or', content)
+            content = safe_sub(r'\bне\b', 'not', content)
 
-           content = re.sub(rf"\.вывести\b", ".write", content)
-           content = re.sub(rf"\.прочитать\b", ".read", content)
-           content = re.sub(rf"\.прочитать_строку\b", ".readline", content)
-           content = re.sub(rf"\Истина\b", "True", content)
-           content = re.sub(rf"\Ложь\b", "False", content)
+    # Замена методов работы с файлами
+            content = safe_sub(r'\.вывести\b', '.write', content)
+            content = safe_sub(r'\.прочитать\b', '.read', content)
+            content = safe_sub(r'\.прочитать_строку\b', '.readline', content)
+    
+    # Замена булевых констант
+            content = safe_sub(r'\bИстина\b', 'True', content)
+            content = safe_sub(r'\bЛожь\b', 'False', content)
+            
+  
+            content = safe_sub(r'\b(больше\s+(или|либо)\s+равно|не\s+меньше)\b', ">=", content)
+            content = safe_sub(r'\b(меньше\s+(или|либо)\s+равно|не\s+больше)\b', "<=", content)
+            content = safe_sub(r'\b(не\s+равно|отличается\s+от)\b', "!=", content)
+            content = safe_sub(r'\bбольше\b', ">", content)
+            content = safe_sub(r'\bменьше\b', "<", content)
+            content = safe_sub(r'\bравно\b', "==", content)
 
+            
+            
         
         
         # 2. Умная обработка методов списков (сразу с записью и выходом из цикла)
@@ -266,16 +296,36 @@ def run_rupy(input_file):
                py_lines.append(f"{prefix}{' '.join(parts[1:])}")
             else:
                 py_lines.append(f"{prefix}{' '.join(parts[1:4])}({','.join(parts[4:])})")
+                
+        
 
         elif cmd == 'если':
-            # Убираем слово 'если' и берем всё остальное как условие
             condition = " ".join(parts[1:]).strip()
             py_lines.append(f"{prefix}if {condition}:")
+            # Открываем блок: увеличиваем отступ для кода внутри 'если'
             indent_level += 1
             continue
 
+        
+        elif cmd == 'иначе' and len(parts) > 1 and parts[1] == 'если':
+                    
+            condition = " ".join(parts[2:]).strip()
+            py_lines.append(f"{prefix}elif {condition}:")
+            
+            # 3. Открываем новый блок для кода внутри 'иначе если'
+            indent_level += 1
+            continue
 
-    
+        # Ветка для обычного "иначе"
+        elif cmd == 'иначе':
+            py_lines.append(f"{prefix}else:")
+            
+            # 3. Открываем новый блок для кода внутри 'иначе'
+            indent_level += 1
+            continue
+         
+
+            # В НАЧАЛЕ ЦИКЛА ОБРАБОТКИ СТРОКИ:
         elif cmd == 'из':
             # Пример: из время использовать время как в
             # Безопасно убираем начальное "из " из строки content, если оно там осталось
@@ -402,7 +452,7 @@ def run_rupy(input_file):
             # 4. Заменяем ключевое слово "как" на английское "as"
             line_content = re.sub(rf"\bкак\b", "as", line_content)
             
-            # 5. Формируем конструкцию с "with" и двоеточием в конце
+             # 5. Формируем конструкцию с "with" и двоеточием в конце
             py_lines.append(f"{prefix}with {line_content}:")
             
             indent_level += 1
@@ -410,9 +460,7 @@ def run_rupy(input_file):
 
      
             
-        elif cmd == 'иначе':
-            py_lines.append(f"{prefix}else:")
-            indent_level += 1
+        
 
         elif cmd == 'попробовать':
             py_lines.append(f"{prefix}try:")
@@ -516,21 +564,27 @@ def run_rupy(input_file):
                     py_lines.append(f"{prefix}{line_to_process}")
                     is_processed = True
                     break
-        
             if is_processed: continue
             
             # АВТО-СКОБКИ ДЛЯ ВЫЗОВОВ МЕТОДОВ И ФУНКЦИЙ
-            if ' ' in content and '=' not in content and '(' not in content:
-                # Находим первое слово (это имя функции/метода)
-                # и все остальное (это аргументы)
-                func_part, args_part = content.split(' ', 1)
-                
-                # Если это похоже на вызов (например, бот.взять_вещь)
-                if '.' in func_part or any(kw in func_part for kw in ['вывести', 'приветствие']):
-                    content = f"{func_part.strip()}({args_part.strip()})"
-            
+            if '=' not in content and '(' not in content:
+                # Проверяем, есть ли вообще аргументы (разделенные пробелом)
+                if ' ' in content:
+                    # Находим первое слово и все остальное
+                    func_part, args_part = content.split(' ', 1)
+        
+                    # Если это похоже на вызов (например, бот.взять_вещь)
+                    if '.' in func_part or any(kw in func_part for kw in ['вывести', 'приветствие']):
+                        content = f"{func_part.strip()}({args_part.strip()})"
+                else:
+                    # Если пробела нет, значит это вызов функции без аргументов
+                    # Например, строка "приветствие" превратится в "приветствие()"
+                    if '.' in content or any(kw in content for kw in ['вывести', 'приветствие']):
+                        content = f"{content.strip()}()"
+
             py_lines.append(f"{prefix}{content}")
-            
+
+     
 
 
 
@@ -662,7 +716,8 @@ if __name__ == "__main__":
             print(f"Файл не найден по пути: {target_file}{RESET}")
             print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
     else:
-        if param[0] == '-install':
+        
+        elif param[0] == '-install':
             print("Запущена установка ассоциации файлов и модулей...")
             
             python_path = find_local_python() 

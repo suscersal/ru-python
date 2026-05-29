@@ -9,7 +9,7 @@
 		{ "include": "#strings" },
 		{ "include": "#numbers" }
 	],
-	"repository": {
+		"repository": {
 		"keywords": {
 			"patterns": [
 				{
@@ -19,6 +19,26 @@
 				{
 					"name": "keyword.other.rupy",
 					"match": "\\b(пусть|вывести|ввод)\\b"
+				},
+				{
+					"name": "keyword.operator.logical.rupy",
+					"comment": "Логические операторы",
+					"match": "\\b(и|или|не)\\b"
+				},
+				{
+					"name": "keyword.operator.comparison.rupy",
+					"comment": "Операторы сравнения словами",
+					"match": "\\b(равно|больше|меньше)\\b"
+				},
+				{
+					"name": "support.function.builtin.rupy",
+					"comment": "Встроенная функция открытия файлов",
+					"match": "\\b(открыть)\\b"
+				},
+				{
+					"name": "constant.language.file-mode.rupy",
+					"comment": "Режимы работы с файлами",
+					"match": "\\b(запись|чтение|добавление)\\b"
 				},
 				{
 					"name": "entity.name.function.member.rupy",
@@ -32,7 +52,6 @@
 			]
 		},
 
-
 		"functions": {
 			"patterns": [
 				{
@@ -42,8 +61,13 @@
 				},
 				{
 					"name": "entity.name.function.rupy",
-					"comment": "Подсветка вызова: бот.говорить()",
+					"comment": "Подсветка вызова методов: бот.говорить()",
 					"match": "(?<=\\.)([a-zA-Zа-яА-Я_]\\w*)(?=\\s*\\()"
+				},
+				{
+					"name": "entity.name.function.rupy",
+					"comment": "Подсветка обычного вызова: функция() или открыть()",
+					"match": "\\b([a-zA-Zа-яА-Я_]\\w*)(?=\\s*\\()"
 				}
 			]
 		},
@@ -87,7 +111,7 @@
 				}
 			]
 		}
-
-		
 	}
+}
+
 }
