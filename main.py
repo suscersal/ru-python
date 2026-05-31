@@ -136,7 +136,7 @@ def get_russian_error(raw_error):
         pass
     return raw_error_str
 
-def run_rupy(input_file):
+def run_rupy(input_file,log_file):
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
@@ -597,40 +597,60 @@ def run_rupy(input_file):
     print(f"{GREEN}--- Трансляция завершена ({output_file}) ---{RESET}")
 
     # Запуск
+    from contextlib import redirect_stdout
+
+
+    # Вспомогательный объект-разветвитель (всего 3 строчки кода)
+    class Tee:
+        def __init__(self, file1, file2): self.f1, self.f2 = file1, file2
+        def write(self, data): self.f1.write(data); self.f2.write(data)
+        def flush(self): self.f1.flush(); self.f2.flush()
+        
+    is_logging_enabled = bool(log_file and str(log_file).strip())
+
+    if is_logging_enabled:
+        # Если путь есть, создаем для него папки (если их нет)
+        log_dir = os.path.dirname(log_file)
+        if log_dir:
+            os.makedirs(log_dir, exist_ok=True)
+
+    
+
     print(f"{RED}--- Запуск... ---{RESET}\n")    
     try:
         full_code = "\n".join(py_lines)
-        # prefix(full_code)
-        # Компилируем код, чтобы Python знал "имя" файла и номера строк
-        # Это магия, которая свяжет ошибки с твоим файлом
         compiled_code = compile(full_code, input_file, 'exec')
-        
-        exec(compiled_code, {})
-        print(f"\n{GREEN}>>> Успешно завершено{RESET}")
-        
+    
+        # Открываем лог-файл
+        with open(log_file, "a", encoding="utf-8") as f:
+            # redirect_stdout думает, что работает с одним файлом, а мы пишем и на экран, и в f
+            with redirect_stdout(Tee(sys.__stdout__, f)):
+                exec(compiled_code, {})
+                print(f"\n{GREEN}>>> Успешно завершено{RESET}")
+            
     except Exception as e:
-        print(f"\n{RED}--- ОШИБКА ---")
-        
-        # 1. Если это ошибка синтаксиса (отступы, скобки)
-        if isinstance(e, SyntaxError):
-            print(f"Строка: {e.lineno}")
-            print(f"Код: {e.text.strip() if e.text else 'неизвестно'}")
-        
-        # 2. Если это ошибка во время работы (деление на ноль и т.д.)
-        else:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            tb = traceback.extract_tb(exc_traceback)
-            relevant_entry = None
-            for entry in reversed(tb):
-                if entry.filename == input_file:
-                    relevant_entry = entry
-                    break
+        with open(log_file, "a", encoding="utf-8") as f:
+            with redirect_stdout(Tee(sys.__stdout__, f)):
+                print(f"\n{RED}--- ОШИБКА ---")
             
-            if relevant_entry:
-                print(f"Строка: {relevant_entry.lineno}")
-                print(f"Код: {relevant_entry.line.strip()}")
-            
-        print(f"Что случилось: {get_russian_error(e)}{RESET}")
+                if isinstance(e, SyntaxError):
+                    print(f"Строка: {e.lineno}")
+                    print(f"Код: {e.text.strip() if e.text else 'неизвестно'}")
+                else:
+                    exc_type, exc_value, exc_traceback = sys.exc_info()
+                    tb = traceback.extract_tb(exc_traceback)
+                    relevant_entry = None
+                    for entry in reversed(tb):
+                        if entry.filename == input_file:
+                            relevant_entry = entry
+                            break
+                
+                    if relevant_entry:
+                        print(f"Строка: {relevant_entry.lineno}")
+                        print(f"Код: {relevant_entry.line.strip()}")
+                
+                print(f"Что случилось: {get_russian_error(e)}{RESET}")
+
 
 
 
@@ -700,25 +720,34 @@ if __name__ == "__main__":
 
     # 2. Обработка аргументов командной строки
     if len(sys.argv) > 1:
-        if not sys.argv[1].startswith('-'):
-            target_file = sys.argv[1]
+        if not sys.argv[1].startswith('--'):
+            if sys.argv[2] == '--log_file':
+                target_file = sys.argv[1]
+                param = sys.argv[2:]
+                print('1')
+            else:
+                target_file = sys.argv[1]
+                param = ['',None]
+                print('2')
         else:
             param = sys.argv[1:]
+            param = ['',None]
+            print('3')
     else:
         target_file = os.path.join(current_dir, "test.rupy")
+        param = [None,None]
     
     # 3. Логика выполнения в зависимости от параметров
-    if param is None:
+    if param is None or param == '--install':
         if target_file and os.path.exists(target_file):
-            run_rupy(target_file)
+            print(param)
+            run_rupy(target_file,param[1])
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
             print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
     else:
-        if param[0] == '--не придумал ещё':
-            pass
-        elif param[0] == '-install':
+        if param[0] == '--install':
             print("Запущена установка ассоциации файлов и модулей...")
             
             python_path = find_local_python() 
