@@ -1,6 +1,8 @@
 name: Автоматическая сборка раз в три дня
 
 on:
+push:
+      paths: '.github/workflows/build.yml'
   schedule:
     - cron: '0 0 */3 * *' # Запуск каждые 3 дня в 00:00 UTC
   workflow_dispatch: # Возможность ручного запуска
@@ -119,6 +121,7 @@ jobs:
 
       # НОВЫЙ ШАГ: Публикация расширения в официальный VS Code Marketplace
       - name: Публикация в VS Code Marketplace
+        continued-on-error: true
         shell: powershell
         run: |
           cd rus-python
