@@ -121,7 +121,7 @@ jobs:
 
       # НОВЫЙ ШАГ: Публикация расширения в официальный VS Code Marketplace
       - name: Публикация в VS Code Marketplace
-        continued-on-error: true
+        continue-on-error: true
         shell: powershell
         run: |
           cd rus-python
