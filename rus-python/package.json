@@ -1,101 +1,111 @@
 {
-  "name": "russ-python",
-  "displayName": "Russ Python",
-  "description": "Позволяет писать на русском синтаксис python",
-  "publisher": "SUSCERSAL",
-  "version": "0.0.5",
-"readme": "./README-NPM.md",
-  "icon": "icon.png",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/suscersal/ru-python"
-  },
-  "main": "./extension.js",
-  "activationEvents": [
-      "onLanguage:rupy"
-  ],
-  "engines": {
-    "vscode": "^1.75.0"
-  },
-  "categories": [
-    "Programming Languages"
-  ],
-  "contributes": {
-    "languages": [{
-        "id": "rupy",
-        "aliases": ["Russ Python", "rupy", "RuPy"],
-        "extensions": [".rupy"],
-        "configuration": "./language-configuration.json",
-        "icon": { 
-            "light": "./icon.png", 
-            "dark": "./icon.png" 
-        }
-    }],
-    "grammars": [{
-      "language": "rupy",
-      "scopeName": "source.rupy",
-      "path": "./syntaxes/rupy.tmLanguage.json"
-    }],
-    "snippets": [
-        {
-            "language": "rupy",
-            "path": "./snippets/rupy-words.json"
-        }
-    ],
-    "commands": [
-        {
-            "command": "rupy.run",
-            "title": "Запустить Rupy",
-            "icon": "$(play)"
-        },
-        {
-            "command": "rupy.createNewFile",
-            "title": "Файл RuPython",
-            "category": "RuPy",
-            "icon": "$(file-add)" 
-        },
-        {
-            "command": "rupy.reloadSnippets",
-            "title": "Перезагрузить сниппеты RuPy",
-            "category": "RuPy"
-        }
-    ],
-    "menus": {
-        "editor/title": [
-            {
-                "command": "rupy.run",
-                "when": "resourceExtname == .rupy",
-                "group": "navigation" 
-            }
-        ],
-        "file/newFile": [
-            {
-                "command": "rupy.createNewFile"
-            }
-        ]
-    },
-    "configuration": {
-        "title": "RuPy Configuration",
-        "properties": {
-            "rupy.path": {
-                "type": "string",
-                "default": "rupython",
-                "description": "Абсолютный путь к файлу rupython.exe (например, C:\\Program Files\\RuPy\\rupython.exe). Если оставить по умолчанию, будет использоваться глобальная команда."
-            }
-        }
-    },
-    "configurationDefaults": {
-        "[rupy]": {
-            "editor.quickSuggestions": {
-                "other": "on",
-                "comments": "off",
-                "strings": "on"
-            },
-            "editor.suggest.showSnippets": "top",
-            "editor.suggest.snippetsPreventQuickSuggestions": false,
-            "editor.wordBasedSuggestions": "on",
-            "editor.tabCompletion": "on"
-        }
-    }
-  }
+    "name":  "russ-python",
+    "displayName":  "Russ Python",
+    "description":  "Позволяет писать на русском синтаксис python",
+    "publisher":  "SUSCERSAL",
+    "version":  "0.0.6",
+    "readme":  "./README-NPM.md",
+    "icon":  "icon.png",
+    "repository":  {
+                       "type":  "git",
+                       "url":  "https://github.com/suscersal/ru-python"
+                   },
+    "main":  "./extension.js",
+    "activationEvents":  [
+                             "onLanguage:rupy"
+                         ],
+    "engines":  {
+                    "vscode":  "^1.75.0"
+                },
+    "categories":  [
+                       "Programming Languages"
+                   ],
+    "contributes":  {
+                        "languages":  [
+                                          {
+                                              "id":  "rupy",
+                                              "aliases":  [
+                                                              "Russ Python",
+                                                              "rupy",
+                                                              "RuPy"
+                                                          ],
+                                              "extensions":  [
+                                                                 ".rupy"
+                                                             ],
+                                              "configuration":  "./language-configuration.json",
+                                              "icon":  {
+                                                           "light":  "./icon.png",
+                                                           "dark":  "./icon.png"
+                                                       }
+                                          }
+                                      ],
+                        "grammars":  [
+                                         {
+                                             "language":  "rupy",
+                                             "scopeName":  "source.rupy",
+                                             "path":  "./syntaxes/rupy.tmLanguage.json"
+                                         }
+                                     ],
+                        "snippets":  [
+                                         {
+                                             "language":  "rupy",
+                                             "path":  "./snippets/rupy-words.json"
+                                         }
+                                     ],
+                        "commands":  [
+                                         {
+                                             "command":  "rupy.run",
+                                             "title":  "Запустить Rupy",
+                                             "icon":  "$(play)"
+                                         },
+                                         {
+                                             "command":  "rupy.createNewFile",
+                                             "title":  "Файл RuPython",
+                                             "category":  "RuPy",
+                                             "icon":  "$(file-add)"
+                                         },
+                                         {
+                                             "command":  "rupy.reloadSnippets",
+                                             "title":  "Перезагрузить сниппеты RuPy",
+                                             "category":  "RuPy"
+                                         }
+                                     ],
+                        "menus":  {
+                                      "editor/title":  [
+                                                           {
+                                                               "command":  "rupy.run",
+                                                               "when":  "resourceExtname == .rupy",
+                                                               "group":  "navigation"
+                                                           }
+                                                       ],
+                                      "file/newFile":  [
+                                                           {
+                                                               "command":  "rupy.createNewFile"
+                                                           }
+                                                       ]
+                                  },
+                        "configuration":  {
+                                              "title":  "RuPy Configuration",
+                                              "properties":  {
+                                                                 "rupy.path":  {
+                                                                                   "type":  "string",
+                                                                                   "default":  "rupython",
+                                                                                   "description":  "Абсолютный путь к файлу rupython.exe (например, C:\\Program Files\\RuPy\\rupython.exe). Если оставить по умолчанию, будет использоваться глобальная команда."
+                                                                               }
+                                                             }
+                                          },
+                        "configurationDefaults":  {
+                                                      "[rupy]":  {
+                                                                     "editor.quickSuggestions":  {
+                                                                                                     "other":  "on",
+                                                                                                     "comments":  "off",
+                                                                                                     "strings":  "on"
+                                                                                                 },
+                                                                     "editor.suggest.showSnippets":  "top",
+                                                                     "editor.suggest.snippetsPreventQuickSuggestions":  false,
+                                                                     "editor.wordBasedSuggestions":  "on",
+                                                                     "editor.tabCompletion":  "on"
+                                                                 }
+                                                  }
+                    }
 }
