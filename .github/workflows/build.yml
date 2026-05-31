@@ -5,7 +5,7 @@ on:
     - cron: '0 0 */3 * *' # Запуск каждые 3 дня в 00:00 UTC
   workflow_dispatch: # Возможность ручного запуска
 
-# Добавляем права для корректной работы GITHUB_TOKEN (создание релизов и запись пакетов)
+# Права расширены для возможности пушить изменения кода (contents: write)
 permissions:
   contents: write
 
@@ -20,13 +20,16 @@ jobs:
     steps:
       - name: Копирование кода
         uses: actions/checkout@v4
+        with:
+          # По умолчанию checkout скачивает detached HEAD. 
+          # Указываем ref, чтобы git push знал, в какую ветку отправлять изменения.
+          ref: ${{ github.head_ref || github.ref_name }}
 
       # Шаг для генерации точной даты и времени сборки
       - name: Получение даты и времени
         id: datetime
         shell: powershell
         run: |
-          # Форматируем дату и время (например: 25.05.2026 21:15)
           $current_time = Get-Date -Format "dd.MM.yyyy HH:mm"
           echo "build_time=$current_time" >> $env:GITHUB_OUTPUT
 
@@ -43,17 +46,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Сборка расширения VS Code (.vsix)
+      - name: Сборка расширения VS Code и автоповышение версии
+        id: vsce_setup
         shell: powershell
         run: |
-          # Настройка кодировки вывода консоли
           [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
           $OutputEncoding = [System.Text.Encoding]::UTF8
           
           npm install -g @vscode/vsce
           cd rus-python
           
-          # ЧИТАЕМ СТРОГО В UTF-8, чтобы не сломать русский текст в description и displayName
+          # ЧИТАЕМ СТРОГО В UTF-8
           $json = Get-Content package.json -Raw -Encoding utf8 | ConvertFrom-Json
           
           # АВТОПОВЫШЕНИЕ ВЕРСИИ
@@ -71,7 +74,10 @@ jobs:
               $json | Add-Member -NotePropertyName "version" -NotePropertyValue "1.0.0"
           }
           
-          # ИСПРАВЛЕНИЕ ИМЕНИ: Убираем префикс издателя из поля name, если он там есть
+          # Сохраняем новую версию в переменную окружения GitHub Actions для использования в коммите
+          echo "ext_version=$($json.version)" >> $env:GITHUB_OUTPUT
+          
+          # ИСПРАВЛЕНИЕ ИМЕНИ
           if ($json.name -match "suscersal\.") {
               $json.name = $json.name -replace "suscersal\.", ""
           }
@@ -89,12 +95,37 @@ jobs:
           [System.IO.File]::WriteAllText((Get-Item package.json).FullName, $jsonString, $utf8NoBom)
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) "LICENSE"), "MIT License", $utf8NoBom)
           
-          # Сборка расширения
+          # Сборка локального .vsix пакета (оставляем для архивов/релизов GitHub)
           vsce package --no-dependencies
 
+      # НОВЫЙ ШАГ: Сохраняем измененный package.json обратно в ваш репозиторий GitHub
+      - name: Коммит и Пуш новой версии в репозиторий
+        shell: powershell
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Добавляем package.json (находится в папке rus-python)
+          git add rus-python/package.json
+          
+          # Проверяем, есть ли реальные изменения, чтобы не вызывать ошибку пустого коммита
+          $status = git status --porcelain
+          if ($status) {
+              git commit -m "chore: bump extension version to ${{ steps.vsce_setup.outputs.ext_version }} [skip ci]"
+              git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          } else {
+              Write-Host "Изменений в package.json не обнаружено."
+          }
 
-
-
+      # НОВЫЙ ШАГ: Публикация расширения в официальный VS Code Marketplace
+      - name: Публикация в VS Code Marketplace
+        shell: powershell
+        run: |
+          cd rus-python
+          # Публикуем напрямую (команда сама подхватит текущую версию из обновленного package.json)
+          vsce publish --no-dependencies
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }} # Не забудьте добавить этот токен в Settings вашего репозитория!
 
       # Компиляция инсталлятора Inno Setup
       - name: Компиляция инсталлятора (Inno Setup)
@@ -120,7 +151,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         with:
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('auto-{0}', github.sha) }}
-          # Добавили дату и время прямо в название релиза
           name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка от {0}', steps.datetime.outputs.build_time) }}
           generate_release_notes: true
           body: |
@@ -130,11 +160,12 @@ jobs:
             - **Дата и время:** ${{ steps.datetime.outputs.build_time }} (UTC раннера)
             - **Триггер:** ${{ github.event_name }}
             - **Коммит:** ${{ github.sha }}
+            - **Версия расширения VS Code:** ${{ steps.vsce_setup.outputs.ext_version }}
             
             ---
             ### Что нового:
           draft: false
-          prerelease: ${{ github.event_name != 'create' }} # Автосборки помечаются как Pre-release
+          prerelease: ${{ github.event_name != 'create' }}
           files: |
             dist/*.exe
             Setup_Build/rupyInstaller.exe
