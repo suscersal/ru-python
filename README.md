@@ -1,4 +1,4 @@
-[![Сайт проекта](https://img.shields.io/badge/Сайт-ru--python-blue.svg)](https://suscersal.github.io/ru-python/)
+[![Сайт](https://img.shields.io/badge/Сайт-проекта-blue.svg)](https://suscersal.github.io/ru-python/)
 
 [![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 [![Marketplace Version](https://vsmarketplacebadges.dev/version-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
