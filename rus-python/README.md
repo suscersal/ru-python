@@ -29,4 +29,1043 @@ _Вот скрипт на простой перевод: [тык](https://github
 
 ## Таблица переводов
 
-<!--START_SECTION:translations-->| Модуль | Имя | Русский ||---|---|---|| os | os | операционная система || os | DirEntry | запись в каталоге || os | EX_OK | е х ок || os | F_OK | окей || os | GenericAlias | общий псевдоним || os | Mapping | картографирование || os | MutableMapping | изменяемое отображение || os | O_APPEND | о приложение || os | O_BINARY | о б и н а р ь || os | O_CREAT | о творчестве || os | O_EXCL | о е х с л || os | O_NOINHERIT | о нет о в наследстве || os | O_RANDOM | или рандом || os | O_RDONLY | или д о н л ы || os | O_RDWR | или р д ш р || os | O_SHORT_LIVED | о короткоживущий || os | O_TEMPORARY | в р а м о р а я || os | O_TEXT | о т е х т || os | O_TRUNC | о бегать || os | O_WRONLY | оу р о н л ы || os | P_DETACH | п д е т а ч || os | P_NOWAIT | п н о подожди || os | P_NOWAITO | п н о погоди || os | P_OVERLAY | п о в е р л а й || os | P_WAIT | п подожди || os | PathLike | путь как || os | R_OK | р о к || os | SEEK_CUR | искать || os | SEEK_END | искать || os | SEEK_SET | ищу набор || os | TMP_MAX | т м п м а х || os | W_OK | в о к || os | X_OK | х о к || os | abc | Абстрактные базовые классы || os | abort | прерывать || os | access | доступ || os | altsep | альтернативный сентябрь || os | chdir | изменить рабочий каталог || os | chmod | изменить режим разрешений || os | close | закрывать || os | closerange | близкое расстояние || os | cpu_count | количество процессоров || os | curdir | курдир || os | defpath | путь определения || os | device_encoding | кодирование устройства || os | dup | обман || os | dup2 | дубликат2 || os | environ | переменные среды || os | error | ошибка || os | execl | исключить || os | execle | исполнительный файл || os | execv | выполнить программу с аргументами || os | execve | исполнять || os | execvp | исполнительный директор || os | execvpe | исполнительный е || os | extsep | доп.сентябрь || os | fsdecode | декодирование фс || os | fsencode | фс кодировать || os | fspath | путь к фс || os | fstat | фстат || os | get_blocking | получить блокировку || os | get_exec_path | получить путь выполнения программы || os | get_handle_inheritable | получить дескриптор, передаваемый по наследству || os | get_inheritable | получить по наследству || os | get_terminal_size | получить размер терминала || os | getcwd | получить текущий рабочий каталог || os | getenv | получить переменную среды || os | getlogin | получить логин || os | getpid | получитьпид || os | isatty | недовольный || os | kill | убийство || os | lchmod | л чмод || os | linesep | линия сентябрь || os | link | связь || os | listdir | список содержимого каталога || os | listdrives | список дисков || os | listmounts | список монтировок || os | listvolumes | список томов || os | lseek | я ищу || os | lstat | состояние ссылки || os | makedirs | создавать каталоги рекурсивно || os | mkdir | создать каталог || os | name | имя || os | open | открыть || os | pardir | номинальная режиссура || os | path | путь || os | pathsep | путь сентября || os | pipe | трубка || os | popen | открыть || os | process_cpu_count | количество процессоров процесса || os | putenv | установить переменную среды || os | read | читать || os | readlink | ссылка для чтения || os | remove | удалять || os | removedirs | рекурсивно удалять каталоги || os | rename | переименовывать || os | renames | переименовывает || os | replace | заменять || os | rmdir | удалить каталог || os | scandir | сканировать содержимое каталога || os | sep | сентябрь || os | set_blocking | установить блокировку || os | set_handle_inheritable | установить дескриптор, наследуемый || os | set_inheritable | установить наследуемый || os | spawnl | спаун л || os | spawnle | спаун ле || os | spawnve | порождать пять || os | st | ул. || os | startfile | стартовый файл || os | stat | статистика || os | stat_result | результат статистики || os | strerror | ошибка || os | supports_bytes_environ | поддерживает байтовые переменные среды || os | supports_effective_ids | поддерживает эффективные идентификаторы || os | supports_fd | поддерживает файловый дескриптор || os | supports_follow_symlinks | поддерживает следование символическим ссылкам || os | symlink | символическая ссылка || os | sys | система || os | system | система || os | terminal_size | размер терминала || os | times | раз || os | times_result | результат раз || os | truncate | обрезать || os | umask | маска || os | uname_result | безымянный результат || os | unlink | отсоединить || os | urandom | случайный || os | utime | тебе пора || os | waitpid | ожидание || os | waitstatus_to_exitcode | статус ожидания для выхода из кода || os | walk | ходить || os | write | писать || time | time | время || time | CLOCK_BOOTTIME | время загрузки часов || time | CLOCK_MONOTONIC | часы м о н о то н и с || time | CLOCK_REALTIME | часы в реальном времени || time | CLOCK_TAI | часы || time | CLOCK_THREAD_CPUTIME_ID | часы || time | altzone | альтернативная зона || time | asctime | время подъема || time | clock_getres | часы получить разрешение || time | clock_gettime | часы получить время || time | clock_gettime_ns | часы получают время нс || time | daylight | дневной свет || time | get_clock_info | получить информацию о часах || time | localtime | местное время || time | mktime | мктайм || time | monotonic | монотонный || time | monotonic_ns | монотонный нс || time | perf_counter | счетчик производительности || time | perf_counter_ns | счетчик производительности нс || time | process_time | время процесса || time | process_time_ns | время процесса нс || time | sleep | спать || time | strftime | отформатировать время как строку || time | strptime | время анализа строки || time | struct_time | структурировать время || time | thread_time | время потока || time | thread_time_ns | время потока нс || time | time | время || time | time_ns | время нс || time | timezone | часовой пояс || time | tzname | тцнаме || math | math | математика || math | acos | арккосинус || math | acosh | обратный гиперболический косинус || math | asin | арксинус || math | asinh | обратный гиперболический синус || math | atan | арктангенс || math | atan2 | арктангенс двух аргументов || math | atanh | обратный гиперболический тангенс || math | ceil | округлить потолок || math | comb | гребень || math | copysign | копировать знак || math | cos | косинус || math | cosh | гиперболический косинус || math | degrees | конвертировать в градусы || math | dist | расстояние || math | e | е || math | erf | эрф || math | exp | показательная функция || math | exp2 | эксп2 || math | expm1 | экспоненциальный минус 1 || math | fabs | абсолютное значение с плавающей запятой || math | factorial | факториал || math | floor | круглый пол вниз || math | fma | фма || math | fmod | с плавающей запятой по модулю || math | frexp | фр. опыт || math | gamma | гамма || math | gcd | наибольший общий делитель || math | hypot | вычислить гипотенузу || math | inf | бесконечность || math | isclose | близко || math | isfinite | конечно || math | isinf | бесконечность || math | isnan | не число || math | lcm | наименьшее общее кратное || math | ldexp | лд эксп || math | lgamma | л гамма || math | log | натуральный логарифм || math | log10 | десятичный логарифм || math | log1p | log1p || math | log2 | логарифм по основанию 2 || math | modf | мод ф || math | nan | не число || math | nextafter | следующий после || math | perm | пермь || math | pi | пи || math | pow | привести к власти || math | prod | произведение элементов || math | radians | конвертировать в радианы || math | remainder | остаток || math | sin | синус || math | sinh | гиперболический синус || math | sqrt | вычислить квадратный корень || math | sumprod | сумма производства || math | tan | касательная || math | tanh | гиперболический тангенс || math | tau | тау || math | trunc | ствол || math | ulp | мутить || sys | sys | система || sys | activate_stack_trampoline | активировать батут стека || sys | addaudithook | добавить крючок аудита || sys | api_version | версия api || sys | argv | значения аргументов || sys | audit | аудит || sys | base_exec_prefix | базовый префикс программы выполнения || sys | base_prefix | базовый префикс || sys | breakpointhook | перехват точки останова || sys | builtin_module_names | встроенные имена модулей || sys | byteorder | порядок байтов || sys | call_tracing | отслеживание вызовов || sys | copyright | авторское право || sys | deactivate_stack_trampoline | отключить батут стека || sys | displayhook | дисплей крючок || sys | dont_write_bytecode | не пиши байт-код || sys | exc_info | информация об исключении времени выполнения || sys | excepthook | кроме крючка || sys | exception | исключение || sys | exec_prefix | выполнить префикс программы || sys | executable | исполняемый файл || sys | exit | выход || sys | flags | флаги || sys | float_info | плавающая информация || sys | float_repr_style | стиль представления строки с плавающей запятой || sys | get_asyncgen_hooks | получить перехватчики асинхронного поколения || sys | get_coroutine_origin_tracking_depth | получить глубину отслеживания происхождения сопрограммы || sys | getallocatedblocks | получить выделенные блоки || sys | getdefaultencoding | получить кодировку по умолчанию || sys | getfilesystemencodeerrors | получить ошибки кодирования файловой системы || sys | getfilesystemencoding | получить кодировку файловой системы || sys | getprofile | получить профиль || sys | getrecursionlimit | получить предел рекурсии || sys | getrefcount | получить рефсчет || sys | getsizeof | получить размер || sys | getswitchinterval | получить интервал переключения || sys | gettrace | получить след || sys | getunicodeinternedsize | получить внутренний размер юникода || sys | hash_info | хеш-информация || sys | hexversion | шестнадцатеричная версия || sys | implementation | выполнение || sys | int_info | внутренняя информация || sys | intern | стажер || sys | is_finalizing | завершает работу || sys | is_remote_debug_enabled | включена ли удаленная отладка || sys | is_stack_trampoline_active | активен ли батут стека? || sys | maxsize | максимальный размер || sys | maxunicode | максимальный юникод || sys | meta_path | метапуть || sys | modules | модули || sys | monitoring | мониторинг || sys | orig_argv | исходные значения аргументов || sys | path | путь || sys | path_hooks | крючки для пути || sys | path_importer_cache | кэш импортера путей || sys | platform | платформа || sys | platlibdir | платная библиотека || sys | prefix | префикс || sys | pycache_prefix | префикс кэша py || sys | remote_exec | удаленное выполнение программы || sys | set_asyncgen_hooks | установить перехватчики асинхронного поколения || sys | set_coroutine_origin_tracking_depth | установить глубину отслеживания происхождения сопрограммы || sys | setprofile | установить профиль || sys | setrecursionlimit | установить предел рекурсии || sys | setswitchinterval | установить интервал переключения || sys | settrace | установить трассировку || sys | stderr | стандартный вывод ошибок || sys | stdin | стандартный ввод || sys | stdout | стандартный вывод || sys | thread_info | информация о теме || sys | unraisablehook | неподнимаемый крюк || sys | version | версия || sys | version_info | информация о версии || sys | warnoptions | варианты предупреждения || sys | winver | выиграть версию || sys | get_int_max_str_digits | получить int max строку текста цифры || sys | set_int_max_str_digits | установить int max строковые текстовые цифры || cmath | cmath | с математика || cmath | acos | арккосинус || cmath | acosh | обратный гиперболический косинус || cmath | asin | арксинус || cmath | asinh | обратный гиперболический синус || cmath | atan | арктангенс || cmath | atanh | обратный гиперболический тангенс || cmath | cos | косинус || cmath | cosh | гиперболический косинус || cmath | e | е || cmath | exp | показательная функция || cmath | inf | бесконечность || cmath | infj | инфж || cmath | isclose | близко || cmath | isfinite | конечно || cmath | isinf | бесконечность || cmath | isnan | не число || cmath | log | натуральный логарифм || cmath | log10 | десятичный логарифм || cmath | nan | не число || cmath | nanj | нет, штат нью-джерси || cmath | phase | фаза || cmath | pi | пи || cmath | polar | полярный || cmath | rect | прямой || cmath | sin | синус || cmath | sinh | гиперболический синус || cmath | sqrt | вычислить квадратный корень || cmath | tan | касательная || cmath | tanh | гиперболический тангенс || cmath | tau | тау || numpy | numpy | бестолковый || numpy | False_ | ложь || numpy | ScalarType | скалярный тип || numpy | True_ | истинный || numpy | abs | абсолютное значение || numpy | absolute | абсолютный || numpy | acos | арккосинус || numpy | acosh | обратный гиперболический косинус || numpy | add | добавлять || numpy | all | все || numpy | allclose | все близко || numpy | amax | макс || numpy | amin | я в || numpy | angle | угол || numpy | any | любой || numpy | append | добавить || numpy | apply_along_axis | применить вдоль оси || numpy | apply_over_axes | применять по осям || numpy | arange | диапазон || numpy | arccos | арккос || numpy | arccosh | арккос ч || numpy | arcsin | арксин || numpy | arcsinh | дуга синх || numpy | arctan | арктан || numpy | arctan2 | арктан2 || numpy | argmax | аргументмакс || numpy | argmin | аргмин || numpy | argpartition | раздел аргумента || numpy | argsort | сортировка аргументов || numpy | argwhere | аргумент, где || numpy | around | вокруг || numpy | array | множество || numpy | array2string | строка массива 2 || numpy | array_equal | массив равен || numpy | array_equiv | эквивалент массива || numpy | array_repr | представление строки массива || numpy | array_split | разделение массива || numpy | array_str | текст строки массива || numpy | asanyarray | как любой массив || numpy | asarray | как массив || numpy | ascontiguousarray | как непрерывный массив || numpy | asfortranarray | как массив фортрана || numpy | asin | арксинус || numpy | asinh | обратный гиперболический синус || numpy | asmatrix | как матрица || numpy | astype | как тип || numpy | atan | арктангенс || numpy | atan2 | арктангенс двух аргументов || numpy | atanh | обратный гиперболический тангенс || numpy | atleast_1d | по крайней мере 1 день || numpy | atleast_2d | по крайней мере 2 дня || numpy | atleast_3d | по крайней мере 3d || numpy | average | средний || numpy | bartlett | бартлетт || numpy | base_repr | представление базовой строки || numpy | binary_repr | представление двоичной строки || numpy | bincount | количество ячеек || numpy | bitwise_and | побитовое и || numpy | bitwise_count | побитовый подсчет || numpy | bitwise_invert | побитовое инвертирование || numpy | bitwise_left_shift | побитовый сдвиг влево || numpy | bitwise_not | побитовое нет || numpy | bitwise_or | поразрядно или || numpy | bitwise_right_shift | побитовый сдвиг вправо || numpy | bitwise_xor | побитовое или || numpy | blackman | черный мужчина || numpy | block | блокировать || numpy | bmat | бмат || numpy | bool | логическое значение || numpy | bool_ | логическое значение || numpy | broadcast | транслировать || numpy | broadcast_arrays | широковещательные массивы || numpy | broadcast_shapes | транслируемые формы || numpy | broadcast_to | транслировать на || numpy | busday_count | счетчик дней в автобусе || numpy | busday_offset | компенсация за автобусный день || numpy | busdaycalendar | календарь дней автобуса || numpy | byte | байт || numpy | bytes_ | байты || numpy | c_ | с || numpy | can_cast | может бросить || numpy | ceil | округлить потолок || numpy | char | характер || numpy | character | характер || numpy | choose | выбирать || numpy | clip | клип || numpy | column_stack | стек столбцов || numpy | common_type | общий тип || numpy | complex128 | комплекс 128 || numpy | complex64 | комплекс 64 || numpy | complexfloating | комплексный плавучий || numpy | compress | компресс || numpy | concat | конкат || numpy | concatenate | объединять || numpy | conj | кондж || numpy | conjugate | сопряженный || numpy | convolve | сворачиваться || numpy | copy | копировать || numpy | copysign | копировать знак || numpy | copyto | скопировать в || numpy | core | основной || numpy | corrcoef | корр коэф || numpy | correlate | коррелировать || numpy | cos | косинус || numpy | cosh | гиперболический косинус || numpy | count_nonzero | считать ненулевым || numpy | cov | ковариация || numpy | cross | крест || numpy | cumprod | совокупный продукт || numpy | cumsum | совокупная сумма || numpy | cumulative_prod | совокупное произведение элементов || numpy | cumulative_sum | совокупная сумма расчета || numpy | datetime64 | дата-время 64 || numpy | datetime_as_string | дата-время как строка || numpy | datetime_data | данные даты и времени || numpy | deg2rad | град2рад || numpy | degrees | конвертировать в градусы || numpy | delete | удалить || numpy | diag | диагностика || numpy | diag_indices | индексы диагностики || numpy | diag_indices_from | индексы диагностики из || numpy | diagflat | диагностика квартиры || numpy | diagonal | диагональ || numpy | diff | вычислить разницу || numpy | digitize | оцифровать || numpy | divide | разделять || numpy | divmod | деление и остаток || numpy | dot | точка || numpy | double | двойной || numpy | dsplit | я разделю || numpy | dtype | тип д || numpy | e | е || numpy | ediff1d | ediff1d || numpy | einsum | эйн сумма || numpy | einsum_path | путь общей суммы || numpy | emath | электронная математика || numpy | empty | пустой || numpy | empty_like | пустой как || numpy | equal | равный || numpy | errstate | ошибочное состояние || numpy | euler_gamma | эйлерова гамма || numpy | exceptions | исключения || numpy | exp | показательная функция || numpy | exp2 | эксп2 || numpy | expand_dims | расширить затемнение || numpy | expm1 | экспоненциальный минус 1 || numpy | extract | извлекать || numpy | eye | глаз || numpy | f2py | f2py || numpy | fabs | абсолютное значение с плавающей запятой || numpy | fft | фф || numpy | fill_diagonal | заполнить диагональ || numpy | finfo | информация о || numpy | fix | исправить || numpy | flatiter | плоский итер || numpy | flatnonzero | плоский ненулевой || numpy | flexible | гибкий || numpy | flip | подбросить || numpy | fliplr | перевернуть лр || numpy | flipud | перевернуть уд || numpy | float16 | поплавок16 || numpy | float32 | поплавок32 || numpy | float64 | float64 || numpy | float_power | плавающая сила || numpy | floating | плавающий || numpy | floor | круглый пол вниз || numpy | floor_divide | закруглить перекрытие пола вниз || numpy | fmax | fмакс || numpy | fmod | с плавающей запятой по модулю || numpy | format_float_positional | формат с плавающей запятой позиционный || numpy | frexp | фр. опыт || numpy | from_dlpack | из дл пака || numpy | frombuffer | из буфера || numpy | fromfile | из файла || numpy | fromfunction | из функции || numpy | fromiter | из итера || numpy | frompyfunc | из py-функции || numpy | fromregex | из регулярного выражения || numpy | fromstring | из строки || numpy | full | полный || numpy | full_like | полный лайк || numpy | gcd | наибольший общий делитель || numpy | generic | универсальный || numpy | geomspace | геометрия пространства || numpy | get_include | получить включить || numpy | get_printoptions | получить варианты печати || numpy | getbufsize | получить размер буфера || numpy | geterr | ошибиться || numpy | geterrcall | получить сообщение об ошибке || numpy | gradient | градиент || numpy | greater | больший || numpy | greater_equal | большее равное || numpy | half | половина || numpy | hamming | хамминг || numpy | hanning | хэннинг || numpy | heaviside | хевисайд || numpy | histogram | гистограмма || numpy | histogram2d | гистограмма 2d || numpy | histogram_bin_edges | края интервала гистограммы || numpy | histogramdd | гистограмма дд || numpy | hsplit | ч раскол || numpy | hstack | ч стек || numpy | hypot | вычислить гипотенузу || numpy | i0 | я0 || numpy | identity | личность || numpy | iinfo | я информация || numpy | imag | изображение || numpy | index_exp | индексная экспоненциальная функция || numpy | indices | индексы || numpy | inexact | в точном || numpy | inf | бесконечность || numpy | info | информация || numpy | inner | внутренний || numpy | insert | вставлять || numpy | int16 | int16 || numpy | int32 | int32 || numpy | int64 | int64 || numpy | int8 | int8 || numpy | int_ | интервал || numpy | intc | инк || numpy | integer | целое число || numpy | interp | интерпретатор || numpy | intersect1d | пересекать 1d || numpy | intp | интп || numpy | invert | инвертировать || numpy | is_busday | автобусный день || numpy | isclose | близко || numpy | iscomplex | сложный || numpy | iscomplexobj | сложный объект || numpy | isfinite | конечно || numpy | isfortran | фортран || numpy | isin | находится в || numpy | isinf | бесконечность || numpy | isnan | не число || numpy | isnat | ест || numpy | isneginf | отрицательная информация || numpy | isposinf | информация о позиции || numpy | isreal | реально || numpy | isrealobj | настоящий объект || numpy | isscalar | скалярным || numpy | issubdtype | тип субд || numpy | iterable | повторяемый || numpy | kaiser | кайзер || numpy | kron | крон || numpy | lcm | наименьшее общее кратное || numpy | ldexp | лд эксп || numpy | left_shift | левый сдвиг || numpy | less | меньше || numpy | less_equal | менее равный || numpy | lexsort | лекс сортировка || numpy | lib | библиотека || numpy | linalg | линалг || numpy | linspace | линспейс || numpy | little_endian | с прямым порядком байтов || numpy | load | прочитать из файла || numpy | loadtxt | загрузить текстовый файл || numpy | log | натуральный логарифм || numpy | log10 | десятичный логарифм || numpy | log1p | log1p || numpy | log2 | логарифм по основанию 2 || numpy | logaddexp | войти добавить опыт || numpy | logaddexp2 | logaddexp2 || numpy | logical_and | логичный и || numpy | logical_not | логично нет || numpy | logical_or | логичный или || numpy | logical_xor | логическое исключающее или || numpy | logspace | пространство журнала || numpy | long | длинный || numpy | longdouble | длинный двойной || numpy | longlong | долго долго || numpy | ma | ма || numpy | mask_indices | индексы маски || numpy | matmul | коврик мул || numpy | matrix | матрица || numpy | matrix_transpose | транспонировать матрицу || numpy | matvec | коврик век || numpy | max | макс || numpy | maximum | максимум || numpy | may_share_memory | может поделиться памятью || numpy | mean | иметь в виду || numpy | median | медиана || numpy | memmap | карта памяти || numpy | meshgrid | сетчатая сетка || numpy | mgrid | мгрид || numpy | min | мин || numpy | min_scalar_type | минимальный скалярный тип || numpy | minimum | минимум || numpy | mintypecode | минимальный код типа || numpy | mod | остаток по модулю || numpy | modf | мод ф || numpy | moveaxis | перемещение оси || numpy | multiply | умножать || numpy | nan | не число || numpy | nan_to_num | не число для числа || numpy | nanargmax | нан аргмакс || numpy | nanargmin | нан аргмин || numpy | nancumprod | нан, сперма, продюсирование || numpy | nancumsum | нан сперма || numpy | nanmax | нэн макс || numpy | nanmean | нан значит || numpy | nanmedian | нан медиана || numpy | nanmin | нан мин || numpy | nanpercentile | нан процентиль || numpy | nanprod | нэн прод || numpy | nanquantile | нан-квантиль || numpy | nanstd | нан стандарт || numpy | nansum | нан сумма || numpy | nanvar | нан вар || numpy | ndarray | й массив || numpy | ndenumerate | и перечислить || numpy | ndim | ндим || numpy | ndindex | й индекс || numpy | nditer | итер || numpy | negative | отрицательный || numpy | nested_iters | вложенные итеры || numpy | newaxis | новая ось || numpy | nextafter | следующий после || numpy | nonzero | ненулевой || numpy | not_equal | не равный || numpy | number | число || numpy | object_ | объект || numpy | ogrid | о сетка || numpy | ones | те || numpy | ones_like | такие как || numpy | outer | внешний || numpy | packbits | упаковать биты || numpy | pad | подушечка || numpy | partition | раздел || numpy | percentile | процентиль || numpy | permute_dims | перестановка затемнений || numpy | pi | пи || numpy | piecewise | по частям || numpy | place | место || numpy | poly | поли || numpy | poly1d | поли1д || numpy | polyadd | поли добавить || numpy | polyder | поли дер || numpy | polydiv | полидив || numpy | polyfit | поли подходит || numpy | polyint | полиинт || numpy | polymul | поли мул || numpy | polynomial | полиномиальный || numpy | polysub | поли суб || numpy | polyval | поливал || numpy | positive | позитивный || numpy | pow | привести к власти || numpy | power | власть || numpy | printoptions | параметры печати || numpy | prod | произведение элементов || numpy | promote_types | продвигать типы || numpy | ptp | птп || numpy | put | помещать || numpy | put_along_axis | расположить вдоль оси || numpy | putmask | надеть маску || numpy | quantile | квантиль || numpy | r_ | р || numpy | rad2deg | рад2дег || numpy | radians | конвертировать в радианы || numpy | random | случайный || numpy | ravel | путаться || numpy | ravel_multi_index | мультииндекс равель || numpy | real | настоящий || numpy | real_if_close | реально, если близко || numpy | rec | запись || numpy | recarray | массив записи || numpy | reciprocal | взаимный || numpy | record | записывать || numpy | remainder | остаток || numpy | repeat | повторить || numpy | require | требовать || numpy | reshape | изменить форму || numpy | resize | изменить размер || numpy | result_type | тип результата || numpy | right_shift | правый сдвиг || numpy | rint | рвать || numpy | roll | рулон || numpy | rollaxis | ось крена || numpy | roots | корни || numpy | rot90 | гниль90 || numpy | round | круглый || numpy | row_stack | стек строк || numpy | s_ | с || numpy | save | сохранять || numpy | savetxt | сохранить текст || numpy | savez | сохранить || numpy | savez_compressed | сохранить сжатый || numpy | searchsorted | поиск отсортирован || numpy | select | выбирать || numpy | set_printoptions | установить параметры печати || numpy | setbufsize | установить размер буфера || numpy | setdiff1d | setdiff1d || numpy | seterr | установить ошибку || numpy | seterrcall | установить вызов при ошибке || numpy | setxor1d | setxor1d || numpy | shape | форма || numpy | shares_memory | разделяет память || numpy | short | короткий || numpy | show_config | показать конфигурацию || numpy | show_runtime | показать время выполнения || numpy | sign | знак || numpy | signbit | знаковый бит || numpy | signedinteger | целое число со знаком || numpy | sin | синус || numpy | sinc | с тех пор || numpy | single | одинокий || numpy | sinh | гиперболический синус || numpy | size | размер || numpy | sort | сортировать || numpy | sort_complex | сортировать комплекс || numpy | spacing | расстояние || numpy | split | расколоть || numpy | sqrt | вычислить квадратный корень || numpy | square | квадрат || numpy | squeeze | сжимать || numpy | stack | куча || numpy | std | стандартное отклонение || numpy | str_ | строковый текст || numpy | strings | струны || numpy | subtract | вычесть || numpy | sum | рассчитать сумму || numpy | swapaxes | поменять местами оси || numpy | take | брать || numpy | take_along_axis | взять вдоль оси || numpy | tan | касательная || numpy | tanh | гиперболический тангенс || numpy | tensordot | тензорная точка || numpy | test | тест || numpy | testing | тестирование || numpy | tile | плитка || numpy | timedelta64 | разница во времени 64 || numpy | trace | след || numpy | transpose | транспонировать || numpy | trapezoid | трапеция || numpy | tri | три || numpy | tril | трил || numpy | tril_indices | индексы трила || numpy | tril_indices_from | индексы трила из || numpy | trim_zeros | обрезать нули || numpy | triu | три ты || numpy | triu_indices | три индекса || numpy | triu_indices_from | три индекса из || numpy | true_divide | истинный разрыв || numpy | trunc | ствол || numpy | typecodes | коды типов || numpy | typename | имя типа || numpy | typing | печатание || numpy | ubyte | убайт || numpy | ufunc | ты веселый || numpy | uint16 | uint16 || numpy | uint32 | uint32 || numpy | uint64 | uint64 || numpy | uint8 | uint8 || numpy | uintp | уинт п || numpy | ulong | улонг || numpy | ulonglong | ты долго-долго || numpy | union1d | союз 1д || numpy | unique | уникальный || numpy | unique_all | уникальные все || numpy | unique_counts | уникальные значения || numpy | unique_inverse | уникальный инверсный || numpy | unique_values | уникальные ценности || numpy | unpackbits | распаковать биты || numpy | unravel_index | индекс разгадки || numpy | unsignedinteger | целое число без знака || numpy | unstack | разбирать || numpy | unwrap | разворачивать || numpy | ushort | сокращать || numpy | vander | ван дер || numpy | var | дисперсия || numpy | vdot | вдот || numpy | vecdot | векторная точка || numpy | vectorize | векторизовать || numpy | void | пустота || numpy | where | где || numpy | zeros | нули || numpy | zeros_like | нули вроде || shutil | shutil | заткнись || shutil | COPY_BUFSIZE | копировать но размер || shutil | Error | ошибка || shutil | ReadError | ошибка чтения || shutil | RegistryError | ошибка реестра || shutil | SameFileError | та же ошибка файла || shutil | SpecialFileError | особая ошибка файла || shutil | chown | сменить владельца || shutil | collections | коллекции || shutil | copy | копировать || shutil | copy2 | копия2 || shutil | copyfile | скопировать файл || shutil | copymode | режим копирования || shutil | copystat | копировать статистику || shutil | copytree | копировать дерево || shutil | disk_usage | использование диска || shutil | errno | нет || shutil | get_archive_formats | получить форматы архивов || shutil | get_terminal_size | получить размер терминала || shutil | get_unpack_formats | получить распакованные форматы || shutil | ignore_patterns | игнорировать шаблоны || shutil | make_archive | архив || shutil | move | двигаться || shutil | nt | нт || shutil | os | ос || shutil | posix | позикс || shutil | register_archive_format | формат архива регистрации || shutil | register_unpack_format | зарегистрироваться распаковать формат || shutil | rmtree | дерево рм || shutil | stat | статистика || shutil | sys | система || shutil | unpack_archive | распаковать архив || shutil | unregister_archive_format | отменить регистрацию формата архива || shutil | unregister_unpack_format | отменить регистрацию распаковать формат || shutil | which | который || shutil | tzset | цсет || ursina | ursina | ursina || ursina | AmbientLight | рассеянный свет || ursina | Animation | анимация || ursina | Animator | аниматор || ursina | Audio | аудио || ursina | BitMask32 | битовая маска32 || ursina | Bounds | границы || ursina | BoxCollider | детектор столкновений коробок || ursina | BoxShape | форма коробки || ursina | BulletBoxShape | форма пули || ursina | BulletCapsuleShape | форма капсулы пули || ursina | BulletDebugNode | узел отладки пули || ursina | BulletPlaneShape | форма плоскости пули || ursina | BulletRigidBodyNode | узел твердого тела пули || ursina | BulletSphereShape | форма сферы пули || ursina | BulletTriangleMesh | треугольная сетка пули || ursina | BulletTriangleMeshShape | форма сетки треугольника пули || ursina | BulletWorld | пулевый мир || ursina | Button | кнопка || ursina | ButtonGroup | группа кнопок || ursina | ButtonList | список кнопок || ursina | Capsule | капсула || ursina | CapsuleCollider | детектор столкновений капсул || ursina | CapsuleShape | форма капсулы || ursina | CheckBox | флажок || ursina | Circle | круг || ursina | Collider | детектор столкновений || ursina | CollisionBox | поле столкновений || ursina | CollisionCapsule | столкновительная капсула || ursina | CollisionNode | узел столкновения || ursina | CollisionPolygon | многоугольник столкновения || ursina | CollisionSphere | сфера столкновения || ursina | Color | цвет || ursina | Cone | конус || ursina | ContentTypes | типы контента || ursina | Cube | куб || ursina | Cursor | курсор || ursina | Cylinder | цилиндр || ursina | Default | по умолчанию || ursina | DirectionalLight | направленный свет || ursina | Draggable | перетаскиваемый || ursina | EditorCamera | редактор камеры || ursina | Empty | пустой || ursina | Entity | сущность || ursina | FrameAnimation3d | кадр анимация 3d || ursina | Func | исполняемая функция || ursina | Grid | сетка || ursina | InputField | поле ввода || ursina | Keys | ключи || ursina | LVector3f | л вектор 3f || ursina | Light | свет || ursina | LoopingList | циклический список || ursina | Mat3 | мат3 || ursina | Mat4 | мат4 || ursina | Mesh | сетка || ursina | MeshCollider | детектор столкновений сетки || ursina | MeshModes | режимы сетки || ursina | MeshShape | форма сетки || ursina | NodePath | путь к узлу || ursina | PandaAmbientLight | панда окружающий свет || ursina | PandaDirectionalLight | панда направленного света || ursina | PandaPointLight | панда точечный свет || ursina | PandaSpotLight | панда точечный светильник || ursina | Panel | панель || ursina | Path | путь || ursina | PhysicsBody | физика тела || ursina | Pipe | трубка || ursina | Plane | самолет || ursina | PlaneShape | форма плоскости || ursina | PointLight | точечный свет || ursina | PostInitCaller | пост-инициализация вызывающего объекта || ursina | Quad | четверной || ursina | Quat | кват || ursina | RigidBody | твердое тело || ursina | Scrollable | прокручиваемый || ursina | Sequence | последовательность || ursina | Shader | шейдер || ursina | Sky | небо || ursina | Slider | ползунок || ursina | SmoothFollow | плавное следование || ursina | Space | космос || ursina | SphereCollider | детектор столкновений сфер || ursina | SphereShape | форма сферы || ursina | SpotLight | точечный свет || ursina | Sprite | спрайт || ursina | SpriteSheetAnimation | анимация листа спрайтов || ursina | Terrain | местность || ursina | Text | текст || ursina | TextField | текстовое поле || ursina | Texture | текстура || ursina | ThinSlider | тонкий ползунок || ursina | Tooltip | подсказка || ursina | TransformState | трансформировать состояние || ursina | Ursina | главное окно игры || ursina | Vec2 | вектор 2d || ursina | Vec3 | вектор 3d || ursina | Vec4 | вектор 4d || ursina | Wait | ждать || ursina | WindowPanel | игровая оконная панель || ursina | XUp | х вверх || ursina | YUp | ага || ursina | acos | арккосинус || ursina | after | после || ursina | application | приложение || ursina | audio | аудио || ursina | boxcast | коробка литая || ursina | camel_to_snake | верблюд к змее || ursina | camera | камера || ursina | ceil | округлить потолок || ursina | chunk_list | список фрагментов || ursina | clamp | зажим || ursina | collider | детектор столкновений || ursina | color | цвет || ursina | copy | копировать || ursina | cos | косинус || ursina | curve | изгиб || ursina | dedent | де дент || ursina | deepcopy | глубокая копия || ursina | destroy | разрушать || ursina | distance | расстояние || ursina | distance_2d | расстояние 2d || ursina | distance_xz | расстояние хз || ursina | duplicate | дубликат || ursina | entity | сущность || ursina | enumerate_2d | перечислить 2d || ursina | every | каждый || ursina | find_sequence | найти последовательность || ursina | flatten_completely | полностью сгладить || ursina | flatten_list | сгладить список || ursina | floor | круглый пол вниз || ursina | generate_properties_for_class | генерировать свойства для класса || ursina | grid_layout | макет сетки || ursina | held_keys | ключи || ursina | hit_info | информация о хите || ursina | hsv | оттенок насыщенность цвет || ursina | import_all_classes | импортировать все классы || ursina | inf | бесконечность || ursina | input_handler | обработчик ввода || ursina | internal_sum | внутренняя расчетная сумма || ursina | invoke | вызывать || ursina | lerp | я ошибаюсь || ursina | lerp_angle | л. угол э.п.м. || ursina | lights | огни || ursina | load_blender_scene | прочитать из сцены файла в блендере || ursina | load_model | читать из файловой модели || ursina | load_texture | читать из текстуры файла || ursina | main | основной || ursina | make_gradient | градиент || ursina | math | математика || ursina | mesh | сетка || ursina | mesh_importer | импортер сетки || ursina | models | модели || ursina | mouse | мышь || ursina | multireplace | множественная замена || ursina | os | операционная система || ursina | pi | пи || ursina | prefabs | префабы || ursina | print_info | распечатать информацию || ursina | print_on_screen | распечатать на экране || ursina | print_warning | распечатать предупреждение || ursina | printvar | распечатать вар || ursina | random | случайный || ursina | raycast | лучевой приброс || ursina | re | регулярное выражение || ursina | rgb | красный зеленый синий цвет || ursina | rigidbody | твердое тело || ursina | rotate_around_point_2d | вращаться вокруг точки 2d || ursina | round_to_closest | округлить до ближайшего || ursina | sample_gradient | образец градиента || ursina | scene | сцена || ursina | scripts | сценарии || ursina | sequence | последовательность || ursina | shader | шейдер || ursina | sin | синус || ursina | size_list | список размеров || ursina | slerp | сл эрп || ursina | snake_to_camel | змея к верблюду || ursina | sqrt | вычислить квадратный корень || ursina | string_utilities | строковые утилиты || ursina | sum | рассчитать сумму || ursina | sys | система || ursina | terraincast | рельеф местности || ursina | text | текст || ursina | texture | текстура || ursina | texture_importer | импортер текстур || ursina | time | время || ursina | traceback | обратная трассировка || ursina | ursinamath | урсина математика || ursina | ursinastuff | медвежья штука || ursina | vec2 | вектор 2d || ursina | vec3 | вектор 3d || ursina | vec4 | вектор 4d || ursina | window | окно игры || ursina | world_position_to_screen_position | мировая позиция на экране |<!--END_SECTION:translations-->
+<!--START_SECTION:translations-->
+| Модуль | Источник / Компонент | Название на русском |
+| :--- | :--- | :--- |
+| **os** | — | операционная система |
+| os | `DirEntry` | запись в каталоге |
+| os | `EX_OK` | е х ок |
+| os | `F_OK` | окей |
+| os | `GenericAlias` | общий псевдоним |
+| os | `Mapping` | картографирование |
+| os | `MutableMapping` | изменяемое отображение |
+| os | `O_APPEND` | о приложение |
+| os | `O_BINARY` | о б и н а р ь |
+| os | `O_CREAT` | о творчестве |
+| os | `O_EXCL` | о е х с л |
+| os | `O_NOINHERIT` | о нет о в наследстве |
+| os | `O_RANDOM` | или рандом |
+| os | `O_RDONLY` | или д о н л ы |
+| os | `O_RDWR` | или р д ш р |
+| os | `O_SHORT_LIVED` | о короткоживущий |
+| os | `O_TEMPORARY` | в р а м о р а я |
+| os | `O_TEXT` | о т е х т |
+| os | `O_TRUNC` | о бегать |
+| os | `O_WRONLY` | оу р о н л ы |
+| os | `P_DETACH` | п д е т а ч |
+| os | `P_NOWAIT` | п н о подожди |
+| os | `P_NOWAITO` | п н о погоди |
+| os | `P_OVERLAY` | п о в е р л а й |
+| os | `P_WAIT` | п подожди |
+| os | `PathLike` | путь как |
+| os | `R_OK` | р о к |
+| os | `SEEK_CUR` | искать |
+| os | `SEEK_END` | искать |
+| os | `SEEK_SET` | ищу набор |
+| os | `TMP_MAX` | т м п м а х |
+| os | `W_OK` | в о к |
+| os | `X_OK` | х о к |
+| os | `abc` | Абстрактные базовые классы |
+| os | `abort` | прерывать |
+| os | `access` | доступ |
+| os | `altsep` | альтернативный сентябрь |
+| os | `chdir` | изменить рабочий каталог |
+| os | `chmod` | изменить режим разрешений |
+| os | `close` | закрывать |
+| os | `closerange` | близкое расстояние |
+| os | `cpu_count` | количество процессоров |
+| os | `curdir` | курдир |
+| os | `defpath` | путь определения |
+| os | `device_encoding` | кодирование устройства |
+| os | `dup` | обман |
+| os | `dup2` | дубликат2 |
+| os | `environ` | переменные среды |
+| os | `error` | ошибка |
+| os | `execl` | исключить |
+| os | `execle` | исполнительный файл |
+| os | `execv` | выполнить программу с аргументами |
+| os | `execve` | исполнять |
+| os | `execvp` | исполнительный директор |
+| os | `execvpe` | исполнительный е |
+| os | `extsep` | доп.сентябрь |
+| os | `fsdecode` | декодирование фс |
+| os | `fsencode` | фс кодировать |
+| os | `fspath` | путь к фс |
+| os | `fstat` | фстат |
+| os | `get_blocking` | получить блокировку |
+| os | `get_exec_path` | получить путь выполнения программы |
+| os | `get_handle_inheritable` | получить дескриптор, передаваемый по наследству |
+| os | `get_inheritable` | получить по наследству |
+| os | `get_terminal_size` | получить размер терминала |
+| os | `getcwd` | получить текущий рабочий каталог |
+| os | `getenv` | получить переменную среды |
+| os | `getlogin` | получить логин |
+| os | `getpid` | получитьпид |
+| os | `isatty` | недовольный |
+| os | `kill` | убийство |
+| os | `lchmod` | л чмод |
+| os | `linesep` | линия сентябрь |
+| os | `link` | связь |
+| os | `listdir` | список содержимого каталога |
+| os | `listdrives` | список дисков |
+| os | `listmounts` | список монтировок |
+| os | `listvolumes` | список томов |
+| os | `lseek` | я ищу |
+| os | `lstat` | состояние ссылки |
+| os | `makedirs` | создавать каталоги рекурсивно |
+| os | `mkdir` | создать каталог |
+| os | `name` | имя |
+| os | `open` | открыть |
+| os | `pardir` | номинальная режиссура |
+| os | `path` | путь |
+| os | `pathsep` | путь сентября |
+| os | `pipe` | трубка |
+| os | `popen` | открыть |
+| os | `process_cpu_count` | количество процессоров процесса |
+| os | `putenv` | установить переменную среды |
+| os | `read` | читать |
+| os | `readlink` | ссылка для чтения |
+| os | `remove` | удалять |
+| os | `removedirs` | рекурсивно удалять каталоги |
+| os | `rename` | переименовывать |
+| os | `renames` | переименовывает |
+| os | `replace` | заменять |
+| os | `rmdir` | удалить каталог |
+| os | `scandir` | сканировать содержимое каталога |
+| os | `sep` | сентябрь |
+| os | `set_blocking` | установить блокировку |
+| os | `set_handle_inheritable` | установить дескриптор, наследуемый |
+| os | `set_inheritable` | установить наследуемый |
+| os | `spawnl` | спаун л |
+| os | `spawnle` | спаун ле |
+| os | `spawnve` | порождать пять |
+| os | `st` | ул. |
+| os | `startfile` | стартовый файл |
+| os | `stat` | статистика |
+| os | `stat_result` | результат статистики |
+| os | `strerror` | ошибка |
+| os | `supports_bytes_environ` | поддерживает байтовые переменные среды |
+| os | `supports_effective_ids` | поддерживает эффективные идентификаторы |
+| os | `supports_fd` | поддерживает файловый дескриптор |
+| os | `supports_follow_symlinks` | поддерживает следование символическим ссылкам |
+| os | `symlink` | символическая ссылка |
+| os | `sys` | система |
+| os | `system` | система |
+| os | `terminal_size` | размер терминала |
+| os | `times` | раз |
+| os | `times_result` | результат раз |
+| os | `truncate` | обрезать |
+| os | `umask` | маска |
+| os | `uname_result` | безымянный результат |
+| os | `unlink` | отсоединить |
+| os | `urandom` | случайный |
+| os | `utime` | тебе пора |
+| os | `waitpid` | ожидание |
+| os | `waitstatus_to_exitcode` | статус ожидания для выхода из кода |
+| os | `walk` | ходить |
+| os | `write` | писать |
+| **time** | — | время |
+| time | `CLOCK_BOOTTIME` | время загрузки часов |
+| time | `CLOCK_MONOTONIC` | часы м о н о то н и с |
+| time | `CLOCK_REALTIME` | часы в реальном времени |
+| time | `CLOCK_TAI` | часы |
+| time | `CLOCK_THREAD_CPUTIME_ID` | часы |
+| time | `altzone` | альтернативная зона |
+| time | `asctime` | время подъема |
+| time | `clock_getres` | часы получить разрешение |
+| time | `clock_gettime` | часы получить время |
+| time | `clock_gettime_ns` | часы получают время нс |
+| time | `daylight` | дневной свет |
+| time | `get_clock_info` | получить информацию о часах |
+| time | `localtime` | местное время |
+| time | `mktime` | мктайм |
+| time | `monotonic` | монотонный |
+| time | `monotonic_ns` | монотонный нс |
+| time | `perf_counter` | счетчик производительности |
+| time | `perf_counter_ns` | счетчик производительности нс |
+| time | `process_time` | время процесса |
+| time | `process_time_ns` | время процесса нс |
+| time | `sleep` | спать |
+| time | `strftime` | отформатировать время как строку |
+| time | `strptime` | время анализа строки |
+| time | `struct_time` | структурировать время |
+| time | `thread_time` | время потока |
+| time | `thread_time_ns` | время потока нс |
+| time | `time` | время |
+| time | `time_ns` | время нс |
+| time | `timezone` | часовой пояс |
+| time | `tzname` | тцнаме |
+| **math** | — | математика |
+| math | `acos` | арккосинус |
+| math | `acosh` | обратный гиперболический косинус |
+| math | `asin` | арксинус |
+| math | `asinh` | обратный гиперболический синус |
+| math | `atan` | арктангенс |
+| math | `atan2` | арктангенс двух аргументов |
+| math | `atanh` | обратный гиперболический тангенс |
+| math | `ceil` | округлить потолок |
+| math | `comb` | гребень |
+| math | `copysign` | копировать знак |
+| math | `cos` | косинус |
+| math | `cosh` | гиперболический косинус |
+| math | `degrees` | конвертировать в градусы |
+| math | `dist` | расстояние |
+| math | `e` | е |
+| math | `erf` | эрф |
+| math | `exp` | показательная функция |
+| math | `exp2` | эксп2 |
+| math | `expm1` | экспоненциальный минус 1 |
+| math | `fabs` | абсолютное значение с плавающей запятой |
+| math | `factorial` | факториал |
+| math | `floor` | круглый пол вниз |
+| math | `fma` | фма |
+| math | `fmod` | с плавающей запятой по модулю |
+| math | `frexp` | фр. опыт |
+| math | `gamma` | гамма |
+| math | `gcd` | наибольший общий делитель |
+| math | `hypot` | вычислить гипотенузу |
+| math | `inf` | бесконечность |
+| math | `isclose` | близко |
+| math | `isfinite` | конечно |
+| math | `isinf` | бесконечность |
+| math | `isnan` | не число |
+| math | `lcm` | наименьшее общее кратное |
+| math | `ldexp` | лд эксп |
+| math | `lgamma` | л гамма |
+| math | `log` | натуральный логарифм |
+| math | `log10` | десятичный логарифм |
+| math | `log1p` | log1p |
+| math | `log2` | логарифм по основанию 2 |
+| math | `modf` | мод ф |
+| math | `nan` | не число |
+| math | `nextafter` | следующий после |
+| math | `perm` | пермь |
+| math | `pi` | пи |
+| math | `pow` | привести к власти |
+| math | `prod` | произведение элементов |
+| math | `radians` | конвертировать в радианы |
+| math | `remainder` | остаток |
+| math | `sin` | синус |
+| math | `sinh` | гиперболический синус |
+| math | `sqrt` | вычислить квадратный корень |
+| math | `sumprod` | сумма производства |
+| math | `tan` | касательная |
+| math | `tanh` | гиперболический тангенс |
+| math | `tau` | тау |
+| math | `trunc` | ствол |
+| math | `ulp` | мутить |
+| **sys** | — | система |
+| sys | `activate_stack_trampoline` | активировать батут стека |
+| sys | `addaudithook` | добавить крючок аудита |
+| sys | `api_version` | версия api |
+| sys | `argv` | значения аргументов |
+| sys | `audit` | аудит |
+| sys | `base_exec_prefix` | базовый префикс программы выполнения |
+| sys | `base_prefix` | базовый префикс |
+| sys | `breakpointhook` | перехват точки останова |
+| sys | `builtin_module_names` | встроенные имена модулей |
+| sys | `byteorder` | порядок байтов |
+| sys | `call_tracing` | отслеживание вызовов |
+| sys | `copyright` | авторское право |
+| sys | `deactivate_stack_trampoline` | отключить батут стека |
+| sys | `displayhook` | дисплей крючок |
+| sys | `dont_write_bytecode` | не пиши байт-код |
+| sys | `exc_info` | информация об исключении времени выполнения |
+| sys | `excepthook` | кроме крючка |
+| sys | `exception` | исключение |
+| sys | `exec_prefix` | выполнить префикс программы |
+| sys | `executable` | исполняемый файл |
+| sys | `exit` | выход |
+| sys | `flags` | флаги |
+| sys | `float_info` | плавающая информация |
+| sys | `float_repr_style` | стиль представления строки с плавающей запятой |
+| sys | `get_asyncgen_hooks` | получить перехватчики асинхронного поколения |
+| sys | `get_coroutine_origin_tracking_depth` | получить глубину отслеживания происхождения сопрограммы |
+| sys | `getallocatedblocks` | получить выделенные блоки |
+| sys | `getdefaultencoding` | получить кодировку по умолчанию |
+| sys | `getfilesystemencodeerrors` | получить ошибки кодирования файловой системы |
+| sys | `getfilesystemencoding` | получить кодировку файловой системы |
+| sys | `getprofile` | получить профиль |
+| sys | `getrecursionlimit` | получить предел рекурсии |
+| sys | `getrefcount` | получить рефсчет |
+| sys | `getsizeof` | получить размер |
+| sys | `getswitchinterval` | получить интервал переключения |
+| sys | `gettrace` | получить след |
+| sys | `getunicodeinternedsize` | получить внутренний размер юникода |
+| sys | `hash_info` | хеш-информация |
+| sys | `hexversion` | шестнадцатеричная версия |
+| sys | `implementation` | выполнение |
+| sys | `int_info` | внутренняя информация |
+| sys | `intern` | стажер |
+| sys | `is_finalizing` | завершает работу |
+| sys | `is_remote_debug_enabled` | включена ли удаленная отладка |
+| sys | `is_stack_trampoline_active` | активен ли батут стека? |
+| sys | `maxsize` | максимальный размер |
+| sys | `maxunicode` | максимальный юникод |
+| sys | `meta_path` | метапуть |
+| sys | `modules` | модули |
+| sys | `monitoring` | мониторинг |
+| sys | `orig_argv` | исходные значения аргументов |
+| sys | `path` | путь |
+| sys | `path_hooks` | крючки для пути |
+| sys | `path_importer_cache` | кэш импортера путей |
+| sys | `platform` | платформа |
+| sys | `platlibdir` | платная библиотека |
+| sys | `prefix` | префикс |
+| sys | `pycache_prefix` | префикс кэша py |
+| sys | `remote_exec` | удаленное выполнение программы |
+| sys | `set_asyncgen_hooks` | установить перехватчики асинхронного поколения |
+| sys | `set_coroutine_origin_tracking_depth` | установить глубину отслеживания происхождения сопрограммы |
+| sys | `setprofile` | установить профиль |
+| sys | `setrecursionlimit` | установить предел рекурсии |
+| sys | `setswitchinterval` | установить интервал переключения |
+| sys | `settrace` | установить трассировку |
+| sys | `stderr` | стандартный вывод ошибок |
+| sys | `stdin` | стандартный ввод |
+| sys | `stdout` | стандартный вывод |
+| sys | `thread_info` | информация о теме |
+| sys | `unraisablehook` | неподнимаемый крюк |
+| sys | `version` | версия |
+| sys | `version_info` | информация о версии |
+| sys | `warnoptions` | варианты предупреждения |
+| sys | `winver` | выиграть версию |
+| sys | `get_int_max_str_digits` | получить int max строку текста цифры |
+| sys | `set_int_max_str_digits` | установить int max строковые текстовые цифры |
+| **cmath** | — | с математика |
+| cmath | `acos` | арккосинус |
+| cmath | `acosh` | обратный гиперболический косинус |
+| cmath | `asin` | арксинус |
+| cmath | `asinh` | обратный гиперболический синус |
+| cmath | `atan` | арктангенс |
+| cmath | `atanh` | обратный гиперболический тангенс |
+| cmath | `cos` | косинус |
+| cmath | `cosh` | гиперболический косинус |
+| cmath | `e` | е |
+| cmath | `exp` | показательная функция |
+| cmath | `inf` | бесконечность |
+| cmath | `infj` | инфж |
+| cmath | `isclose` | близко |
+| cmath | `isfinite` | конечно |
+| cmath | `isinf` | бесконечность |
+| cmath | `isnan` | не число |
+| cmath | `log` | натуральный логарифм |
+| cmath | `log10` | десятичный логарифм |
+| cmath | `nan` | не число |
+| cmath | `nanj` | нет, штат нью-джерси |
+| cmath | `phase` | фаза |
+| cmath | `pi` | пи |
+| cmath | `polar` | полярный |
+| cmath | `rect` | прямой |
+| cmath | `sin` | синус |
+| cmath | `sinh` | гиперболический синус |
+| cmath | `sqrt` | вычислить квадратный корень |
+| cmath | `tan` | касательная |
+| cmath | `tanh` | гиперболический тангенс |
+| cmath | `tau` | тау |
+| **numpy** | — | бестолковый |
+| numpy | `False_` | ложь |
+| numpy | `ScalarType` | скалярный тип |
+| numpy | `True_` | истинный |
+| numpy | `abs` | абсолютное значение |
+| numpy | `absolute` | абсолютный |
+| numpy | `acos` | арккосинус |
+| numpy | `acosh` | обратный гиперболический косинус |
+| numpy | `add` | добавлять |
+| numpy | `all` | все |
+| numpy | `allclose` | все близко |
+| numpy | `amax` | макс |
+| numpy | `amin` | я в |
+| numpy | `angle` | угол |
+| numpy | `any` | любой |
+| numpy | `append` | добавить |
+| numpy | `apply_along_axis` | применить вдоль оси |
+| numpy | `apply_over_axes` | применять по осям |
+| numpy | `arange` | диапазон |
+| numpy | `arccos` | арккос |
+| numpy | `arccosh` | арккос ч |
+| numpy | `arcsin` | арксин |
+| numpy | `arcsinh` | дуга синх |
+| numpy | `arctan` | арктан |
+| numpy | `arctan2` | арктан2 |
+| numpy | `argmax` | аргументмакс |
+| numpy | `argmin` | аргмин |
+| numpy | `argpartition` | раздел аргумента |
+| numpy | `argsort` | сортировка аргументов |
+| numpy | `argwhere` | аргумент, где |
+| numpy | `around` | вокруг |
+| numpy | `array` | множество |
+| numpy | `array2string` | строка массива 2 |
+| numpy | `array_equal` | массив равен |
+| numpy | `array_equiv` | эквивалент массива |
+| numpy | `array_repr` | представление строки массива |
+| numpy | `array_split` | разделение массива |
+| numpy | `array_str` | текст строки массива |
+| numpy | `asanyarray` | как любой массив |
+| numpy | `asarray` | как массив |
+| numpy | `ascontiguousarray` | как непрерывный массив |
+| numpy | `asfortranarray` | как массив фортрана |
+| numpy | `asin` | арксинус |
+| numpy | `asinh` | обратный гиперболический синус |
+| numpy | `asmatrix` | как матрица |
+| numpy | `astype` | как тип |
+| numpy | `atan` | арктангенс |
+| numpy | `atan2` | арктангенс двух аргументов |
+| numpy | `atanh` | обратный гиперболический тангенс |
+| numpy | `atleast_1d` | по крайней мере 1 день |
+| numpy | `atleast_2d` | по крайней мере 2 дня |
+| numpy | `atleast_3d` | по крайней мере 3d |
+| numpy | `average` | средний |
+| numpy | `bartlett` | бартлетт |
+| numpy | `base_repr` | представление базовой строки |
+| numpy | `binary_repr` | представление двоичной строки |
+| numpy | `bincount` | количество ячеек |
+| numpy | `bitwise_and` | побитовое и |
+| numpy | `bitwise_count` | побитовый подсчет |
+| numpy | `bitwise_invert` | побитовое инвертирование |
+| numpy | `bitwise_left_shift` | побитовый сдвиг влево |
+| numpy | `bitwise_not` | побитовое нет |
+| numpy | `bitwise_or` | поразрядно или |
+| numpy | `bitwise_right_shift` | побитовый сдвиг вправо |
+| numpy | `bitwise_xor` | побитовое или |
+| numpy | `blackman` | черный мужчина |
+| numpy | `block` | блокировать |
+| numpy | `bmat` | бмат |
+| numpy | `bool` | логическое значение |
+| numpy | `bool_` | логическое значение |
+| numpy | `broadcast` | транслировать |
+| numpy | `broadcast_arrays` | широковещательные массивы |
+| numpy | `broadcast_shapes` | транслируемые формы |
+| numpy | `broadcast_to` | транслировать на |
+| numpy | `busday_count` | счетчик дней в автобусе |
+| numpy | `busday_offset` | компенсация за автобусный день |
+| numpy | `busdaycalendar` | календарь дней автобуса |
+| numpy | `byte` | байт |
+| numpy | `bytes_` | байты |
+| numpy | `c_` | с |
+| numpy | `can_cast` | может бросить |
+| numpy | `ceil` | округлить потолок |
+| numpy | `char` | характер |
+| numpy | `character` | характер |
+| numpy | `choose` | выбирать |
+| numpy | `clip` | клип |
+| numpy | `column_stack` | стек столбцов |
+| numpy | `common_type` | общий тип |
+| numpy | `complex128` | комплекс 128 |
+| numpy | `complex64` | комплекс 64 |
+| numpy | `complexfloating` | комплексный плавучий |
+| numpy | `compress` | компресс |
+| numpy | `concat` | конкат |
+| numpy | `concatenate` | объединять |
+| numpy | `conj` | кондж |
+| numpy | `conjugate` | сопряженный |
+| numpy | `convolve` | сворачиваться |
+| numpy | `copy` | копировать |
+| numpy | `copysign` | копировать знак |
+| numpy | `copyto` | скопировать в |
+| numpy | `core` | основной |
+| numpy | `corrcoef` | корр коэф |
+| numpy | `correlate` | коррелировать |
+| numpy | `cos` | косинус |
+| numpy | `cosh` | гиперболический косинус |
+| numpy | `count_nonzero` | считать ненулевым |
+| numpy | `cov` | ковариация |
+| numpy | `cross` | крест |
+| numpy | `cumprod` | совокупный продукт |
+| numpy | `cumsum` | совокупная сумма |
+| numpy | `cumulative_prod` | совокупное произведение элементов |
+| numpy | `cumulative_sum` | совокупная сумма расчета |
+| numpy | `datetime64` | дата-время 64 |
+| numpy | `datetime_as_string` | дата-время как строка |
+| numpy | `datetime_data` | данные даты и времени |
+| numpy | `deg2rad` | град2рад |
+| numpy | `degrees` | конвертировать в градусы |
+| numpy | `delete` | удалить |
+| numpy | `diag` | диагностика |
+| numpy | `diag_indices` | индексы диагностики |
+| numpy | `diag_indices_from` | индексы диагностики из |
+| numpy | `diagflat` | диагностика квартиры |
+| numpy | `diagonal` | диагональ |
+| numpy | `diff` | вычислить разницу |
+| numpy | `digitize` | оцифровать |
+| numpy | `divide` | разделять |
+| numpy | `divmod` | деление и остаток |
+| numpy | `dot` | точка |
+| numpy | `double` | двойной |
+| numpy | `dsplit` | я разделю |
+| numpy | `dtype` | тип д |
+| numpy | `e` | е |
+| numpy | `ediff1d` | ediff1d |
+| numpy | `einsum` | эйн сумма |
+| numpy | `einsum_path` | путь общей суммы |
+| numpy | `emath` | электронная математика |
+| numpy | `empty` | пустой |
+| numpy | `empty_like` | пустой как |
+| numpy | `equal` | равный |
+| numpy | `errstate` | ошибочное состояние |
+| numpy | `euler_gamma` | эйлерова гамма |
+| numpy | `exceptions` | исключения |
+| numpy | `exp` | показательная функция |
+| numpy | `exp2` | эксп2 |
+| numpy | `expand_dims` | расширить затемнение |
+| numpy | `expm1` | экспоненциальный минус 1 |
+| numpy | `extract` | извлекать |
+| numpy | `eye` | глаз |
+| numpy | `f2py` | f2py |
+| numpy | `fabs` | абсолютное значение с плавающей запятой |
+| numpy | `fft` | фф |
+| numpy | `fill_diagonal` | заполнить диагональ |
+| numpy | `finfo` | информация о |
+| numpy | `fix` | исправить |
+| numpy | `flatiter` | плоский итер |
+| numpy | `flatnonzero` | плоский ненулевой |
+| numpy | `flexible` | гибкий |
+| numpy | `flip` | подбросить |
+| numpy | `fliplr` | перевернуть лр |
+| numpy | `flipud` | перевернуть уд |
+| numpy | `float16` | поплавок16 |
+| numpy | `float32` | поплавок32 |
+| numpy | `float64` | float64 |
+| numpy | `float_power` | плавающая сила |
+| numpy | `floating` | плавающий |
+| numpy | `floor` | круглый пол вниз |
+| numpy | `floor_divide` | закруглить перекрытие пола вниз |
+| numpy | `fmax` | fмакс |
+| numpy | `fmod` | с плавающей запятой по модулю |
+| numpy | `format_float_positional` | формат с плавающей запятой позиционный |
+| numpy | `frexp` | фр. опыт |
+| numpy | `from_dlpack` | из дл пака |
+| numpy | `frombuffer` | из буфера |
+| numpy | `fromfile` | из файла |
+| numpy | `fromfunction` | из функции |
+| numpy | `fromiter` | из итера |
+| numpy | `frompyfunc` | из py-функции |
+| numpy | `fromregex` | из регулярного выражения |
+| numpy | `fromstring` | из строки |
+| numpy | `full` | полный |
+| numpy | `full_like` | полный лайк |
+| numpy | `gcd` | наибольший общий делитель |
+| numpy | `generic` | универсальный |
+| numpy | `geomspace` | геометрия пространства |
+| numpy | `get_include` | получить включить |
+| numpy | `get_printoptions` | получить варианты печати |
+| numpy | `getbufsize` | получить размер буфера |
+| numpy | `geterr` | ошибиться |
+| numpy | `geterrcall` | получить сообщение об ошибке |
+| numpy | `gradient` | градиент |
+| numpy | `greater` | больший |
+| numpy | `greater_equal` | большее равное |
+| numpy | `half` | половина |
+| numpy | `hamming` | хамминг |
+| numpy | `hanning` | хэннинг |
+| numpy | `heaviside` | хевисайд |
+| numpy | `histogram` | гистограмма |
+| numpy | `histogram2d` | гистограмма 2d |
+| numpy | `histogram_bin_edges` | края интервала гистограммы |
+| numpy | `histogramdd` | гистограмма дд |
+| numpy | `hsplit` | ч раскол |
+| numpy | `hstack` | ч стек |
+| numpy | `hypot` | вычислить гипотенузу |
+| numpy | `i0` | я0 |
+| numpy | `identity` | личность |
+| numpy | `iinfo` | я информация |
+| numpy | `imag` | изображение |
+| numpy | `index_exp` | индексная экспоненциальная функция |
+| numpy | `indices` | индексы |
+| numpy | `inexact` | в точном |
+| numpy | `inf` | бесконечность |
+| numpy | `info` | информация |
+| numpy | `inner` | внутренний |
+| numpy | `insert` | вставлять |
+| numpy | `int16` | int16 |
+| numpy | `int32` | int32 |
+| numpy | `int64` | int64 |
+| numpy | `int8` | int8 |
+| numpy | `int_` | интервал |
+| numpy | `intc` | инк |
+| numpy | `integer` | целое число |
+| numpy | `interp` | интерпретатор |
+| numpy | `intersect1d` | пересекать 1d |
+| numpy | `intp` | интп |
+| numpy | `invert` | инвертировать |
+| numpy | `is_busday` | автобусный день |
+| numpy | `isclose` | близко |
+| numpy | `iscomplex` | сложный |
+| numpy | `iscomplexobj` | сложный объект |
+| numpy | `isfinite` | конечно |
+| numpy | `isfortran` | фортран |
+| numpy | `isin` | находится в |
+| numpy | `isinf` | бесконечность |
+| numpy | `isnan` | не число |
+| numpy | `isnat` | ест |
+| numpy | `isneginf` | отрицательная информация |
+| numpy | `isposinf` | информация о позиции |
+| numpy | `isreal` | реально |
+| numpy | `isrealobj` | настоящий объект |
+| numpy | `isscalar` | скалярным |
+| numpy | `issubdtype` | тип субд |
+| numpy | `iterable` | повторяемый |
+| numpy | `kaiser` | кайзер |
+| numpy | `kron` | крон |
+| numpy | `lcm` | наименьшее общее кратное |
+| numpy | `ldexp` | лд эксп |
+| numpy | `left_shift` | левый сдвиг |
+| numpy | `less` | меньше |
+| numpy | `less_equal` | менее равный |
+| numpy | `lexsort` | лекс сортировка |
+| numpy | `lib` | библиотека |
+| numpy | `linalg` | линалг |
+| numpy | `linspace` | линспейс |
+| numpy | `little_endian` | с прямым порядком байтов |
+| numpy | `load` | прочитать из файла |
+| numpy | `loadtxt` | загрузить текстовый файл |
+| numpy | `log` | натуральный логарифм |
+| numpy | `log10` | десятичный логарифм |
+| numpy | `log1p` | log1p |
+| numpy | `log2` | логарифм по основанию 2 |
+| numpy | `logaddexp` | войти добавить опыт |
+| numpy | `logaddexp2` | logaddexp2 |
+| numpy | `logical_and` | логичный и |
+| numpy | `logical_not` | логично нет |
+| numpy | `logical_or` | логичный или |
+| numpy | `logical_xor` | логическое исключающее или |
+| numpy | `logspace` | пространство журнала |
+| numpy | `long` | длинный |
+| numpy | `longdouble` | длинный двойной |
+| numpy | `longlong` | долго долго |
+| numpy | `ma` | ма |
+| numpy | `mask_indices` | индексы маски |
+| numpy | `matmul` | коврик мул |
+| numpy | `matrix` | матрица |
+| numpy | `matrix_transpose` | транспонировать матрицу |
+| numpy | `matvec` | коврик век |
+| numpy | `max` | макс |
+| numpy | `maximum` | максимум |
+| numpy | `may_share_memory` | может поделиться памятью |
+| numpy | `mean` | иметь в виду |
+| numpy | `median` | медиана |
+| numpy | `memmap` | карта памяти |
+| numpy | `meshgrid` | сетчатая сетка |
+| numpy | `mgrid` | мгрид |
+| numpy | `min` | мин |
+| numpy | `min_scalar_type` | минимальный скалярный тип |
+| numpy | `minimum` | минимум |
+| numpy | `mintypecode` | минимальный код типа |
+| numpy | `mod` | остаток по модулю |
+| numpy | `modf` | мод ф |
+| numpy | `moveaxis` | перемещение оси |
+| numpy | `multiply` | умножать |
+| numpy | `nan` | не число |
+| numpy | `nan_to_num` | не число для числа |
+| numpy | `nanargmax` | нан аргмакс |
+| numpy | `nanargmin` | нан аргмин |
+| numpy | `nancumprod` | нан, сперма, продюсирование |
+| numpy | `nancumsum` | нан сперма |
+| numpy | `nanmax` | нэн макс |
+| numpy | `nanmean` | нан значит |
+| numpy | `nanmedian` | нан медиана |
+| numpy | `nanmin` | нан мин |
+| numpy | `nanpercentile` | нан процентиль |
+| numpy | `nanprod` | нэн прод |
+| numpy | `nanquantile` | нан-квантиль |
+| numpy | `nanstd` | нан стандарт |
+| numpy | `nansum` | нан сумма |
+| numpy | `nanvar` | нан вар |
+| numpy | `ndarray` | й массив |
+| numpy | `ndenumerate` | и перечислить |
+| numpy | `ndim` | ндим |
+| numpy | `ndindex` | й индекс |
+| numpy | `nditer` | итер |
+| numpy | `negative` | отрицательный |
+| numpy | `nested_iters` | вложенные итеры |
+| numpy | `newaxis` | новая ось |
+| numpy | `nextafter` | следующий после |
+| numpy | `nonzero` | ненулевой |
+| numpy | `not_equal` | не равный |
+| numpy | `number` | число |
+| numpy | `object_` | объект |
+| numpy | `ogrid` | о сетка |
+| numpy | `ones` | те |
+| numpy | `ones_like` | такие как |
+| numpy | `outer` | внешний |
+| numpy | `packbits` | упаковать биты |
+| numpy | `pad` | подушечка |
+| numpy | `partition` | раздел |
+| numpy | `percentile` | процентиль |
+| numpy | `permute_dims` | перестановка затемнений |
+| numpy | `pi` | пи |
+| numpy | `piecewise` | по частям |
+| numpy | `place` | место |
+| numpy | `poly` | поли |
+| numpy | `poly1d` | поли1д |
+| numpy | `polyadd` | поли добавить |
+| numpy | `polyder` | поли дер |
+| numpy | `polydiv` | полидив |
+| numpy | `polyfit` | поли подходит |
+| numpy | `polyint` | полиинт |
+| numpy | `polymul` | поли мул |
+| numpy | `polynomial` | полиномиальный |
+| numpy | `polysub` | поли суб |
+| numpy | `polyval` | поливал |
+| numpy | `positive` | позитивный |
+| numpy | `pow` | привести к власти |
+| numpy | `power` | власть |
+| numpy | `printoptions` | параметры печати |
+| numpy | `prod` | произведение элементов |
+| numpy | `promote_types` | продвигать типы |
+| numpy | `ptp` | птп |
+| numpy | `put` | помещать |
+| numpy | `put_along_axis` | расположить вдоль оси |
+| numpy | `putmask` | надеть маску |
+| numpy | `quantile` | квантиль |
+| numpy | `r_` | р |
+| numpy | `rad2deg` | рад2дег |
+| numpy | `radians` | конвертировать в радианы |
+| numpy | `random` | случайный |
+| numpy | `ravel` | путаться |
+| numpy | `ravel_multi_index` | мультииндекс равель |
+| numpy | `real` | настоящий |
+| numpy | `real_if_close` | реально, если близко |
+| numpy | `rec` | запись |
+| numpy | `recarray` | массив записи |
+| numpy | `reciprocal` | взаимный |
+| numpy | `record` | записывать |
+| numpy | `remainder` | остаток |
+| numpy | `repeat` | повторить |
+| numpy | `require` | требовать |
+| numpy | `reshape` | изменить форму |
+| numpy | `resize` | изменить размер |
+| numpy | `result_type` | тип результата |
+| numpy | `right_shift` | правый сдвиг |
+| numpy | `rint` | рвать |
+| numpy | `roll` | рулон |
+| numpy | `rollaxis` | ось крена |
+| numpy | `roots` | корни |
+| numpy | `rot90` | гниль90 |
+| numpy | `round` | круглый |
+| numpy | `row_stack` | стек строк |
+| numpy | `s_` | с |
+| numpy | `save` | сохранять |
+| numpy | `savetxt` | сохранить текст |
+| numpy | `savez` | сохранить |
+| numpy | `savez_compressed` | сохранить сжатый |
+| numpy | `searchsorted` | поиск отсортирован |
+| numpy | `select` | выбирать |
+| numpy | `set_printoptions` | установить параметры печати |
+| numpy | `setbufsize` | установить размер буфера |
+| numpy | `setdiff1d` | setdiff1d |
+| numpy | `seterr` | установить ошибку |
+| numpy | `seterrcall` | установить вызов при ошибке |
+| numpy | `setxor1d` | setxor1d |
+| numpy | `shape` | форма |
+| numpy | `shares_memory` | разделяет память |
+| numpy | `short` | короткий |
+| numpy | `show_config` | показать конфигурацию |
+| numpy | `show_runtime` | показать время выполнения |
+| numpy | `sign` | знак |
+| numpy | `signbit` | знаковый бит |
+| numpy | `signedinteger` | целое число со знаком |
+| numpy | `sin` | синус |
+| numpy | `sinc` | с тех пор |
+| numpy | `single` | одинокий |
+| numpy | `sinh` | гиперболический синус |
+| numpy | `size` | размер |
+| numpy | `sort` | сортировать |
+| numpy | `sort_complex` | сортировать комплекс |
+| numpy | `spacing` | расстояние |
+| numpy | `split` | расколоть |
+| numpy | `sqrt` | вычислить квадратный корень |
+| numpy | `square` | квадрат |
+| numpy | `squeeze` | сжимать |
+| numpy | `stack` | куча |
+| numpy | `std` | стандартное отклонение |
+| numpy | `str_` | строковый текст |
+| numpy | `strings` | струны |
+| numpy | `subtract` | вычесть |
+| numpy | `sum` | рассчитать сумму |
+| numpy | `swapaxes` | поменять местами оси |
+| numpy | `take` | брать |
+| numpy | `take_along_axis` | взять вдоль оси |
+| numpy | `tan` | касательная |
+| numpy | `tanh` | гиперболический тангенс |
+| numpy | `tensordot` | тензорная точка |
+| numpy | `test` | тест |
+| numpy | `testing` | тестирование |
+| numpy | `tile` | плитка |
+| numpy | `timedelta64` | разница во времени 64 |
+| numpy | `trace` | след |
+| numpy | `transpose` | транспонировать |
+| numpy | `trapezoid` | трапеция |
+| numpy | `tri` | три |
+| numpy | `tril` | трил |
+| numpy | `tril_indices` | индексы трила |
+| numpy | `tril_indices_from` | индексы трила из |
+| numpy | `trim_zeros` | обрезать нули |
+| numpy | `triu` | три ты |
+| numpy | `triu_indices` | три индекса |
+| numpy | `triu_indices_from` | три индекса из |
+| numpy | `true_divide` | истинный разрыв |
+| numpy | `trunc` | ствол |
+| numpy | `typecodes` | коды типов |
+| numpy | `typename` | имя типа |
+| numpy | `typing` | печатание |
+| numpy | `ubyte` | убайт |
+| numpy | `ufunc` | ты веселый |
+| numpy | `uint16` | uint16 |
+| numpy | `uint32` | uint32 |
+| numpy | `uint64` | uint64 |
+| numpy | `uint8` | uint8 |
+| numpy | `uintp` | уинт п |
+| numpy | `ulong` | улонг |
+| numpy | `ulonglong` | ты долго-долго |
+| numpy | `union1d` | союз 1д |
+| numpy | `unique` | уникальный |
+| numpy | `unique_all` | уникальные все |
+| numpy | `unique_counts` | уникальные значения |
+| numpy | `unique_inverse` | уникальный инверсный |
+| numpy | `unique_values` | уникальные ценности |
+| numpy | `unpackbits` | распаковать биты |
+| numpy | `unravel_index` | индекс разгадки |
+| numpy | `unsignedinteger` | целое число без знака |
+| numpy | `unstack` | разбирать |
+| numpy | `unwrap` | разворачивать |
+| numpy | `ushort` | сокращать |
+| numpy | `vander` | ван дер |
+| numpy | `var` | дисперсия |
+| numpy | `vdot` | вдот |
+| numpy | `vecdot` | векторная точка |
+| numpy | `vectorize` | векторизовать |
+| numpy | `void` | пустота |
+| numpy | `where` | где |
+| numpy | `zeros` | нули |
+| numpy | `zeros_like` | нули вроде |
+| **shutil** | — | заткнись |
+| shutil | `COPY_BUFSIZE` | копировать но размер |
+| shutil | `Error` | ошибка |
+| shutil | `ReadError` | ошибка чтения |
+| shutil | `RegistryError` | ошибка реестра |
+| shutil | `SameFileError` | та же ошибка файла |
+| shutil | `SpecialFileError` | особая ошибка файла |
+| shutil | `chown` | сменить владельца |
+| shutil | `collections` | коллекции |
+| shutil | `copy` | копировать |
+| shutil | `copy2` | копия2 |
+| shutil | `copyfile` | скопировать файл |
+| shutil | `copymode` | режим копирования |
+| shutil | `copystat` | копировать статистику |
+| shutil | `copytree` | копировать дерево |
+| shutil | `disk_usage` | использование диска |
+| shutil | `errno` | нет |
+| shutil | `get_archive_formats` | получить форматы архивов |
+| shutil | `get_terminal_size` | получить размер терминала |
+| shutil | `get_unpack_formats` | получить распакованные форматы |
+| shutil | `ignore_patterns` | игнорировать шаблоны |
+| shutil | `make_archive` | архив |
+| shutil | `move` | двигаться |
+| shutil | `nt` | нт |
+| shutil | `os` | ос |
+| shutil | `posix` | позикс |
+| shutil | `register_archive_format` | формат архива регистрации |
+| shutil | `register_unpack_format` | зарегистрироваться распаковать формат |
+| shutil | `rmtree` | дерево рм |
+| shutil | `stat` | статистика |
+| shutil | `sys` | система |
+| shutil | `unpack_archive` | распаковать архив |
+| shutil | `unregister_archive_format` | отменить регистрацию формата архива |
+| shutil | `unregister_unpack_format` | отменить регистрацию распаковать формат |
+| shutil | `which` | который |
+| shutil | `tzset` | цсет |
+| **ursina** | — | ursina |
+| ursina | `AmbientLight` | рассеянный свет |
+| ursina | `Animation` | анимация |
+| ursina | `Animator` | аниматор |
+| ursina | `Audio` | аудио |
+| ursina | `BitMask32` | битовая маска32 |
+| ursina | `Bounds` | границы |
+| ursina | `BoxCollider` | детектор столкновений коробок |
+| ursina | `BoxShape` | форма коробки |
+| ursina | `BulletBoxShape` | форма пули |
+| ursina | `BulletCapsuleShape` | форма капсулы пули |
+| ursina | `BulletDebugNode` | узел отладки пули |
+| ursina | `BulletPlaneShape` | форма плоскости пули |
+| ursina | `BulletRigidBodyNode` | узел твердого тела пули |
+| ursina | `BulletSphereShape` | форма сферы пули |
+| ursina | `BulletTriangleMesh` | треугольная сетка пули |
+| ursina | `BulletTriangleMeshShape` | форма сетки треугольника пули |
+| ursina | `BulletWorld` | пулевый мир |
+| ursina | `Button` | кнопка |
+| ursina | `ButtonGroup` | группа кнопок |
+| ursina | `ButtonList` | список кнопок |
+| ursina | `Capsule` | капсула |
+| ursina | `CapsuleCollider` | детектор столкновений капсул |
+| ursina | `CapsuleShape` | форма капсулы |
+| ursina | `CheckBox` | флажок |
+| ursina | `Circle` | круг |
+| ursina | `Collider` | детектор столкновений |
+| ursina | `CollisionBox` | поле столкновений |
+| ursina | `CollisionCapsule` | столкновительная капсула |
+| ursina | `CollisionNode` | узел столкновения |
+| ursina | `CollisionPolygon` | многоугольник столкновения |
+| ursina | `CollisionSphere` | сфера столкновения |
+| ursina | `Color` | цвет |
+| ursina | `Cone` | конус |
+| ursina | `ContentTypes` | типы контента |
+| ursina | `Cube` | куб |
+| ursina | `Cursor` | курсор |
+| ursina | `Cylinder` | цилиндр |
+| ursina | `Default` | по умолчанию |
+| ursina | `DirectionalLight` | направленный свет |
+| ursina | `Draggable` | перетаскиваемый |
+| ursina | `EditorCamera` | редактор камеры |
+| ursina | `Empty` | пустой |
+| ursina | `Entity` | сущность |
+| ursina | `FrameAnimation3d` | кадр анимация 3d |
+| ursina | `Func` | исполняемая функция |
+| ursina | `Grid` | сетка |
+| ursina | `InputField` | поле ввода |
+| ursina | `Keys` | ключи |
+| ursina | `LVector3f` | л вектор 3f |
+| ursina | `Light` | свет |
+| ursina | `LoopingList` | циклический список |
+| ursina | `Mat3` | мат3 |
+| ursina | `Mat4` | мат4 |
+| ursina | `Mesh` | сетка |
+| ursina | `MeshCollider` | детектор столкновений сетки |
+| ursina | `MeshModes` | режимы сетки |
+| ursina | `MeshShape` | форма сетки |
+| ursina | `NodePath` | путь к узлу |
+| ursina | `PandaAmbientLight` | панда окружающий свет |
+| ursina | `PandaDirectionalLight` | панда направленного света |
+| ursina | `PandaPointLight` | панда точечный свет |
+| ursina | `PandaSpotLight` | панда точечный светильник |
+| ursina | `Panel` | панель |
+| ursina | `Path` | путь |
+| ursina | `PhysicsBody` | физика тела |
+| ursina | `Pipe` | трубка |
+| ursina | `Plane` | самолет |
+| ursina | `PlaneShape` | форма плоскости |
+| ursina | `PointLight` | точечный свет |
+| ursina | `PostInitCaller` | пост-инициализация вызывающего объекта |
+| ursina | `Quad` | четверной |
+| ursina | `Quat` | кват |
+| ursina | `RigidBody` | твердое тело |
+| ursina | `Scrollable` | прокручиваемый |
+| ursina | `Sequence` | последовательность |
+| ursina | `Shader` | шейдер |
+| ursina | `Sky` | небо |
+| ursina | `Slider` | ползунок |
+| ursina | `SmoothFollow` | плавное следование |
+| ursina | `Space` | космос |
+| ursina | `SphereCollider` | детектор столкновений сфер |
+| ursina | `SphereShape` | форма сферы |
+| ursina | `SpotLight` | точечный свет |
+| ursina | `Sprite` | спрайт |
+| ursina | `SpriteSheetAnimation` | анимация листа спрайтов |
+| ursina | `Terrain` | местность |
+| ursina | `Text` | текст |
+| ursina | `TextField` | текстовое поле |
+| ursina | `Texture` | текстура |
+| ursina | `ThinSlider` | тонкий ползунок |
+| ursina | `Tooltip` | подсказка |
+| ursina | `TransformState` | трансформировать состояние |
+| ursina | `Ursina` | главное окно игры |
+| ursina | `Vec2` | вектор 2d |
+| ursina | `Vec3` | вектор 3d |
+| ursina | `Vec4` | вектор 4d |
+| ursina | `Wait` | ждать |
+| ursina | `WindowPanel` | игровая оконная панель |
+| ursina | `XUp` | х вверх |
+| ursina | `YUp` | ага |
+| ursina | `acos` | арккосинус |
+| ursina | `after` | после |
+| ursina | `application` | приложение |
+| ursina | `audio` | аудио |
+| ursina | `boxcast` | коробка литая |
+| ursina | `camel_to_snake` | верблюд к змее |
+| ursina | `camera` | камера |
+| ursina | `ceil` | округлить потолок |
+| ursina | `chunk_list` | список фрагментов |
+| ursina | `clamp` | зажим |
+| ursina | `collider` | детектор столкновений |
+| ursina | `color` | цвет |
+| ursina | `copy` | копировать |
+| ursina | `cos` | косинус |
+| ursina | `curve` | изгиб |
+| ursina | `dedent` | де дент |
+| ursina | `deepcopy` | глубокая копия |
+| ursina | `destroy` | разрушать |
+| ursina | `distance` | расстояние |
+| ursina | `distance_2d` | расстояние 2d |
+| ursina | `distance_xz` | расстояние хз |
+| ursina | `duplicate` | дубликат |
+| ursina | `entity` | сущность |
+| ursina | `enumerate_2d` | перечислить 2d |
+| ursina | `every` | каждый |
+| ursina | `find_sequence` | найти последовательность |
+| ursina | `flatten_completely` | полностью сгладить |
+| ursina | `flatten_list` | сгладить список |
+| ursina | `floor` | круглый пол вниз |
+| ursina | `generate_properties_for_class` | генерировать свойства для класса |
+| ursina | `grid_layout` | макет сетки |
+| ursina | `held_keys` | ключи |
+| ursina | `hit_info` | информация о хите |
+| ursina | `hsv` | оттенок насыщенность цвет |
+| ursina | `import_all_classes` | импортировать все классы |
+| ursina | `inf` | бесконечность |
+| ursina | `input_handler` | обработчик ввода |
+| ursina | `internal_sum` | внутренняя расчетная сумма |
+| ursina | `invoke` | вызывать |
+| ursina | `lerp` | я ошибаюсь |
+| ursina | `lerp_angle` | л. угол э.п.м. |
+| ursina | `lights` | огни |
+| ursina | `load_blender_scene` | прочитать из сцены файла в блендере |
+| ursina | `load_model` | читать из файловой модели |
+| ursina | `load_texture` | читать из текстуры файла |
+| ursina | `main` | основной |
+| ursina | `make_gradient` | градиент |
+| ursina | `math` | математика |
+| ursina | `mesh` | сетка |
+| ursina | `mesh_importer` | импортер сетки |
+| ursina | `models` | модели |
+| ursina | `mouse` | мышь |
+| ursina | `multireplace` | множественная замена |
+| ursina | `os` | операционная система |
+| ursina | `pi` | пи |
+| ursina | `prefabs` | префабы |
+| ursina | `print_info` | распечатать информацию |
+| ursina | `print_on_screen` | распечатать на экране |
+| ursina | `print_warning` | распечатать предупреждение |
+| ursina | `printvar` | распечатать вар |
+| ursina | `random` | случайный |
+| ursina | `raycast` | лучевой приброс |
+| ursina | `re` | регулярное выражение |
+| ursina | `rgb` | красный зеленый синий цвет |
+| ursina | `rigidbody` | твердое тело |
+| ursina | `rotate_around_point_2d` | вращаться вокруг точки 2d |
+| ursina | `round_to_closest` | округлить до ближайшего |
+| ursina | `sample_gradient` | образец градиента |
+| ursina | `scene` | сцена |
+| ursina | `scripts` | сценарии |
+| ursina | `sequence` | последовательность |
+| ursina | `shader` | шейдер |
+| ursina | `sin` | синус |
+| ursina | `size_list` | список размеров |
+| ursina | `slerp` | сл эрп |
+| ursina | `snake_to_camel` | змея к верблюду |
+| ursina | `sqrt` | вычислить квадратный корень |
+| ursina | `string_utilities` | строковые утилиты |
+| ursina | `sum` | рассчитать сумму |
+| ursina | `sys` | система |
+| ursina | `terraincast` | рельеф местности |
+| ursina | `text` | текст |
+| ursina | `texture` | текстура |
+| ursina | `texture_importer` | импортер текстур |
+| ursina | `time` | время |
+| ursina | `traceback` | обратная трассировка |
+| ursina | `ursinamath` | урсина математика |
+| ursina | `ursinastuff` | медвежья штука |
+| ursina | `vec2` | вектор 2d |
+| ursina | `vec3` | вектор 3d |
+| ursina | `vec4` | вектор 4d |
+| ursina | `window` | окно игры |
+| ursina | `world_position_to_screen_position` | мировая позиция на экране |
+<!--END_SECTION:translations-->
