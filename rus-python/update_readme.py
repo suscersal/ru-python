@@ -1,9 +1,10 @@
 import json
 from pathlib import Path
 
-ROOT = Path(".")
-MODULES_FILE = ROOT / "modules.json"
-README_FILE = ROOT / "README.md"
+BASE = Path(__file__).resolve().parent
+MODULES_FILE = BASE / "modules.json"
+README_FILE = BASE / "README.md"
+
 START = "<!--START_SECTION:translations-->"
 END = "<!--END_SECTION:translations-->"
 
@@ -19,9 +20,9 @@ for module_name, module_data in data.items():
         source_ru = source_data.get("ru-name", "")
         rows.append((module_name, source_name, source_ru))
 
-table = "| Модуль | Имя | Русский |
+table = """| Модуль | Имя | Русский |
 |---|---|---|
-"
+"""
 for module_name, english_name, russian_name in rows:
     table += f"| {module_name} | {english_name} | {russian_name} |
 "
@@ -32,8 +33,7 @@ if START in readme and END in readme:
     before = readme.split(START, 1)[0]
     after = readme.split(END, 1)[1]
     new_readme = before + START + "
-" + table + "
-" + END + after
+" + table + END + after
 else:
     if readme and not readme.endswith("
 "):
