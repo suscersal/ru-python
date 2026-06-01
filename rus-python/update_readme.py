@@ -24,9 +24,7 @@ lines = [
 for module_name, english_name, russian_name in rows:
     lines.append("| {} | {} | {} |".format(module_name, english_name, russian_name))
 
-table = "
-".join(lines) + "
-"
+table = "".join(lines) + ""
 
 readme = README_FILE.read_text(encoding="utf-8") if README_FILE.exists() else ""
 
