@@ -31,16 +31,10 @@ readme = README_FILE.read_text(encoding="utf-8") if README_FILE.exists() else ""
 if START in readme and END in readme:
     before = readme.split(START, 1)[0]
     after = readme.split(END, 1)[1]
-    new_readme = before + START + "
-" + table + END + after
+    new_readme = before + START + "" + table + END + after
 else:
-    if readme and not readme.endswith("
-"):
-        readme += "
-"
-    new_readme = readme + "
-## Таблица переводов
-
-" + table
+    if readme and not readme.endswith(""):
+        readme += ""
+    new_readme = readme + "## Таблица переводов" + table
 
 README_FILE.write_text(new_readme, encoding="utf-8")
