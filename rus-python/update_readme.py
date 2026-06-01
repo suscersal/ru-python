@@ -12,19 +12,20 @@ data = json.loads(MODULES_FILE.read_text(encoding="utf-8"))
 
 rows = []
 for module_name, module_data in data.items():
-    module_ru = module_data.get("ru-name", "")
-    rows.append((module_name, module_name, module_ru))
+    rows.append((module_name, module_name, module_data.get("ru-name", "")))
+    for source_name, source_data in module_data.get("sources", {}).items():
+        rows.append((module_name, source_name, source_data.get("ru-name", "")))
 
-    sources = module_data.get("sources", {})
-    for source_name, source_data in sources.items():
-        source_ru = source_data.get("ru-name", "")
-        rows.append((module_name, source_name, source_ru))
+table_lines = [
+    "| Модуль | Имя | Русский |",
+    "|---|---|---|",
+]
 
-table = """| Модуль | Имя | Русский |
-|---|---|---|
-"""
 for module_name, english_name, russian_name in rows:
-    table += f"| {module_name} | {english_name} | {russian_name} |
+    table_lines.append("| {} | {} | {} |".format(module_name, english_name, russian_name))
+
+table = "
+".join(table_lines) + "
 "
 
 readme = README_FILE.read_text(encoding="utf-8") if README_FILE.exists() else ""
