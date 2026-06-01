@@ -22,7 +22,7 @@ lines = [
 ]
 
 for module_name, english_name, russian_name in rows:
-    lines.append("| {} | {} | {} |".format(module_name, english_name, russian_name))
+    lines.append(f"| {module_name} | {english_name} | {russian_name} |")
 
 table = "".join(lines) + ""
 
