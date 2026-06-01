@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - modules.json
-      - update_readme.py
+      - 'rus-python/modules.json'
+      - 'rus-python/update_readme.py'
+      - 'rus-python/README.md'
   workflow_dispatch:
 
 permissions:
@@ -15,6 +16,10 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: rus-python
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,7 +27,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Generate README table
         run: python update_readme.py
