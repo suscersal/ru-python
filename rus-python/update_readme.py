@@ -16,16 +16,16 @@ for module_name, module_data in data.items():
     for source_name, source_data in module_data.get("sources", {}).items():
         rows.append((module_name, source_name, source_data.get("ru-name", "")))
 
-table_lines = [
+lines = [
     "| Модуль | Имя | Русский |",
     "|---|---|---|",
 ]
 
 for module_name, english_name, russian_name in rows:
-    table_lines.append("| {} | {} | {} |".format(module_name, english_name, russian_name))
+    lines.append("| {} | {} | {} |".format(module_name, english_name, russian_name))
 
 table = "
-".join(table_lines) + "
+".join(lines) + "
 "
 
 readme = README_FILE.read_text(encoding="utf-8") if README_FILE.exists() else ""
