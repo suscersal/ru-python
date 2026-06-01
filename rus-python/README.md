@@ -23,3 +23,11 @@
 _ну в принципе можно посмотреть готовый [файл](https://github.com/suscersal/ru-python/blob/main/rus-python/modules.json) (буду не против комитов на дополнение)._ 
 
 _Вот скрипт на простой перевод: [тык](https://github.com/suscersal/ru-python/blob/main/rus-python/simple-add-modules.py)_
+
+
+
+
+## Таблица переводов
+
+<!--START_SECTION:translations-->
+<!--END_SECTION:translations-->
