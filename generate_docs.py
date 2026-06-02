@@ -14,8 +14,8 @@ def clean_body(body):
     else:
         body = str(body)
 
-    body = re.sub(r"${d+:([^}]*)}", r"\u0001", body)
-    body = re.sub(r"${d+|([^}]*)|}", r"\u0001", body)
+    body = re.sub(r"${d+:([^}]*)}", lambda m: m.group(1), body)
+    body = re.sub(r"${d+|([^}]*)|}", lambda m: m.group(1), body)
     body = re.sub(r"$d+", "", body)
     return body
 
@@ -25,7 +25,7 @@ def build_page():
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ru-Python Документация(отображение snippets)</title>
+  <title>Ru-Python Snippets</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f6f8fa; }
     .container { background: white; padding: 30px; border-radius: 8px; }
@@ -56,18 +56,3 @@ def build_page():
       <div class="meta"><b>Description:</b> {esc(description)}</div>
       <pre><code>{esc(body_text)}</code></pre>
     </div>
-"""
-            count += 1
-    else:
-        page += "<p>Файл rupy-words.json не найден.</p>"
-
-    page += f"""
-    <p>Всего snippets: {count}</p>
-  </div>
-</body>
-</html>
-"""
-    return page
-
-Path("index.html").write_text(build_page(), encoding="utf-8")
-print("Generated index.html")
