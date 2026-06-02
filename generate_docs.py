@@ -8,17 +8,25 @@ snippets_file = Path("rus-python/snippets/rupy-words.json")
 def esc(s):
     return html.escape(str(s))
 
+def remove_placeholders(text):
+    text = str(text)
+    text = text.replace("$0", "")
+    text = re.sub(r"$d+", "", text)
+
+    prev = None
+    while prev != text:
+        prev = text
+        text = re.sub(r"${d+:([^{}]*(?:{[^{}]*}[^{}]*)*)}", lambda m: m.group(1), text)
+        text = re.sub(r"${d+|([^{}]*(?:{[^{}]*}[^{}]*)*)|}", lambda m: m.group(1), text)
+
+    text = re.sub(r"${d+}", "", text)
+    return text
+
 def clean_body(body):
     if isinstance(body, list):
-        body = "".join(body)
-    else:
-        body = str(body)
-
-    body = re.sub(r"${d+:([^}]*)}", lambda m: m.group(1), body)
-    body = re.sub(r"${d+|([^}]*)|}", lambda m: m.group(1), body)
-    body = re.sub(r"$0", "", body)
-    body = re.sub(r"$d+", "", body)
-    return body
+        return "
+".join(remove_placeholders(line) for line in body)
+    return remove_placeholders(body)
 
 def build_index():
     return """<!DOCTYPE html>
@@ -48,9 +56,9 @@ def build_documentation():
     .snippet { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 16px 0; background: #fafbfc; }
     .title { font-size: 28px; margin: 0 0 20px; }
     .name { font-size: 20px; font-weight: 700; margin: 0 0 10px; }
-    .meta { margin: 6px 0; color: #555; line-height: 1.5; }
-    pre { background: #1e1e1e; color: #fff; padding: 14px; border-radius: 6px; overflow-x: auto; margin: 12px 0 0; }
-    code { font-family: Consolas, monospace; }
+    .meta { margin: 6px 0; color: #555; line-height: 1.5; white-space: pre-wrap; }
+    pre { background: #1e1e1e; color: #fff; padding: 14px; border-radius: 6px; overflow-x: auto; margin: 12px 0 0; white-space: pre-wrap; }
+    code { font-family: Consolas, monospace; white-space: pre-wrap; }
     a { color: #0969da; text-decoration: none; }
   </style>
 </head>
@@ -70,7 +78,8 @@ def build_documentation():
             parts.append(f"""
     <div class="snippet">
       <div class="name">{esc(name)}</div>
-      <div class="meta"><b>Description:</b> {esc(description)}</div>
+      <div class="meta"><b>Description:</b>
+{esc(description)}</div>
       <pre><code>{esc(body_text)}</code></pre>
     </div>
 """)
