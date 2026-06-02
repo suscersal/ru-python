@@ -66,8 +66,7 @@ def strip_placeholders(text):
 
 def clean_body(body):
     if isinstance(body, list):
-        return "
-".join(strip_placeholders(line) for line in body)
+        return "".join(strip_placeholders(line) for line in body)
     return strip_placeholders(body)
 
 def build_index():
