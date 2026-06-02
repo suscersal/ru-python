@@ -8,7 +8,7 @@ on:
       - 'generate_docs.py'
       - 'index.html'
       - 'documentation.html'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/update_docs.yml'
   workflow_dispatch:
 
 permissions:
