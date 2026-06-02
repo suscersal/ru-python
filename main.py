@@ -769,7 +769,7 @@ if __name__ == "__main__":
     # 3. Логика выполнения в зависимости от параметров
     if param is None or param != '--install':
         if target_file and os.path.exists(target_file):
-            print(param)
+           # print(param)
             run_rupy(target_file,param[1])
         else:
             print(f"{RED}--- ОШИБКА ---")
