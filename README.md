@@ -3,7 +3,9 @@
 [![VisualStudioCode](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 [![MarketplaceVersion](https://vsmarketplacebadges.dev/version-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
 [![Downloads](https://vsmarketplacebadges.dev/downloads-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
+
 [![Installs](https://vsmarketplacebadges.dev/installs-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python) 
+
 [![Rating](https://vsmarketplacebadges.dev/rating-short/suscersal.russ-python.svg)](https://marketplace.visualstudio.com/items?itemName=suscersal.russ-python)
 
 
