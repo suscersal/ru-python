@@ -158,7 +158,7 @@ _Вот скрипт на простой перевод: [тык](https://github
 | os | `umask` | маска |
 | os | `uname_result` | безымянный результат |
 | os | `unlink` | отсоединить |
-| os | `urandom` | случайный |
+| os | `urandom` | системные случайные байты |
 | os | `utime` | тебе пора |
 | os | `waitpid` | ожидание |
 | os | `waitstatus_to_exitcode` | статус ожидания для выхода из кода |
@@ -1068,4 +1068,36 @@ _Вот скрипт на простой перевод: [тык](https://github
 | ursina | `vec4` | вектор 4d |
 | ursina | `window` | окно игры |
 | ursina | `world_position_to_screen_position` | мировая позиция на экране |
+| **random** | — | рандом |
+| random | `BPF` | б п ж |
+| random | `LOG4` | л о г4 |
+| random | `NV_MAGICCONST` | нв м а г и к кон с т |
+| random | `Random` | Рандом |
+| random | `SystemRandom` | система случайная |
+| random | `TWOPI` | т в о п я |
+| random | `betavariate` | бета-вариант |
+| random | `binomialvariate` | биномиальная переменная |
+| random | `choice` | выбор |
+| random | `choices` | выбор |
+| random | `expovariate` | вариант выставки |
+| random | `gammavariate` | гамма-вариант |
+| random | `gauss` | гаусс |
+| random | `getrandbits` | получить ранды |
+| random | `getstate` | получить состояние |
+| random | `lognormvariate` | логарифмическая норма варьируется |
+| random | `main` | основной |
+| random | `normalvariate` | нормальный вариант |
+| random | `paretovariate` | парето-вариация |
+| random | `randbytes` | рандом байтов |
+| random | `randint` | целый_рандом |
+| random | `random` | случайный |
+| random | `randrange` | диапазон рандов |
+| random | `sample` | образец |
+| random | `seed` | сид |
+| random | `setstate` | установить состояние |
+| random | `shuffle` | перетасовать |
+| random | `triangular` | треугольный |
+| random | `uniform` | униформа |
+| random | `vonmisesvariate` | фон мизес варьируется |
+| random | `weibullvariate` | вейбулл вариация |
 <!--END_SECTION:translations-->
