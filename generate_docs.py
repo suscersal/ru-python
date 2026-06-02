@@ -3,7 +3,7 @@ import json
 import html
 
 snippets_file = Path("rus-python/snippets/rupy-words.json")
-docs_dir = Path("docs")
+docs_dir = Path.cwd()
 docs_dir.mkdir(exist_ok=True)
 
 def esc(s):
