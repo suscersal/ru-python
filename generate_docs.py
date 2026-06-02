@@ -41,8 +41,7 @@ if snippets_file.exists():
         body = item.get("body", "")
 
         if isinstance(body, list):
-            body_text = "
-".join(body)
+            body_text = "".join(body)
         else:
             body_text = str(body)
 
