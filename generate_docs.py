@@ -1,31 +1,74 @@
 from pathlib import Path
 import json
 import html
-import re
 
 snippets_file = Path("rus-python/snippets/rupy-words.json")
 
 def esc(s):
     return html.escape(str(s))
 
-def remove_placeholders(text):
+def strip_placeholders(text):
     text = str(text)
-    text = text.replace("$0", "")
-    text = re.sub(r"$d+", "", text)
+    out = []
+    i = 0
+    n = len(text)
 
-    prev = None
-    while prev != text:
-        prev = text
-        text = re.sub(r"${d+:([^{}]*(?:{[^{}]*}[^{}]*)*)}", lambda m: m.group(1), text)
-        text = re.sub(r"${d+|([^{}]*(?:{[^{}]*}[^{}]*)*)|}", lambda m: m.group(1), text)
+    while i < n:
+        ch = text[i]
 
-    text = re.sub(r"${d+}", "", text)
-    return text
+        if ch == "$" and i + 1 < n and text[i + 1] == "0":
+            i += 2
+            continue
+
+        if ch == "$" and i + 1 < n and text[i + 1].isdigit():
+            i += 2
+            while i < n and text[i].isdigit():
+                i += 1
+            continue
+
+        if ch == "$" and i + 1 < n and text[i + 1] == "{":
+            j = i + 2
+            while j < n and text[j].isdigit():
+                j += 1
+
+            if j < n and text[j] in [":", "|", "}"]:
+                if text[j] == "}":
+                    i = j + 1
+                    continue
+
+                delim = text[j]
+                j += 1
+                depth = 1
+                start = j
+
+                while j < n and depth > 0:
+                    if text[j] == "$" and j + 1 < n and text[j + 1] == "{":
+                        depth += 1
+                        j += 2
+                        continue
+                    if text[j] == "}":
+                        depth -= 1
+                        if depth == 0:
+                            content = text[start:j]
+                            out.append(strip_placeholders(content))
+                            i = j + 1
+                            break
+                    j += 1
+                else:
+                    out.append(text[i])
+                    i += 1
+                continue
+
+        out.append(ch)
+        i += 1
+
+    return "".join(out)
 
 def clean_body(body):
     if isinstance(body, list):
-        return "".join(remove_placeholders(line) for line in body)
-    return remove_placeholders(body)
+        return "
+".join(strip_placeholders(line) for line in body)
+    return strip_placeholders(body)
 
 def build_index():
     return """<!DOCTYPE html>
@@ -42,8 +85,7 @@ def build_index():
 """
 
 def build_documentation():
-    parts = []
-    parts.append("""<!DOCTYPE html>
+    parts = ["""<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -65,7 +107,7 @@ def build_documentation():
   <div class="container">
     <p><a href="index.html">← На главную</a></p>
     <h1 class="title">Snippets документация</h1>
-""")
+"""]
 
     count = 0
     if snippets_file.exists():
