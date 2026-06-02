@@ -378,7 +378,7 @@
         "ru-name": "отсоединить"
       },
       "urandom": {
-        "ru-name": "случайный"
+        "ru-name": "системные случайные байты"
       },
       "utime": {
         "ru-name": "тебе пора"
@@ -3120,6 +3120,104 @@
       },
       "world_position_to_screen_position": {
         "ru-name": "мировая позиция на экране"
+      }
+    }
+  },
+  "random": {
+    "ru-name": "рандом",
+    "sources": {
+      "BPF": {
+        "ru-name": "б п ж"
+      },
+      "LOG4": {
+        "ru-name": "л о г4"
+      },
+      "NV_MAGICCONST": {
+        "ru-name": "нв м а г и к кон с т"
+      },
+      "Random": {
+        "ru-name": "Рандом"
+      },
+      "SystemRandom": {
+        "ru-name": "система случайная"
+      },
+      "TWOPI": {
+        "ru-name": "т в о п я"
+      },
+      "betavariate": {
+        "ru-name": "бета-вариант"
+      },
+      "binomialvariate": {
+        "ru-name": "биномиальная переменная"
+      },
+      "choice": {
+        "ru-name": "выбор"
+      },
+      "choices": {
+        "ru-name": "выбор"
+      },
+      "expovariate": {
+        "ru-name": "вариант выставки"
+      },
+      "gammavariate": {
+        "ru-name": "гамма-вариант"
+      },
+      "gauss": {
+        "ru-name": "гаусс"
+      },
+      "getrandbits": {
+        "ru-name": "получить ранды"
+      },
+      "getstate": {
+        "ru-name": "получить состояние"
+      },
+      "lognormvariate": {
+        "ru-name": "логарифмическая норма варьируется"
+      },
+      "main": {
+        "ru-name": "основной"
+      },
+      "normalvariate": {
+        "ru-name": "нормальный вариант"
+      },
+      "paretovariate": {
+        "ru-name": "парето-вариация"
+      },
+      "randbytes": {
+        "ru-name": "рандом байтов"
+      },
+      "randint": {
+        "ru-name": "целый_рандом"
+      },
+      "random": {
+        "ru-name": "случайный"
+      },
+      "randrange": {
+        "ru-name": "диапазон рандов"
+      },
+      "sample": {
+        "ru-name": "образец"
+      },
+      "seed": {
+        "ru-name": "сид"
+      },
+      "setstate": {
+        "ru-name": "установить состояние"
+      },
+      "shuffle": {
+        "ru-name": "перетасовать"
+      },
+      "triangular": {
+        "ru-name": "треугольный"
+      },
+      "uniform": {
+        "ru-name": "униформа"
+      },
+      "vonmisesvariate": {
+        "ru-name": "фон мизес варьируется"
+      },
+      "weibullvariate": {
+        "ru-name": "вейбулл вариация"
       }
     }
   }
