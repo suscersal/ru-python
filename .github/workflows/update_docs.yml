@@ -7,7 +7,6 @@ on:
       - 'rus-python/snippets/rupy-words.json'
       - 'generate_docs.py'
       - 'index.html'
-      - 'documentation.html'
       - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
