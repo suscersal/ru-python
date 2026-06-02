@@ -24,8 +24,7 @@ def remove_placeholders(text):
 
 def clean_body(body):
     if isinstance(body, list):
-        return "
-".join(remove_placeholders(line) for line in body)
+        return "".join(remove_placeholders(line) for line in body)
     return remove_placeholders(body)
 
 def build_index():
