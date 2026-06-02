@@ -10,17 +10,20 @@ def esc(s):
 
 def clean_body(body):
     if isinstance(body, list):
-        body = "".join(body)
+        body = "
+".join(body)
     else:
         body = str(body)
 
     body = re.sub(r"${d+:([^}]*)}", lambda m: m.group(1), body)
     body = re.sub(r"${d+|([^}]*)|}", lambda m: m.group(1), body)
+    body = re.sub(r"$0", "", body)
     body = re.sub(r"$d+", "", body)
     return body
 
 def build_page():
-    page = """<!DOCTYPE html>
+    parts = []
+    parts.append("""<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -41,7 +44,7 @@ def build_page():
   <div class="container">
     <p><a href="#top">← На главную</a></p>
     <h1 id="top">Snippets документация</h1>
-"""
+""")
 
     count = 0
     if snippets_file.exists():
@@ -50,9 +53,24 @@ def build_page():
             description = item.get("description", "")
             body_text = clean_body(item.get("body", ""))
 
-            page += f"""
+            parts.append(f"""
     <div class="snippet">
       <h2>{esc(name)}</h2>
       <div class="meta"><b>Description:</b> {esc(description)}</div>
       <pre><code>{esc(body_text)}</code></pre>
     </div>
+""")
+            count += 1
+    else:
+        parts.append("<p>Файл rupy-words.json не найден.</p>")
+
+    parts.append(f"""
+    <p>Всего snippets: {count}</p>
+  </div>
+</body>
+</html>
+""")
+    return "".join(parts)
+
+Path("index.html").write_text(build_page(), encoding="utf-8")
+print("Generated index.html")
