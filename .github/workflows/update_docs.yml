@@ -6,7 +6,9 @@ on:
     paths:
       - 'rus-python/snippets/rupy-words.json'
       - 'generate_docs.py'
-      - 'docs/**'
+      - 'index.html'
+      - 'documentation.html'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 permissions:
@@ -28,14 +30,14 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Generate docs
+      - name: Generate site
         run: python generate_docs.py
 
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs
+          path: .
 
   deploy:
     needs: build
