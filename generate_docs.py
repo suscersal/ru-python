@@ -20,29 +20,44 @@ def clean_body(body):
     body = re.sub(r"$d+", "", body)
     return body
 
-def build_page():
+def build_index():
+    return """<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=documentation.html">
+  <title>Ru-Python</title>
+</head>
+<body>
+  <p>Redirecting to <a href="documentation.html">documentation.html</a>...</p>
+</body>
+</html>
+"""
+
+def build_documentation():
     parts = []
     parts.append("""<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ru-Python Snippets</title>
+  <title>Snippets документация</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f6f8fa; }
-    .container { background: white; padding: 30px; border-radius: 8px; }
-    .snippet { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin: 16px 0; background: #fafbfc; }
-    pre { background: #1e1e1e; color: #fff; padding: 14px; border-radius: 6px; overflow-x: auto; }
+    .container { background: white; padding: 24px; border-radius: 12px; }
+    .snippet { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 16px 0; background: #fafbfc; }
+    .title { font-size: 28px; margin: 0 0 20px; }
+    .name { font-size: 20px; font-weight: 700; margin: 0 0 10px; }
+    .meta { margin: 6px 0; color: #555; line-height: 1.5; }
+    pre { background: #1e1e1e; color: #fff; padding: 14px; border-radius: 6px; overflow-x: auto; margin: 12px 0 0; }
     code { font-family: Consolas, monospace; }
-    .meta { margin: 6px 0; color: #555; }
     a { color: #0969da; text-decoration: none; }
-    h1 { margin-top: 0; }
   </style>
 </head>
 <body>
   <div class="container">
-    <p><a href="#top">← На главную</a></p>
-    <h1 id="top">Snippets документация</h1>
+    <p><a href="index.html">← На главную</a></p>
+    <h1 class="title">Snippets документация</h1>
 """)
 
     count = 0
@@ -54,7 +69,7 @@ def build_page():
 
             parts.append(f"""
     <div class="snippet">
-      <h2>{esc(name)}</h2>
+      <div class="name">{esc(name)}</div>
       <div class="meta"><b>Description:</b> {esc(description)}</div>
       <pre><code>{esc(body_text)}</code></pre>
     </div>
@@ -71,5 +86,6 @@ def build_page():
 """)
     return "".join(parts)
 
-Path("index.html").write_text(build_page(), encoding="utf-8")
-print("Generated index.html")
+Path("index.html").write_text(build_index(), encoding="utf-8")
+Path("documentation.html").write_text(build_documentation(), encoding="utf-8")
+print("Generated index.html and documentation.html")
