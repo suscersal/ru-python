@@ -10,8 +10,7 @@ def esc(s):
 
 def clean_body(body):
     if isinstance(body, list):
-        body = "
-".join(body)
+        body = "".join(body)
     else:
         body = str(body)
 
