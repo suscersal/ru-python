@@ -52,9 +52,13 @@ jobs:
 
       - name: Проверка работоспособности параметров
         env:
-          PYTHONUTF8: "1"  
-        run: dist/rupython.exe --install ursina
-
+          PYTHONUTF8: "1"
+          PYTHONIOENCODING: "utf-8"
+          PYTHONLEGACYWINDOWSSTDIO: "0"
+        shell: powershell
+        run: |
+         chcp 65001
+         dist/rupython.exe --install ursina
 
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
