@@ -600,27 +600,29 @@ def run_rupy(input_file,log_file,build):
     
     print(f"{GREEN}--- Трансляция завершена ({output_file}) ---{RESET}")
     
-    if build:
+        if build:
         print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
-    
+
         python_path = find_local_python()
-    
+
         if "не найден" in python_path:
             print(f"{RED}Ошибка: Python не найден, компиляция невозможна.{RESET}")
             return
-    
+
         try:
             result = subprocess.run(
                 [python_path, "-m", "PyInstaller", "--onefile", "--noconsole", str(output_file)],
+                capture_output=True,
                 text=True
             )
             if result.returncode == 0:
                 print(f"{GREEN}Компиляция завершена успешно!{RESET}")
             else:
-                print(f"{RED}Ошибка при компиляции.{RESET}")
+                print(f"{RED}Ошибка при компиляции:{RESET}")
+                print(result.stderr)
         except Exception as e:
             print(f"{RED}Не удалось запустить PyInstaller: {e}{RESET}")
-    
+
         return
     # Запуск
     from contextlib import redirect_stdout
