@@ -1,205 +1,221 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snippets документация</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f6f8fa; }
-    .container { background: white; padding: 24px; border-radius: 12px; }
-    .snippet { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 16px 0; background: #fafbfc; }
-    .title { font-size: 28px; margin: 0 0 20px; }
-    .name { font-size: 20px; font-weight: 700; margin: 0 0 10px; }
-    .meta { margin: 6px 0; color: #555; line-height: 1.5; }
-    pre { background: #1e1e1e; color: #fff; padding: 14px; border-radius: 6px; overflow-x: auto; margin: 12px 0 0; }
-    code { font-family: Consolas, monospace; }
-    a { color: #0969da; text-decoration: none; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snippets документация</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; background: #f6f8fa; }
+.container { background: white; padding: 24px; border-radius: 12px; }
+.snippet { border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin: 16px 0; background: #fafbfc; }
+.title { font-size: 28px; margin: 0 0 20px; }
+.name { font-size: 20px; font-weight: 700; margin: 0 0 10px; }
+.meta { margin: 6px 0; color: #555; line-height: 1.5; white-space: pre-wrap; }
+pre { background: #1e1e1e; color: #fff; padding: 14px; border-radius: 6px; overflow-x: auto; margin: 12px 0 0; white-space: pre-wrap; }
+code { font-family: Consolas, monospace; white-space: pre-wrap; }
+a { color: #0969da; text-decoration: none; }
+</style>
 </head>
 <body>
-  <div class="container">
-    <p><a href="index.html">← На главную</a></p>
-    <h1 class="title">Snippets документация</h1>
+<div class="container">
+<p><a href="index.html">← На главную</a></p>
+<h1 class="title">Snippets документация</h1>
 
-    <div class="snippet">
-      <div class="name">вывести</div>
-      <div class="meta"><b>Description:</b> Печатает текст или значение в консоль</div>
-      <pre><code>вывести &quot;${1&quot;</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">вывести</div>
+<div class="meta"><b>Description:</b> Печатает текст или значение в консоль</div>
+<pre><code>вывести &quot;&quot;</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">и</div>
-      <div class="meta"><b>Description:</b> логический элемент и (конъюнкция)</div>
-      <pre><code>и</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">и</div>
+<div class="meta"><b>Description:</b> логический элемент и (конъюнкция)</div>
+<pre><code>и</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">или</div>
-      <div class="meta"><b>Description:</b> логический элемент или (дизъюнкция)</div>
-      <pre><code>или</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">или</div>
+<div class="meta"><b>Description:</b> логический элемент или (дизъюнкция)</div>
+<pre><code>или</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">не</div>
-      <div class="meta"><b>Description:</b> логическое отрицание не (инверсия)</div>
-      <pre><code>не</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">не</div>
+<div class="meta"><b>Description:</b> логическое отрицание не (инверсия)</div>
+<pre><code>не</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">открыть как</div>
-      <div class="meta"><b>Description:</b> Контекстный менеджер файлов (open as)</div>
-      <pre><code>открыть(&quot;${1:путь_к_файлу&quot;, &quot;${2:режим&quot;) как ${3:файл	$0</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">открыть как</div>
+<div class="meta"><b>Description:</b> Контекстный менеджер файлов (open as)</div>
+<pre><code>открыть(&quot;путь_к_файлу&quot;, &quot;режим&quot;) как файл
+	</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">ввод</div>
-      <div class="meta"><b>Description:</b> Запрашивает ввод данных (ввод переменная(объявлять не нужно) &quot;Текст&quot;)</div>
-      <pre><code>ввод ${1 &quot;${2:Введите: &quot;</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">ввод</div>
+<div class="meta"><b>Description:</b> Запрашивает ввод данных (ввод переменная(объявлять не нужно) &quot;Текст&quot;)</div>
+<pre><code>ввод  &quot;Введите: &quot;</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">использовать</div>
-      <div class="meta"><b>Description:</b> импортирует python модуль.
+<div class="snippet">
+<div class="name">использовать</div>
+<div class="meta"><b>Description:</b> импортирует python модуль.
 русификация модулей будет добавляться постепенно.</div>
-      <pre><code>использовать &lt;модуль&gt;</code></pre>
-    </div>
+<pre><code>использовать &lt;модуль&gt;</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">из</div>
-      <div class="meta"><b>Description:</b> импортирует что-то из модуля.
+<div class="snippet">
+<div class="name">из</div>
+<div class="meta"><b>Description:</b> импортирует что-то из модуля.
 русификация модулей будет добавляться постепенно.</div>
-      <pre><code>из ${1:модуль использовать ${2:что-то</code></pre>
-    </div>
+<pre><code>из модуль использовать что-то</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">как</div>
-      <div class="meta"><b>Description:</b> Задает новое имя (алиас) для импортируемого модуля или функции.
+<div class="snippet">
+<div class="name">как</div>
+<div class="meta"><b>Description:</b> Задает новое имя (алиас) для импортируемого модуля или функции.
 Пример: использовать время как в
 (Аналог конструкции &#x27;as&#x27; в Python).</div>
-      <pre><code>как ${1:псевдоним</code></pre>
-    </div>
+<pre><code>как псевдоним</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">пусть</div>
-      <div class="meta"><b>Description:</b> Создает новую переменную</div>
-      <pre><code>пусть ${1 = ${2</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">пусть</div>
+<div class="meta"><b>Description:</b> Создает новую переменную</div>
+<pre><code>пусть  = </code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">функция</div>
-      <div class="meta"><b>Description:</b> Функция(ну тут наверно 
+<div class="snippet">
+<div class="name">функция</div>
+<div class="meta"><b>Description:</b> Функция(ну тут наверно 
 объяснять что это такое,но на 
 крайний случай):
  
 функция поздороваться имя
   вывод имя
 конец)</div>
-      <pre><code>функция ${1:имя ${2:аргументы	$0конец</code></pre>
-    </div>
+<pre><code>функция имя аргументы
+	
+конец</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">вернуть</div>
-      <div class="meta"><b>Description:</b> Возвращает значение из функции</div>
-      <pre><code>вернуть ${0</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">вернуть</div>
+<div class="meta"><b>Description:</b> Возвращает значение из функции</div>
+<pre><code>вернуть </code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">если</div>
-      <div class="meta"><b>Description:</b> Блок условия</div>
-      <pre><code>если ${1 тогда	$0конецесли;</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">если</div>
+<div class="meta"><b>Description:</b> Блок условия</div>
+<pre><code>если  тогда
+	
+конецесли;</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">иначе если</div>
-      <div class="meta"><b>Description:</b> Блок иначе-если</div>
-      <pre><code>иначе если ${1 тогда	$0</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">иначе если</div>
+<div class="meta"><b>Description:</b> Блок иначе-если</div>
+<pre><code>иначе если  тогда
+	</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">иначе</div>
-      <div class="meta"><b>Description:</b> Блок иначе</div>
-      <pre><code>иначе	$0</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">иначе</div>
+<div class="meta"><b>Description:</b> Блок иначе</div>
+<pre><code>иначе
+	</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">равно</div>
-      <div class="meta"><b>Description:</b> Оператор равно (=)</div>
-      <pre><code>равно</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">равно</div>
+<div class="meta"><b>Description:</b> Оператор равно (=)</div>
+<pre><code>равно</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">больше</div>
-      <div class="meta"><b>Description:</b> Оператор больше (&gt;)</div>
-      <pre><code>больше</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">больше</div>
+<div class="meta"><b>Description:</b> Оператор больше (&gt;)</div>
+<pre><code>больше</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">меньше</div>
-      <div class="meta"><b>Description:</b> Оператор меньше (&lt;)</div>
-      <pre><code>меньше</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">меньше</div>
+<div class="meta"><b>Description:</b> Оператор меньше (&lt;)</div>
+<pre><code>меньше</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">для</div>
-      <div class="meta"><b>Description:</b> Цикл (для имя количество раз)</div>
-      <pre><code>для ${1:номер ${2 раз	$0конец</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">для</div>
+<div class="meta"><b>Description:</b> Цикл (для имя количество раз)</div>
+<pre><code>для номер  раз
+	
+конец</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">класс</div>
-      <div class="meta"><b>Description:</b> Создать новый класс</div>
-      <pre><code>класс ${1	$0конец</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">класс</div>
+<div class="meta"><b>Description:</b> Создать новый класс</div>
+<pre><code>класс 
+	
+конец</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">создать</div>
-      <div class="meta"><b>Description:</b> Конструктор класса</div>
-      <pre><code>создать ${1	$0конец</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">создать</div>
+<div class="meta"><b>Description:</b> Конструктор класса</div>
+<pre><code>создать 
+	
+конец</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">добавить</div>
-      <div class="meta"><b>Description:</b> Метод списка: ф.добавить значение</div>
-      <pre><code>добавить ${1</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">добавить</div>
+<div class="meta"><b>Description:</b> Метод списка: ф.добавить значение</div>
+<pre><code>добавить </code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">удалить</div>
-      <div class="meta"><b>Description:</b> Метод списка: ф.удалить значение</div>
-      <pre><code>удалить ${1</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">удалить</div>
+<div class="meta"><b>Description:</b> Метод списка: ф.удалить значение</div>
+<pre><code>удалить </code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">размер</div>
-      <div class="meta"><b>Description:</b> Метод списка: ф.размер (возвращает длину)</div>
-      <pre><code>размер</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">размер</div>
+<div class="meta"><b>Description:</b> Метод списка: ф.размер (возвращает длину)</div>
+<pre><code>размер</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">очистить</div>
-      <div class="meta"><b>Description:</b> Метод списка: ф.очистить (удаляет всё)</div>
-      <pre><code>очистить</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">очистить</div>
+<div class="meta"><b>Description:</b> Метод списка: ф.очистить (удаляет всё)</div>
+<pre><code>очистить</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">это</div>
-      <div class="meta"><b>Description:</b> Обращение к полям класса (self.)</div>
-      <pre><code>это.</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">это</div>
+<div class="meta"><b>Description:</b> Обращение к полям класса (self.)</div>
+<pre><code>это.</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">попробовать</div>
-      <div class="meta"><b>Description:</b> Обработка ошибок (try...except)</div>
-      <pre><code>попробовать	${1отловить	$0конец</code></pre>
-    </div>
+<div class="snippet">
+<div class="name">попробовать</div>
+<div class="meta"><b>Description:</b> Обработка ошибок (try...except)</div>
+<pre><code>попробовать
+	
+отловить
+	
+конец</code></pre>
+</div>
 
-    <div class="snippet">
-      <div class="name">конец</div>
-      <div class="meta"><b>Description:</b> Завершить блок кода</div>
-      <pre><code>конец</code></pre>
-    </div>
-
-    <p>Всего snippets: 28</p>
-  </div>
+<div class="snippet">
+<div class="name">конец</div>
+<div class="meta"><b>Description:</b> Завершить блок кода</div>
+<pre><code>конец</code></pre>
+</div>
+<p>Всего snippets: 28</p>
+</div>
 </body>
 </html>

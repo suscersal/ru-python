@@ -140,7 +140,7 @@ def get_russian_error(raw_error):
         pass
     return raw_error_str
 
-def run_rupy(input_file,log_file):
+def run_rupy(input_file,log_file,build):
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
@@ -599,7 +599,29 @@ def run_rupy(input_file,log_file):
         f_out.write("\n".join(py_lines))
     
     print(f"{GREEN}--- Трансляция завершена ({output_file}) ---{RESET}")
-
+    
+    if build:
+        print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
+    
+        python_path = find_local_python()
+    
+        if "не найден" in python_path:
+            print(f"{RED}Ошибка: Python не найден, компиляция невозможна.{RESET}")
+            return
+    
+        try:
+            result = subprocess.run(
+                [python_path, "-m", "PyInstaller", "--onefile", "--noconsole", str(output_file)],
+                text=True
+            )
+            if result.returncode == 0:
+                print(f"{GREEN}Компиляция завершена успешно!{RESET}")
+            else:
+                print(f"{RED}Ошибка при компиляции.{RESET}")
+        except Exception as e:
+            print(f"{RED}Не удалось запустить PyInstaller: {e}{RESET}")
+    
+        return
     # Запуск
     from contextlib import redirect_stdout
 
@@ -740,9 +762,10 @@ def find_local_python():
 
 
 if __name__ == "__main__":
-    print(sys.argv)
+ #   print(sys.argv)
     param = None
     target_file = None
+    build = None
 
     # 1. Исправление определения текущей директории для .py и .exe
     if getattr(sys, 'frozen', False):
@@ -759,31 +782,33 @@ if __name__ == "__main__":
                 target_file = sys.argv[1]
                 param = sys.argv[2:]
                 print('1')
+            elif sys.argv[2] == '--build':
+                target_file = sys.argv[1]
+                param = [None,None]
+                build=True
             else:
                 target_file = sys.argv[1]
                 param = ['',None]
                 print('2')
         else:
             param = sys.argv[1:]
-            param = ['',None]
+          #  print(param)
             print('3')
     else:
         target_file = os.path.join(current_dir, "test.rupy")
         param = [None,None]
-    
+    #print(param,"предзапуск")
     # 3. Логика выполнения в зависимости от параметров
-    if param is None or param != '--install' or param != '--build':
+    if param == None or param[0] != '--install':
         if target_file and os.path.exists(target_file):
-           # print(param)
-            run_rupy(target_file,param[1])
+            #print(param,"run")
+            run_rupy(target_file,param[1],build)
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
             print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
     else:
-        if param[1] == '--build':
-            pass
-        elif param[0] == '--install':
+        if param[0] == '--install':
             print("Запущена установка ассоциации файлов и модулей...")
             
             python_path = find_local_python() 
