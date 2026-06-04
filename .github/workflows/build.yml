@@ -43,8 +43,10 @@ jobs:
       - name: Запуск скрипта сборки (build.py)
         run: python build.py
 
+
       - name: Проверка работоспособности параметров
         run: dist/rupython.exe --install ursina
+
 
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
