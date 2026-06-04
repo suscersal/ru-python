@@ -6,13 +6,11 @@ on:
     paths:
       - 'rus-python/snippets/rupy-words.json'
       - 'generate_docs.py'
-      - 'index.html'
-      - 'documentation.html'
       - '.github/workflows/update_docs.yml'
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -21,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,6 +31,14 @@ jobs:
       - name: Generate site
         run: python generate_docs.py
 
+      - name: Commit generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.html documentation.html
+          git diff --staged --quiet || git commit -m "docs: update documentation"
+          git push
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
@@ -40,7 +46,7 @@ jobs:
           path: .
 
   deploy:
-    needs: build
+    needs: build-and-deploy
     runs-on: ubuntu-latest
     environment:
       name: github-pages
