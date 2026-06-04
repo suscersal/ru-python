@@ -9,6 +9,10 @@ import requests
 import subprocess
 
 
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+
+
 os.system('')
 
 RED = "\033[91m"
@@ -736,6 +740,7 @@ def find_local_python():
 
 
 if __name__ == "__main__":
+    print(sys.argv)
     param = None
     target_file = None
 
@@ -767,7 +772,7 @@ if __name__ == "__main__":
         param = [None,None]
     
     # 3. Логика выполнения в зависимости от параметров
-    if param is None or param != '--install':
+    if param is None or param != '--install' or param != '--build':
         if target_file and os.path.exists(target_file):
            # print(param)
             run_rupy(target_file,param[1])
@@ -776,7 +781,9 @@ if __name__ == "__main__":
             print(f"Файл не найден по пути: {target_file}{RESET}")
             print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
     else:
-        if param[0] == '--install':
+        if param[1] == '--build':
+            pass
+        elif param[0] == '--install':
             print("Запущена установка ассоциации файлов и модулей...")
             
             python_path = find_local_python() 
@@ -805,3 +812,4 @@ if __name__ == "__main__":
                 else:
                     print(f"{YELLOW}Флаг -install запущен без указания модуля. Выполняется стандартная настройка.{RESET}")
                     # Здесь можно оставить ваш код для настройки ассоциации файлов .rupy
+             
