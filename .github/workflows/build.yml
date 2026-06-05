@@ -36,22 +36,21 @@ jobs:
 
       - name: Проверка изменений в rus-python
         id: check_changes
-        shell: powershell
+        shell: bash
         run: |
-          $event = "${{ github.event_name }}"
-          if ($event -eq "push") {
-            $changed = git diff --name-only HEAD~1 HEAD -- rus-python/
-            if ($changed) {
-              Write-Host "rus-python изменялся — bump выполним."
-              Add-Content $env:GITHUB_OUTPUT "should_bump=true"
-            } else {
-              Write-Host "rus-python НЕ менялся — bump пропускаем."
-              Add-Content $env:GITHUB_OUTPUT "should_bump=false"
-            }
-          } else {
-            Write-Host "Триггер: $event — bump пропускаем."
-            Add-Content $env:GITHUB_OUTPUT "should_bump=false"
-          }
+          if [ "${{ github.event_name }}" = "push" ]; then
+            changed=$(git diff --name-only HEAD~1 HEAD -- rus-python/)
+            if [ -n "$changed" ]; then
+              echo "rus-python changed - will bump"
+              echo "should_bump=true" >> $GITHUB_OUTPUT
+            else
+              echo "rus-python not changed - skip bump"
+              echo "should_bump=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Trigger: ${{ github.event_name }} - skip bump"
+            echo "should_bump=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Установка Python 3.13
         uses: actions/setup-python@v5
