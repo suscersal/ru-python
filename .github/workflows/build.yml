@@ -63,7 +63,9 @@ jobs:
       - name: Проверка работоспособности параметров
         env:
           PYTHONUTF8: "1"
-        run: dist/rupython.exe --install ursina
+        run: |
+          dist/rupython.exe --install ursina
+          dist/rupython.exe --build --icon icon.ico --name test --add_data "test.rupy;test.py"
 
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
