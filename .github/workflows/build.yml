@@ -2,15 +2,14 @@ name: Автоматическая сборка раз в три дня
 
 on:
   push:
-      paths: ['.github/workflows/build.yml']
+    paths: ['.github/workflows/build.yml']
   schedule:
-    - cron: '0 0 */3 * *' # Запуск каждые 3 дня в 00:00 UTC
-  workflow_dispatch: # Возможность ручного запуска
+    - cron: '0 0 */3 * *'
+  workflow_dispatch:
 
 env:
-  PYTHONIOENCODING: utf-8 # Заставляет Python всегда использовать UTF-8
+  PYTHONIOENCODING: utf-8
 
-# Права расширены для возможности пушить изменения кода (contents: write)
 permissions:
   contents: write
 
@@ -20,18 +19,14 @@ jobs:
     runs-on: windows-latest
     env:
       PYTHONUTF8: 1
-      PYTHONIOENCODING: utf-8
-      PYTHONLEGACYWINDOWSSTDIO: 0
 
     steps:
       - name: Копирование кода
         uses: actions/checkout@v4
         with:
-          # По умолчанию checkout скачивает detached HEAD.
-          # Указываем ref, чтобы git push знал, в какую ветку отправлять изменения.
           ref: ${{ github.head_ref || github.ref_name }}
+          fetch-depth: 2
 
-      # Шаг для генерации точной даты и времени сборки
       - name: Получение даты и времени
         id: datetime
         shell: powershell
@@ -39,35 +34,37 @@ jobs:
           $current_time = Get-Date -Format "dd.MM.yyyy HH:mm"
           echo "build_time=$current_time" >> $env:GITHUB_OUTPUT
 
+      - name: Проверка изменений в rus-python
+        id: check_changes
+        shell: powershell
+        run: |
+          $event = "${{ github.event_name }}"
+          if ($event -eq "push") {
+            $changed = git diff --name-only HEAD~1 HEAD -- rus-python/
+            if ($changed) {
+              Write-Host "rus-python изменялся — bump выполним."
+              echo "should_bump=true" >> $env:GITHUB_OUTPUT
+            } else {
+              Write-Host "rus-python НЕ менялся — bump пропускаем."
+              echo "should_bump=false" >> $env:GITHUB_OUTPUT
+            }
+          } else {
+            Write-Host "Триггер: $event — bump пропускаем."
+            echo "should_bump=false" >> $env:GITHUB_OUTPUT
+          }
+
       - name: Установка Python 3.13
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
 
       - name: Запуск скрипта сборки (build.py)
-        env:
-          PYTHONUTF8: "1"
-          PYTHONIOENCODING: "utf-8"
         run: python build.py
 
-      - name: Проверка работоспособности параметров часть 1
+      - name: Проверка работоспособности параметров
         env:
           PYTHONUTF8: "1"
-          PYTHONIOENCODING: "utf-8"
-          PYTHONLEGACYWINDOWSSTDIO: "0"
-        shell: powershell
-        run: |
-          chcp 65001
-          dist\rupython.exe --install ursina
-      - name: Проверка работоспособности параметров часть 2
-        env:
-          PYTHONUTF8: "1"
-          PYTHONIOENCODING: "utf-8"
-          PYTHONLEGACYWINDOWSSTDIO: "0"
-        shell: powershell
-        run: |
-          chcp 65001
-          dist\rupython.exe test.rupy --build
+        run: dist/rupython.exe --install ursina
 
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
@@ -84,49 +81,66 @@ jobs:
           npm install -g @vscode/vsce
           cd rus-python
 
-          # ЧИТАЕМ СТРОГО В UTF-8
           $json = Get-Content package.json -Raw -Encoding utf8 | ConvertFrom-Json
 
-          # АВТОПОВЫШЕНИЕ ВЕРСИИ
+          $shouldBump = "${{ steps.check_changes.outputs.should_bump }}"
           if ($json.version) {
-              $versionParts = $json.version.Split('.')
-              if ($versionParts.Count -eq 3) {
-                  $major = [int]$versionParts[0]
-                  $minor = [int]$versionParts[1]
-                  $patch = [int]$versionParts[2] + 1
-
-                  $json.version = "${major}.${minor}.${patch}"
-                  Write-Host "Новая версия расширения: $($json.version)"
-              }
+            $versionParts = $json.version.Split('.')
+            if ($versionParts.Count -eq 3 -and $shouldBump -eq "true") {
+              $major = [int]$versionParts[0]
+              $minor = [int]$versionParts[1]
+              $patch = [int]$versionParts[2] + 1
+              $json.version = "${major}.${minor}.${patch}"
+              Write-Host "Новая версия расширения: $($json.version)"
+            } else {
+              Write-Host "Версия не изменена: $($json.version)"
+            }
           } else {
-              $json | Add-Member -NotePropertyName "version" -NotePropertyValue "1.0.0"
+            $json | Add-Member -NotePropertyName "version" -NotePropertyValue "1.0.0"
           }
 
-          # Сохраняем новую версию в переменную окружения GitHub Actions
           echo "ext_version=$($json.version)" >> $env:GITHUB_OUTPUT
 
-          # ИСПРАВЛЕНИЕ ИМЕНИ
           if ($json.name -match "suscersal\.") {
-              $json.name = $json.name -replace "suscersal\.", ""
+            $json.name = $json.name -replace "suscersal\.", ""
           }
           $json.name = $json.name.ToLower()
 
-          # Автоматически добавляем обязательные поля
           if (-not $json.publisher) { $json | Add-Member -NotePropertyName "publisher" -NotePropertyValue "suscersal" }
           if (-not $json.repository) { $json | Add-Member -NotePropertyName "repository" -NotePropertyValue @{ type = "git"; url = "https://github.com" } }
 
-          # Преобразуем обратно в красивый JSON-текст
           $jsonString = $json | ConvertTo-Json -Depth 10
-
-          # Сохраняем в чистом UTF-8 БЕЗ BOM
           $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
           [System.IO.File]::WriteAllText((Get-Item package.json).FullName, $jsonString, $utf8NoBom)
           [System.IO.File]::WriteAllText((Join-Path (Get-Location) "LICENSE"), "MIT License", $utf8NoBom)
 
-          # Сборка локального .vsix пакета
           vsce package --no-dependencies
 
-      # Компиляция инсталлятора Inno Setup
+      - name: Коммит и Пуш новой версии в репозиторий
+        shell: powershell
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add rus-python/package.json
+
+          $status = git status --porcelain
+          if ($status) {
+            git commit -m "chore: bump extension version to ${{ steps.vsce_setup.outputs.ext_version }} [skip ci]"
+            git push origin HEAD:${{ github.head_ref || github.ref_name }}
+          } else {
+            Write-Host "Изменений в package.json не обнаружено."
+          }
+
+      - name: Публикация в VS Code Marketplace
+        continue-on-error: true
+        shell: powershell
+        run: |
+          cd rus-python
+          vsce publish --no-dependencies
+        env:
+          VSCE_TOKEN: ${{ secrets.VSCE_TOKEN }}
+
       - name: Компиляция инсталлятора (Inno Setup)
         run: |
           iscc setup.iss
@@ -144,28 +158,9 @@ jobs:
             rus-python/*.vsix
           if-no-files-found: warn
 
-      # Коммитим версию только если все предыдущие шаги прошли успешно
-      - name: Коммит и Пуш новой версии в репозиторий
-        if: success()
-        shell: powershell
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-          git add rus-python/package.json
-
-          $status = git status --porcelain
-          if ($status) {
-              git commit -m "chore: bump extension version to ${{ steps.vsce_setup.outputs.ext_version }} [skip ci]"
-              git push origin HEAD:${{ github.head_ref || github.ref_name }}
-          } else {
-              Write-Host "Изменений в package.json не обнаружено."
-          }
-
-      # Создание релиза по тегу, расписанию или вручную
       - name: Создать Релиз и загрузить файлы
-        if: success() && (startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         with:
           tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || format('auto-{0}', github.sha) }}
           name: ${{ startsWith(github.ref, 'refs/tags/') && format('Релиз {0}', github.ref_name) || format('Автосборка от {0}', steps.datetime.outputs.build_time) }}
@@ -180,6 +175,7 @@ jobs:
             - **Версия расширения VS Code:** ${{ steps.vsce_setup.outputs.ext_version }}
 
             ---
+
             ### Что нового:
           draft: false
           prerelease: ${{ github.event_name != 'create' }}

@@ -140,7 +140,7 @@ def get_russian_error(raw_error):
         pass
     return raw_error_str
 
-def run_rupy(input_file,log_file,build,build_name=None,extra_files=None):
+def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=None):
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
@@ -604,19 +604,30 @@ def run_rupy(input_file,log_file,build,build_name=None,extra_files=None):
         print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
 
         python_path = find_local_python()
-        print(python_path)
+       # print(python_path)
 
         if "не найден" in python_path:
             print(f"{RED}Ошибка: Python не найден, компиляция невозможна.{RESET}")
             return
 
         # Формируем команду PyInstaller
-        pyinstaller_cmd = ["python", "-m", "PyInstaller", "--onefile", "--noconsole"]
+        pyinstaller_cmd = ["python", "-m", "PyInstaller", "--onefile"]
 
         # Параметр --name: имя выходного .exe
         if build_name:
             pyinstaller_cmd += ["--name", build_name]
             print(f"{YELLOW} Имя выходного файла: {build_name}.exe {RESET}")
+       
+        if icon:
+            if icon.endswith(".ico"):
+                pyinstaller_cmd += ["--icon", icon]
+                print(f"{YELLOW} Иконка выходного файла: {icon} {RESET}")
+            else:
+                print(f"{RED} Иконка должна быть .ico{RESET}")
+                
+                
+            
+             
 
         # Параметр --add-data: дополнительные файлы, включаемые в сборку
         # extra_files — список строк вида "src;dest" (Windows) или "src:dest" (Linux/Mac)
@@ -626,7 +637,7 @@ def run_rupy(input_file,log_file,build,build_name=None,extra_files=None):
                 print(f"{YELLOW} Добавлен файл в сборку: {ef} {RESET}")
 
         pyinstaller_cmd.append(str(output_file))
-
+        print(f"{GREEN} Команда компиляции: {pyinstaller_cmd} {RESET}")
         try:
             result = subprocess.run(
                 pyinstaller_cmd,
@@ -791,6 +802,7 @@ if __name__ == "__main__":
     build = None
     build_name = None
     extra_files = []
+    icon = None
 
     # 1. Исправление определения текущей директории для .py и .exe
     if getattr(sys, 'frozen', False):
@@ -821,6 +833,9 @@ if __name__ == "__main__":
                     elif remaining[i] == '--add-data' and i + 1 < len(remaining):
                         extra_files.append(remaining[i + 1])
                         i += 2
+                    elif remaining[i] == '--icon' and i + 1 < len(remaining):
+                        icon = remaining[i + 1]
+                        i += 2
                     else:
                         i += 1
             else:
@@ -839,7 +854,7 @@ if __name__ == "__main__":
     if param == None or param[0] != '--install':
         if target_file and os.path.exists(target_file):
             #print(param,"run")
-            run_rupy(target_file,param[1],build,build_name,extra_files or None)
+            run_rupy(target_file,param[1],build,build_name,extra_files or None,icon)
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
