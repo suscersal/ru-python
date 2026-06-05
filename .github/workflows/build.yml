@@ -71,9 +71,10 @@ jobs:
         run: |
           dist/rupython.exe test.rupy --build --icon icon.ico --name test --add-data "test.rupy;test.py"
 
-      - name: Удалить тестовые исполняемые файлы
-        run: |
-          rm -f dist/test.exe
+      - name: Clean build artifact
+        run: rm -f dist/test.exe
+        shell: bash
+
 
 
       - name: Установка Node.js (для сборки VS Code расширения)
