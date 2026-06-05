@@ -65,7 +65,7 @@ jobs:
           PYTHONUTF8: "1"
         run: |
           dist/rupython.exe --install ursina
-       - name: Проверка работоспособности параметров. 2 часть
+      - name: Проверка работоспособности параметров. 2 часть
         env:
           PYTHONUTF8: "1"
         run: |
