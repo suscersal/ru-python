@@ -830,7 +830,7 @@ if __name__ == "__main__":
                     if remaining[i] == '--name' and i + 1 < len(remaining):
                         build_name = remaining[i + 1]
                         i += 2
-                    elif remaining[i] == '--add-data' and i + 1 < len(remaining):
+                    elif (remaining[i] == '--add-data' or remaining[i] == '--add_data' )and i + 1 < len(remaining):
                         extra_files.append(remaining[i + 1])
                         i += 2
                     elif remaining[i] == '--icon' and i + 1 < len(remaining):
