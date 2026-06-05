@@ -43,14 +43,14 @@ jobs:
             $changed = git diff --name-only HEAD~1 HEAD -- rus-python/
             if ($changed) {
               Write-Host "rus-python изменялся — bump выполним."
-              echo "should_bump=true" >> $env:GITHUB_OUTPUT
+              Add-Content $env:GITHUB_OUTPUT "should_bump=true"
             } else {
               Write-Host "rus-python НЕ менялся — bump пропускаем."
-              echo "should_bump=false" >> $env:GITHUB_OUTPUT
+              Add-Content $env:GITHUB_OUTPUT "should_bump=false"
             }
           } else {
             Write-Host "Триггер: $event — bump пропускаем."
-            echo "should_bump=false" >> $env:GITHUB_OUTPUT
+            Add-Content $env:GITHUB_OUTPUT "should_bump=false"
           }
 
       - name: Установка Python 3.13
