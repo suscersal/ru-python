@@ -740,6 +740,8 @@ def find_python_in_registry():
     return None
 
 def find_local_python():
+    if not getattr(sys, 'frozen', False):
+        return sys.executable
     """Основная функция поиска Python на ПК."""
     # Шаг 1: Пробуем найти через реестр Windows
     registry_path = find_python_in_registry()
