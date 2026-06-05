@@ -135,6 +135,7 @@ try:
         print(f"{GREEN}\n Готово! Файл {exe_name} создан в папке 'dist'.{RESET}")
         test_run()
     else:
+        raise RuntimeError("Что-то пошло не так")
         print(f"\n {RED}Ошибка сборки. Код: {result.returncode}{RESET}")
 except Exception as e:
     print(f"{RED}Ошибка при запуске PyInstaller: {e}{RESET}")
