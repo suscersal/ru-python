@@ -620,7 +620,7 @@ def run_rupy(input_file,log_file,build):
             else:
                 print(f"{RED}Ошибка при компиляции:{RESET}")
                 print(result.stderr)
-                raise RuntimeError("Что-то пошло не так")
+                sys.exit(1)
         except Exception as e:
             print(f"{RED}Не удалось запустить PyInstaller: {e}{RESET}")
 
