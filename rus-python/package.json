@@ -3,7 +3,7 @@
     "displayName":  "Russ Python",
     "description":  "Позволяет писать на русском синтаксис python",
     "publisher":  "SUSCERSAL",
-    "version":  "0.0.15",
+    "version":  "0.0.16",
     "readme":  "./README-NPM.md",
     "icon":  "icon.png",
     "repository":  {
