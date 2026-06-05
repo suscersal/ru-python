@@ -600,7 +600,7 @@ def run_rupy(input_file,log_file,build):
     
     print(f"{GREEN}--- Трансляция завершена ({output_file}) ---{RESET}")
     
-        if build:
+    if build:
         print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
 
         python_path = find_local_python()
