@@ -140,7 +140,7 @@ def get_russian_error(raw_error):
         pass
     return raw_error_str
 
-def run_rupy(input_file,log_file,build):
+def run_rupy(input_file,log_file,build,build_name=None,extra_files=None):
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
@@ -610,9 +610,26 @@ def run_rupy(input_file,log_file,build):
             print(f"{RED}Ошибка: Python не найден, компиляция невозможна.{RESET}")
             return
 
+        # Формируем команду PyInstaller
+        pyinstaller_cmd = ["python", "-m", "PyInstaller", "--onefile", "--noconsole"]
+
+        # Параметр --name: имя выходного .exe
+        if build_name:
+            pyinstaller_cmd += ["--name", build_name]
+            print(f"{YELLOW} Имя выходного файла: {build_name}.exe {RESET}")
+
+        # Параметр --add-data: дополнительные файлы, включаемые в сборку
+        # extra_files — список строк вида "src;dest" (Windows) или "src:dest" (Linux/Mac)
+        if extra_files:
+            for ef in extra_files:
+                pyinstaller_cmd += ["--add-data", ef]
+                print(f"{YELLOW} Добавлен файл в сборку: {ef} {RESET}")
+
+        pyinstaller_cmd.append(str(output_file))
+
         try:
             result = subprocess.run(
-                ["python", "-m", "PyInstaller", "--onefile", "--noconsole", str(output_file)],
+                pyinstaller_cmd,
                 capture_output=True,
                 text=True
             )
@@ -772,6 +789,8 @@ if __name__ == "__main__":
     param = None
     target_file = None
     build = None
+    build_name = None
+    extra_files = []
 
     # 1. Исправление определения текущей директории для .py и .exe
     if getattr(sys, 'frozen', False):
@@ -792,6 +811,18 @@ if __name__ == "__main__":
                 target_file = sys.argv[1]
                 param = [None,None]
                 build=True
+                # Читаем дополнительные параметры сборки: --name и --add-data
+                remaining = sys.argv[3:]
+                i = 0
+                while i < len(remaining):
+                    if remaining[i] == '--name' and i + 1 < len(remaining):
+                        build_name = remaining[i + 1]
+                        i += 2
+                    elif remaining[i] == '--add-data' and i + 1 < len(remaining):
+                        extra_files.append(remaining[i + 1])
+                        i += 2
+                    else:
+                        i += 1
             else:
                 target_file = sys.argv[1]
                 param = ['',None]
@@ -808,7 +839,7 @@ if __name__ == "__main__":
     if param == None or param[0] != '--install':
         if target_file and os.path.exists(target_file):
             #print(param,"run")
-            run_rupy(target_file,param[1],build)
+            run_rupy(target_file,param[1],build,build_name,extra_files or None)
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
