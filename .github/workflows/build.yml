@@ -58,7 +58,7 @@ jobs:
         shell: powershell
         run: |
           chcp 65001
-          dist/rupython.exe --install ursina
+          dist\rupython.exe --install ursina
       - name: Проверка работоспособности параметров часть 2
         env:
           PYTHONUTF8: "1"
@@ -67,7 +67,7 @@ jobs:
         shell: powershell
         run: |
           chcp 65001
-          dist/rupython.exe test.rupy --build
+          dist\rupython.exe test.rupy --build
 
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
