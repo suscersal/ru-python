@@ -71,16 +71,18 @@ jobs:
         run: |
           dist/rupython.exe test.rupy --build --icon icon.ico --name test --add-data "test.rupy;test.py"
 
+      - name: Удалить тестовые исполняемые файлы
+        run: |
+          rm -f dist/test.exe
+
+
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
      
-       - name: Удалить тестовые исполняемые файлы
-        run: |
-          rm -f dist/test.exe
-
+       
 
       - name: Сборка расширения VS Code и автоповышение версии
         id: vsce_setup
