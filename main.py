@@ -604,6 +604,7 @@ def run_rupy(input_file,log_file,build):
         print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
 
         python_path = find_local_python()
+        print(python_path)
 
         if "не найден" in python_path:
             print(f"{RED}Ошибка: Python не найден, компиляция невозможна.{RESET}")
@@ -611,7 +612,7 @@ def run_rupy(input_file,log_file,build):
 
         try:
             result = subprocess.run(
-                [python_path, "-m", "PyInstaller", "--onefile", "--noconsole", str(output_file)],
+                ["python", "-m", "PyInstaller", "--onefile", "--noconsole", str(output_file)],
                 capture_output=True,
                 text=True
             )
