@@ -69,7 +69,7 @@ jobs:
         env:
           PYTHONUTF8: "1"
         run: |
-          dist/rupython.exe test.rupy --build --icon icon.ico --name test --add_data "test.rupy;test.py"
+          dist/rupython.exe test.rupy --build --icon icon.ico --name test --add-data "test.rupy;test.py"
 
       - name: Установка Node.js (для сборки VS Code расширения)
         uses: actions/setup-node@v4
