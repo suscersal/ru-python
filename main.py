@@ -7,6 +7,7 @@ import shutil
 import pathlib
 import requests
 import subprocess
+import argparse
 
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -630,11 +631,13 @@ def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=Non
              
 
         # Параметр --add-data: дополнительные файлы, включаемые в сборку
-        # extra_files — список строк вида "src;dest" (Windows) или "src:dest" (Linux/Mac)
+        # PyInstaller требует формат SOURCE:DEST (через двоеточие)
+        # Если пользователь передал SOURCE;DEST (старый Windows-формат) — автоматически исправляем
         if extra_files:
             for ef in extra_files:
-                pyinstaller_cmd += ["--add-data", ef]
-                print(f"{YELLOW} Добавлен файл в сборку: {ef} {RESET}")
+                ef_fixed = ef.replace(";", ":")
+                pyinstaller_cmd += [f"--add-data={ef_fixed}"]
+                print(f"{YELLOW} Добавлен файл в сборку: {ef_fixed} {RESET}")
 
         pyinstaller_cmd.append(str(output_file))
         print(f"{GREEN} Команда компиляции: {pyinstaller_cmd} {RESET}")
@@ -796,97 +799,111 @@ def find_local_python():
 
 
 if __name__ == "__main__":
- #   print(sys.argv)
-    param = None
-    target_file = None
-    build = None
-    build_name = None
-    extra_files = []
-    icon = None
 
-    # 1. Исправление определения текущей директории для .py и .exe
+    # 1. Определение текущей директории для .py и .exe
     if getattr(sys, 'frozen', False):
-        # Если запущен скомпилированный .exe, берем папку, где лежит этот .exe
         current_dir = os.path.dirname(os.path.abspath(sys.executable))
     else:
-        # Если запущен обычный скрипт .py
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # 2. Обработка аргументов командной строки
-    if len(sys.argv) > 1:
-        if not sys.argv[1].startswith('--'):
-            if sys.argv[2] == '--log_file':
-                target_file = sys.argv[1]
-                param = sys.argv[2:]
-                print('1')
-            elif sys.argv[2] == '--build':
-                target_file = sys.argv[1]
-                param = [None,None]
-                build=True
-                # Читаем дополнительные параметры сборки: --name и --add-data
-                remaining = sys.argv[3:]
-                i = 0
-                while i < len(remaining):
-                    if remaining[i] == '--name' and i + 1 < len(remaining):
-                        build_name = remaining[i + 1]
-                        i += 2
-                    elif (remaining[i] == '--add-data' or remaining[i] == '--add_data' )and i + 1 < len(remaining):
-                        extra_files.append(remaining[i + 1])
-                        i += 2
-                    elif remaining[i] == '--icon' and i + 1 < len(remaining):
-                        icon = remaining[i + 1]
-                        i += 2
-                    else:
-                        i += 1
-            else:
-                target_file = sys.argv[1]
-                param = ['',None]
-                print('2')
+    # 2. Настройка argparse
+    parser = argparse.ArgumentParser(
+        description="Интерпретатор RuPy — запуск .rupy файлов с русским синтаксисом",
+        epilog="Пример: rupy script.rupy --log_file out.log",
+        prog="rupy"
+    )
+
+    parser.add_argument(
+        "file",
+        type=str,
+        nargs="?",
+        default=os.path.join(current_dir, "test.rupy"),
+        help="Путь к .rupy файлу для выполнения (по умолчанию: test.rupy рядом со скриптом)"
+    )
+    parser.add_argument(
+        "--log_file", "-l",
+        type=str,
+        default=None,
+        help="Путь к файлу для записи лога выполнения"
+    )
+    parser.add_argument(
+        "--build", "-b",
+        action="store_true",
+        default=False,
+        help="Скомпилировать .rupy файл в .exe через PyInstaller"
+    )
+    parser.add_argument(
+        "--name", "-n",
+        type=str,
+        default=None,
+        help="Имя выходного .exe файла при сборке"
+    )
+    parser.add_argument(
+        "--add-data", "--add_data",
+        type=str,
+        dest="extra_files",
+        action="append",
+        default=[],
+        help="Дополнительные файлы для включения в сборку (можно указывать несколько раз)"
+    )
+    parser.add_argument(
+        "--icon", "-i",
+        type=str,
+        default=None,
+        help="Путь к .ico файлу иконки для сборки"
+    )
+    parser.add_argument(
+        "--install",
+        type=str,
+        metavar="МОДУЛЬ",
+        nargs="?",
+        const="__setup__",
+        default=None,
+        help="Установить Python-модуль через pip. Без аргумента — настройка ассоциации файлов"
+    )
+
+    args = parser.parse_args()
+
+    # 3. Логика выполнения
+    if args.install is not None:
+        print("Запущена установка ассоциации файлов и модулей...")
+
+        python_path = find_local_python()
+        print(f"Найденный интерпретатор для установки: {python_path}")
+
+        if "не найден" in python_path:
+            print(f"{RED}Ошибка: Не удалось установить модуль. Python не найден в системе.{RESET}")
+        elif args.install == "__setup__":
+            print(f"{YELLOW}Флаг --install запущен без указания модуля. Выполняется стандартная настройка.{RESET}")
+            # Здесь можно добавить код настройки ассоциации файлов .rupy
         else:
-            param = sys.argv[1:]
-          #  print(param)
-            print('3')
+            module_name = args.install
+            print(f"Установка модуля {module_name} через pip...")
+            try:
+                result = subprocess.run(
+                    [python_path, "-m", "pip", "install", module_name],
+                    capture_output=False,
+                    text=True
+                )
+                if result.returncode == 0:
+                    print(f"\n{YELLOW}Модуль {module_name} успешно установлен!{RESET}")
+                else:
+                    print(f"\n{RED}Произошла ошибка при установке модуля.{RESET}")
+            except Exception as e:
+                print(f"{RED}Не удалось запустить pip: {e}{RESET}")
+
     else:
-        target_file = os.path.join(current_dir, "test.rupy")
-        param = [None,None]
-    #print(param,"предзапуск")
-    # 3. Логика выполнения в зависимости от параметров
-    if param == None or param[0] != '--install':
+        target_file = args.file
         if target_file and os.path.exists(target_file):
-            #print(param,"run")
-            run_rupy(target_file,param[1],build,build_name,extra_files or None,icon)
+            run_rupy(
+                target_file,
+                args.log_file,
+                args.build,
+                args.name,
+                args.extra_files or None,
+                args.icon
+            )
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
             print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
-    else:
-        if param[0] == '--install':
-            print("Запущена установка ассоциации файлов и модулей...")
-            
-            python_path = find_local_python() 
-            print(f"Найденный интерпретатор для установки: {python_path}")
-            
-            if "не найден" in python_path:
-                print(f"{RED}Ошибка: Не удалось установить модуль. Python не найден в системе.{RESET}")
-            else:
-                if len(param) > 1:
-                    module_name = param[1]
-                    print(f"Установка модуля {module_name} через pip...")
-                    
-                    try:
-                        # Запускаем команду: python.exe -m pip install имя_модуля
-                        result = subprocess.run(
-                            [python_path, "-m", "pip", "install", module_name],
-                            capture_output=False, # Вывод pip будет идти прямо в консоль пользователя
-                            text=True
-                        )
-                        if result.returncode == 0:
-                            print(f"\n{YELLOW}Модуль {module_name} успешно установлен!{RESET}")
-                        else:
-                            print(f"\n{RED}Произошла ошибка при установке модуля.{RESET}")
-                    except Exception as e:
-                        print(f"{RED}Не удалось запустить pip: {e}{RESET}")
-                else:
-                    print(f"{YELLOW}Флаг -install запущен без указания модуля. Выполняется стандартная настройка.{RESET}")
-                    # Здесь можно оставить ваш код для настройки ассоциации файлов .rupy
-             

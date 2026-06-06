@@ -5,7 +5,7 @@ a = Analysis(
     ['test.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('test.rupy', 'test.py')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
