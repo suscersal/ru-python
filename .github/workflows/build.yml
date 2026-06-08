@@ -70,6 +70,12 @@ jobs:
           PYTHONUTF8: "1"
         run: |
           dist/rupython.exe test.rupy --build --icon icon.ico --name test --add-data "test.rupy;test.py"
+          
+      - name: Проверка работоспособности параметров. 3 часть
+        env:
+          PYTHONUTF8: "1"
+        run: 
+          echo "suscersal" | dist/rupython.exe --m build_gui
 
       - name: Clean build artifact
         run: rm -f dist/test.exe

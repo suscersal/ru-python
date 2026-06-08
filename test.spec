@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['test.py'],
+    ['/data/data/com.termux/files/home/ru-python/test.py'],
     pathex=[],
     binaries=[],
-    datas=[('test.rupy', 'test.py')],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -35,5 +35,4 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['icon.ico'],
 )

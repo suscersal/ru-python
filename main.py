@@ -141,7 +141,7 @@ def get_russian_error(raw_error):
         pass
     return raw_error_str
 
-def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=None):
+def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=None,translate_only=False):
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
@@ -600,7 +600,10 @@ def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=Non
         f_out.write("\n".join(py_lines))
     
     print(f"{GREEN}--- Трансляция завершена ({output_file}) ---{RESET}")
-    
+    if translate_only:
+        print(f"{YELLOW}Режим только трансляции: запуск кода пропущен{RESET}")
+        return
+        
     if build:
         print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
 
@@ -861,8 +864,30 @@ if __name__ == "__main__":
         default=None,
         help="Установить Python-модуль через pip. Без аргумента — настройка ассоциации файлов"
     )
+    parser.add_argument(
+         "-m", "--module",
+         type=str,
+        default=None,
+        help="Запустить встроенный модуль (например: build_gui)"
+    )
+    parser.add_argument(
+    "--translate-only", "-t",
+    action="store_true",
+    default=False,
+    help="Только трансляция .rupy → .py без запуска кода"
+)
+
 
     args = parser.parse_args()
+    
+    if args.module == "build_gui":
+        import sys
+        import os
+        # Добавляем корневую папку в путь поиска модулей
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from modules.build_gui import run
+        run()
+        sys.exit(0)
 
     # 3. Логика выполнения
     if args.install is not None:
@@ -896,13 +921,14 @@ if __name__ == "__main__":
         target_file = args.file
         if target_file and os.path.exists(target_file):
             run_rupy(
-                target_file,
-                args.log_file,
-                args.build,
-                args.name,
-                args.extra_files or None,
-                args.icon
-            )
+    target_file,
+    args.log_file,
+    args.build,
+    args.name,
+    args.extra_files or None,
+    args.icon,
+    args.translate_only  
+)
         else:
             print(f"{RED}--- ОШИБКА ---")
             print(f"Файл не найден по пути: {target_file}{RESET}")
