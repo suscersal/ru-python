@@ -391,7 +391,7 @@ def run_termux_simple():
                 print(f"  {line}")
             print("-" * 60)
         
-        print_menu()
+      #  print_menu()
     
     def show_full_log():
         clear_screen()
@@ -541,8 +541,17 @@ def run_termux_simple():
     while True:
         show_status()
         
-        choice = input("Выберите действие: ").strip()
+        from simple_term_menu import TerminalMenu
+        options = ["0. Выход", "1. Выбрать .rupy файл", "2. Выбрать выходное имя", "3.Выбрать иконку","4. Переключить один файл/папка", "5. Переключить с консолью/без консоли", "6. Запуск сборки","7. Показать лог"]
         
+        menu = TerminalMenu(
+    options,
+    title="Меню с курсором >",
+    menu_cursor="> ",
+    menu_cursor_style=("fg_red", "bold")
+)
+        choice = str(menu.show())
+       # print(choice)
         if choice == '0':
             print("\n👋 До свидания!")
             break
