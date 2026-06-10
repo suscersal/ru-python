@@ -141,7 +141,7 @@ def get_russian_error(raw_error):
         pass
     return raw_error_str
 
-def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=None,translate_only=False):
+def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=None,translate_only=False,debug=False):
     if not os.path.exists(input_file):
         print(f"{RED}--- ОШИБКА: Файл '{input_file}' не найден! ---{RESET}")
         return
@@ -603,6 +603,13 @@ def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=Non
     if translate_only:
         print(f"{YELLOW}Режим только трансляции: запуск кода пропущен{RESET}")
         return
+    if debug:
+        print(f"{YELLOW}Режим debug: запуск с отладкой{RESET}")
+    # тут вызывай функцию отладки
+        from modules.debug.core import run_debug
+        run_debug(input_file, str(output_file))
+        return 
+        
         
     if build:
         print(f"{YELLOW} Запущена компиляция программы: {input_file} в {input_path.with_suffix('.exe')} ")
@@ -876,6 +883,12 @@ if __name__ == "__main__":
     default=False,
     help="Только трансляция .rupy → .py без запуска кода"
 )
+    parser.add_argument(
+    "--debug", "-d",
+    action="store_true",
+    default=False,
+    help="Запуск отладки .rupy → .py с показом переменных и брейкпоинтов"
+)
 
 
     args = parser.parse_args()
@@ -918,6 +931,10 @@ if __name__ == "__main__":
                 print(f"{RED}Не удалось запустить pip: {e}{RESET}")
 
     else:
+        if args.debug:
+            debug = True
+        else:
+            debug = False
         target_file = args.file
         if target_file and os.path.exists(target_file):
             run_rupy(
@@ -927,7 +944,8 @@ if __name__ == "__main__":
     args.name,
     args.extra_files or None,
     args.icon,
-    args.translate_only  
+    args.translate_only,
+    debug,  
 )
         else:
             print(f"{RED}--- ОШИБКА ---")
