@@ -25,7 +25,7 @@ jobs:
           python-version: '3.11'
 
       - name: Update README example
-        run: python update_readme.py
+        run: python update_readme_example.py
 
       - name: Commit and push
         run: |
