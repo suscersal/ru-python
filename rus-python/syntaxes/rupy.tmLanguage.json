@@ -7,14 +7,15 @@
 		{ "include": "#functions" },
 		{ "include": "#classes" },
 		{ "include": "#strings" },
-		{ "include": "#numbers" }
+		{ "include": "#numbers" },
+		{ "include": "#fstrings" },
 	],
 		"repository": {
 		"keywords": {
 			"patterns": [
 				{
 					"name": "keyword.control.rupy",
-					"match": "\\b(если|иначе|конец|попробовать|отловить|для|раз|функция|вернуть|класс|создать|использовать|из|как)\\b"
+					"match": "\\b(если|иначе|конец|попробовать|отловить|для|раз|функция|вернуть|класс|создать|использовать|из|как|функ)\\b"
 				},
 				{
 					"name": "keyword.other.rupy",
@@ -79,6 +80,21 @@
 					"match": "(?<=класс)\\s+([a-zA-Zа-яА-Я_]\\w*)"
 				}
 			]
+		},
+		"fstrings": {
+		    "name": "string.interpolated.rupy",
+		    "begin": "форм[\"']",
+ 		   "end": "[\"']",
+ 		   "patterns": [
+  		      {
+   		         "name": "constant.character.escape.rupy",
+ 		           "match": "\\\\."
+  		      },
+     		   {
+   		         "name": "variable.other.rupy",
+    		        "match": "\\{[^}]*\\}"
+  		      }
+		    ]
 		},
 		"strings": {
 			"name": "string.quoted.double.rupy",

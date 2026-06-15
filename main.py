@@ -161,6 +161,7 @@ def run_rupy(input_file,log_file,build,build_name=None,extra_files=None,icon=Non
             continue
         raw_line = line.strip()
         raw_line = re.sub(r'\bформ(?=["\'])', 'f', raw_line)
+        raw_line = re.sub(r'\bфунк\b', 'lambda', raw_line)
         
         if line.strip().startswith('#'):
             #print(line)
