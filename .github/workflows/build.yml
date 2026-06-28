@@ -201,7 +201,6 @@ jobs:
             dist/*.exe
             
             Setup_Build/rupyInstaller.exe
-            *.exe
             !dist/test.exe
             rus-python/*.vsix
         env:
