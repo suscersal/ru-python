@@ -931,25 +931,44 @@ if __name__ == "__main__":
                     print(f"\n{RED}Произошла ошибка при установке модуля.{RESET}")
             except Exception as e:
                 print(f"{RED}Не удалось запустить pip: {e}{RESET}")
+        sys.exit(0)
 
+    # 4. Обработка файла
+    if args.debug:
+        debug = True
     else:
-        if args.debug:
-            debug = True
-        else:
-            debug = False
-        target_file = args.file
-        if target_file and os.path.exists(target_file):
-            run_rupy(
-    target_file,
-    args.log_file,
-    args.build,
-    args.name,
-    args.extra_files or None,
-    args.icon,
-    args.translate_only,
-    debug,  
-)
-        else:
-            print(f"{RED}--- ОШИБКА ---")
-            print(f"Файл не найден по пути: {target_file}{RESET}")
-            print(f"{YELLOW}Положите файл 'test.rupy' в папку со скриптом или перетащите его на исполняемый файл{RESET}")
+        debug = False
+    
+    target_file = args.file
+    
+    # Проверяем существование файла
+    if not os.path.exists(target_file):
+        # Если файл не существует и это не test.rupy, пробуем добавить расширение .rupy
+        if not target_file.endswith('.rupy'):
+            test_file = target_file + '.rupy'
+            if os.path.exists(test_file):
+                target_file = test_file
+            else:
+                # Если это test.rupy по умолчанию и его нет, показываем ошибку
+                if target_file == os.path.join(current_dir, "test.rupy"):
+                    print(f"{RED}--- ОШИБКА ---")
+                    print(f"Файл test.rupy не найден в папке: {current_dir}{RESET}")
+                    print(f"{YELLOW}Создайте файл test.rupy или укажите путь к существующему .rupy файлу{RESET}")
+                    sys.exit(1)
+                else:
+                    print(f"{RED}--- ОШИБКА ---")
+                    print(f"Файл не найден по пути: {target_file}{RESET}")
+                    print(f"{YELLOW}Проверьте правильность пути или создайте файл .rupy{RESET}")
+                    sys.exit(1)
+    
+    # Если файл существует, запускаем
+    run_rupy(
+        target_file,
+        args.log_file,
+        args.build,
+        args.name,
+        args.extra_files or None,
+        args.icon,
+        args.translate_only,
+        debug,  
+    )
